@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tentang Kami | KHAAZ Learning Academy</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'], },
+                    colors: { primary: '#1d4ed8', secondary: '#0ea5e9', dark: '#1e293b', },
+                }
+            }
+        }
+    </script>
+    <style>
+        body { background-color: #FAFAFA; }
+        .glass-nav { background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(8px); }
+    </style>
+</head>
+<body class="text-slate-700 antialiased selection:bg-primary selection:text-white">
+
+    <!-- Navbar -->
+    <nav class="fixed w-full z-50 glass-nav border-b border-slate-200/60 transition-all duration-300">
+        <div class="max-w-6xl mx-auto px-5 lg:px-8 py-3 flex justify-between items-center">
+            <a href="index.html" class="flex items-center">
+                <img src="https://i.ibb.co.com/Tf5mCxV/Logo-Utama-TP-1.png" alt="Logo KHAAZ" class="h-8 md:h-9 w-auto object-contain">
+            </a>
+            <div class="hidden md:flex space-x-8 items-center">
+                <a href="index.html" class="text-sm font-medium text-slate-500 hover:text-primary transition-colors">Beranda</a>
+                <a href="tentang-kami.html" class="text-sm font-medium text-primary transition-colors">Tentang Kami</a>
+                <a href="index.html#program" class="text-sm font-medium text-slate-500 hover:text-primary transition-colors">Program</a>
+                <a href="index.html#pendaftaran" class="text-sm font-medium text-white bg-primary px-4 py-2 rounded-full hover:bg-blue-700 transition-all">Daftar Sekarang</a>
+            </div>
+            <!-- Mobile Menu -->
+            <button class="md:hidden text-slate-500">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Header Profil -->
+    <section class="pt-32 pb-12 px-5 max-w-6xl mx-auto text-center border-b border-slate-100">
+        <h1 class="text-3xl md:text-4xl font-bold text-dark mb-4">Profil Pendidik Utama</h1>
+        <p class="text-sm text-slate-500 max-w-2xl mx-auto font-light leading-relaxed">
+            KHAAZ Learning Academy didirikan dan dikelola oleh praktisi pendidikan yang berdedikasi penuh pada kemajuan literasi akademik dan adopsi digital di Indonesia.
+        </p>
+    </section>
+
+    <!-- Pengurus/Guru Section -->
+    <section class="py-16 px-5 max-w-4xl mx-auto space-y-12 min-h-[50vh]">
+        
+        <!-- Profil 1: Rofi Hadiansyah -->
+        <div class="bg-white rounded-2xl p-6 md:p-8 border border-slate-100 flex flex-col md:flex-row gap-8 items-start shadow-sm">
+            <div class="w-32 h-32 md:w-40 md:h-40 flex-shrink-0 mx-auto md:mx-0 bg-blue-50 rounded-2xl overflow-hidden border border-slate-200">
+                <!-- Gambar Bp. Rofi -->
+                <img src="https://i.ibb.co.com/PGMDMmpY/Chat-GPT-Image-10-Jun-2026-15-16-49.png" alt="Rofi Hadiansyah" class="w-full h-full object-cover">
+            </div>
+            <div>
+                <h3 class="text-xl font-bold text-dark mb-1 text-center md:text-left">Rofi Hadiansyah, S.Pd.</h3>
+                <p class="text-primary text-xs font-semibold uppercase tracking-wider mb-4 text-center md:text-left">Pemilik & Mentor Utama KHAAZ Learning Academy</p>
+                <div class="text-sm text-slate-600 font-light space-y-2">
+                    <p class="flex items-start gap-2"><span>🎓</span> Kepala SDN Sindangwangi Kec. Leuwisadeng.</p>
+                    <p class="flex items-start gap-2"><span>🌟</span> Guru Penggerak Angkatan 4 & Koordinator Pengajar Praktik Calon Guru Penggerak Angkatan 9.</p>
+                    <p class="flex items-start gap-2"><span>💻</span> Master Trainer Elevaite & Microsoft Certified Educator.</p>
+                    <p class="flex items-start gap-2"><span>🏢</span> Aktif dalam tim Dinas Pendidikan Kab. Bogor (Tim Pengembang Aplikasi Simulasi TKA SD Kab. Bogor 2026 & Tim Teknis Bimtek Digitalisasi Pembelajaran 2026).</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Profil 2: Sri Wahyuni -->
+        <div class="bg-white rounded-2xl p-6 md:p-8 border border-slate-100 flex flex-col md:flex-row gap-8 items-start shadow-sm">
+            <div class="w-32 h-32 md:w-40 md:h-40 flex-shrink-0 mx-auto md:mx-0 bg-slate-100 rounded-2xl overflow-hidden border border-slate-200 flex items-center justify-center text-slate-300">
+                <!-- Placeholder untuk Gambar Ibu Sri (Siap Diganti) -->
+                <svg class="w-16 h-16" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/></svg>
+            </div>
+            <div>
+                <h3 class="text-xl font-bold text-dark mb-1 text-center md:text-left">Sri Wahyuni, S.Pd.</h3>
+                <p class="text-secondary text-xs font-semibold uppercase tracking-wider mb-4 text-center md:text-left">Pengelola KHAAZ Learning Academy</p>
+                <div class="text-sm text-slate-600 font-light space-y-2">
+                    <p class="flex items-start gap-2"><span>👩‍🏫</span> Guru Kelas 2 SDN Cisaranten.</p>
+                    <p class="flex items-start gap-2"><span>🌟</span> Lulusan Program Guru Penggerak Angkatan 4.</p>
+                    <p class="flex items-start gap-2"><span>🎯</span> Berdedikasi dalam mendampingi tumbuh kembang akademik anak usia dini dan tingkat sekolah dasar melalui metode yang mengedepankan interaksi yang sehat.</p>
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+    <!-- Footer Sama dengan Halaman Utama -->
+    <footer id="kontak" class="bg-white pt-12 pb-8 border-t border-slate-200">
+        <div class="max-w-6xl mx-auto px-5 lg:px-8">
+            <div class="flex flex-col md:flex-row justify-between items-start gap-10 mb-8">
+                <div class="md:w-1/3">
+                    <img src="https://i.ibb.co.com/Tf5mCxV/Logo-Utama-TP-1.png" alt="Logo KHAAZ" class="h-9 w-auto object-contain mb-4">
+                </div>
+                <div class="flex flex-col sm:flex-row gap-10 sm:gap-20">
+                    <div>
+                        <h4 class="text-dark text-sm font-semibold mb-3">Kontak & Lokasi</h4>
+                        <ul class="space-y-2 text-xs text-slate-500 font-light max-w-xs">
+                            <li class="flex items-start gap-2">
+                                <span class="mt-0.5">📍</span> Perum Bukit Sakinah Blok A4/11 RT 01 RW 10 Ds. Barengkok Kec. Leuwiliang Kab. Bogor
+                            </li>
+                            <li>📞 +62 857-9594-1412</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-slate-100 pt-6 flex justify-between items-center text-[11px] text-slate-400 font-light">
+                <p>&copy; 2026 KHAAZ Learning Academy.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Widget WhatsApp Floating -->
+    <a href="https://wa.me/6285795941412?text=Halo%20KHAAZ%20Learning%20Academy,%20saya%20ingin%20bertanya%20terkait%20layanan%20Bimbel/Pelatihan%20AI..." 
+       target="_blank" 
+       class="fixed bottom-6 right-6 w-14 h-14 bg-green-500 text-white rounded-full flex items-center justify-center shadow-lg shadow-green-500/30 hover:bg-green-600 hover:scale-110 transition-all duration-300 z-50 group">
+        <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.183-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.765-5.77zm3.392 8.244c-.161.465-.87.89-1.229.932-.331.039-.773.08-1.922-.444-1.396-.638-2.302-2.073-2.373-2.17-.07-.097-.568-.756-.568-1.442 0-.685.352-1.023.477-1.155.124-.131.272-.164.364-.164.09 0 .179.001.258.005.083.004.194-.032.304.236.113.275.385.945.419 1.015.034.071.056.153.011.246-.044.093-.067.149-.134.225-.068.077-.142.164-.202.228-.063.067-.13.138-.057.264.073.125.324.536.694.869.479.432.883.559 1.009.622.125.063.199.053.274-.033.074-.085.318-.372.404-.5.086-.128.172-.107.288-.063.116.044.739.349.865.412.125.063.208.096.239.149.031.053.031.305-.13.771z"/></svg>
+    </a>
+
+</body>
+</html>
