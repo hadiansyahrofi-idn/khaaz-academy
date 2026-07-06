@@ -4,10 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>In-House Training AI Guru | KHAAZ Learning Academy</title>
-    
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    
     <script>
         tailwind.config = {
             theme: {
@@ -21,14 +19,12 @@
     <style>
         body { background-color: #FAFAFA; }
         .floating-nav { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
-        .app-card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1); }
     </style>
 </head>
 <body class="text-slate-700 antialiased selection:bg-primary selection:text-white">
 
-    <!-- FLOATING NAVBAR -->
     <div class="fixed top-4 left-0 right-0 z-50 px-4">
-        <nav class="max-w-5xl mx-auto floating-nav shadow-md border border-slate-200 rounded-full px-5 py-3 flex justify-between items-center transition-all duration-300">
+        <nav class="max-w-5xl mx-auto floating-nav shadow-sm border border-slate-200 rounded-full px-5 py-3 flex justify-between items-center transition-all duration-300">
             <a href="index.html" class="flex items-center pl-2">
                 <img src="https://i.ibb.co.com/Tf5mCxV/Logo-Utama-TP-1.png" alt="Logo KHAAZ" class="h-7 md:h-8 w-auto object-contain">
             </a>
@@ -37,117 +33,244 @@
                 <a href="index.html#program" class="text-sm font-medium text-slate-500 hover:text-primary transition-colors">Bimbel Siswa</a>
                 <a href="pelatihan-guru.html" class="text-sm font-medium text-primary transition-colors">Pelatihan Guru</a>
                 <a href="tentang-kami.html" class="text-sm font-medium text-slate-500 hover:text-primary transition-colors">Profil</a>
-                <a href="#iht-kontak" class="text-sm font-medium text-dark bg-yellow px-5 py-2.5 rounded-full hover:bg-yellow/80 transition-all shadow-md font-bold">Undang IHT</a>
+                <a href="https://wa.me/6285795941412" target="_blank" class="text-sm font-medium text-dark bg-yellow px-5 py-2.5 rounded-full hover:bg-yellow/80 transition-all shadow-md font-bold">Undang IHT</a>
             </div>
-            <button class="md:hidden text-slate-500 pr-2">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
-            </button>
         </nav>
     </div>
 
-    <!-- HERO PELATIHAN GURU -->
-    <section class="pt-36 pb-20 bg-dark text-white relative overflow-hidden text-center px-5">
-        <div class="absolute top-20 left-0 w-96 h-96 bg-primary/20 rounded-full blur-[100px] pointer-events-none"></div>
-        <div class="max-w-4xl mx-auto relative z-10">
-            <span class="inline-block px-4 py-1.5 rounded-full bg-white/10 border border-yellow/30 text-yellow text-xs font-bold tracking-wider uppercase mb-6 backdrop-blur-sm">
-                In-House Training (IHT) Sekolah
-            </span>
-            <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold mb-6 leading-[1.2]">
-                Transformasi Pendidikan dengan <br> <span class="text-secondary">Generative AI</span>
-            </h1>
-            <p class="text-slate-300 text-sm md:text-base font-light mb-10 max-w-2xl mx-auto leading-relaxed">
-                Pelatihan intensif bagi tenaga kependidikan untuk mendesain pembelajaran abad 21 secara efektif, inovatif, dan menghemat waktu administrasi hingga 80%.
-            </p>
-        </div>
-    </section>
-
-    <!-- TEKNOLOGI & APLIKASI -->
-    <section class="py-20 bg-slate-50 border-b border-slate-100">
-        <div class="max-w-6xl mx-auto px-5 lg:px-8">
-            <div class="text-center mb-12">
-                <h2 class="text-primary font-semibold tracking-wider text-xs uppercase mb-2">Kurikulum Pelatihan</h2>
-                <h3 class="text-2xl md:text-3xl font-bold text-dark">Tools yang Akan Dikuasai</h3>
-                <p class="text-sm text-slate-500 font-light mt-3 max-w-2xl mx-auto">Kami mengkurasi berbagai platform Kecerdasan Buatan terbaik di industri yang paling relevan dengan kebutuhan manajerial kepala sekolah dan pedagogik guru.</p>
-            </div>
+    <!-- COMPACT HERO & TOOLS -->
+    <section class="pt-28 pb-16 bg-dark text-white relative overflow-hidden">
+        <div class="absolute top-0 right-0 w-80 h-80 bg-primary/20 rounded-full blur-[80px] pointer-events-none"></div>
+        <div class="max-w-5xl mx-auto px-5 relative z-10 flex flex-col md:flex-row items-center gap-10">
             
-            <div class="flex flex-wrap justify-center gap-4">
-                <!-- App Badges -->
-                <div class="app-card bg-white border border-slate-200 px-6 py-4 rounded-xl flex items-center gap-3 font-semibold text-slate-700 transition-all duration-300"><span class="text-xl">🎨</span> Canva Edu</div>
-                <div class="app-card bg-white border border-slate-200 px-6 py-4 rounded-xl flex items-center gap-3 font-semibold text-slate-700 transition-all duration-300"><span class="text-xl">🤖</span> ChatGPT</div>
-                <div class="app-card bg-white border border-slate-200 px-6 py-4 rounded-xl flex items-center gap-3 font-semibold text-slate-700 transition-all duration-300"><span class="text-xl">✨</span> Gemini</div>
-                <div class="app-card bg-white border border-slate-200 px-6 py-4 rounded-xl flex items-center gap-3 font-semibold text-slate-700 transition-all duration-300"><span class="text-xl">🧠</span> Microsoft Copilot</div>
-                <div class="app-card bg-white border border-slate-200 px-6 py-4 rounded-xl flex items-center gap-3 font-semibold text-slate-700 transition-all duration-300"><span class="text-xl">💡</span> Google AI Studio</div>
-                <div class="app-card bg-white border border-slate-200 px-6 py-4 rounded-xl flex items-center gap-3 font-semibold text-slate-700 transition-all duration-300"><span class="text-xl">🎯</span> Genially</div>
-                <div class="app-card bg-white border border-slate-200 px-6 py-4 rounded-xl flex items-center gap-3 font-semibold text-slate-700 transition-all duration-300"><span class="text-xl">🪄</span> Gamma App</div>
-                <div class="app-card bg-white border border-slate-200 px-6 py-4 rounded-xl flex items-center gap-3 font-semibold text-slate-700 transition-all duration-300"><span class="text-xl">💖</span> Lovable AI</div>
-                <div class="app-card bg-white border border-slate-200 px-6 py-4 rounded-xl flex items-center gap-3 font-semibold text-slate-700 transition-all duration-300"><span class="text-xl">📓</span> NotebookLM</div>
-                <div class="app-card bg-white border border-slate-200 px-6 py-4 rounded-xl flex items-center gap-3 font-semibold text-slate-700 transition-all duration-300"><span class="text-xl">💻</span> VS Code & Apps Script</div>
+            <div class="w-full md:w-1/2">
+                <span class="inline-block px-3 py-1 rounded-full bg-white/10 border border-yellow/30 text-yellow text-[10px] font-bold tracking-wider uppercase mb-4">
+                    In-House Training (IHT)
+                </span>
+                <h1 class="text-3xl md:text-4xl font-bold mb-5 leading-tight">
+                    Pelatihan Guru Berbasis <br><span class="text-secondary">Generative AI</span>
+                </h1>
+                <p class="text-slate-300 text-sm leading-relaxed font-light mb-6 max-w-lg">
+                    Tingkatkan kapasitas mengajar dan manajerial sekolah Anda. KHAAZ Learning Academy memfasilitasi program In-House Training (IHT) yang meliputi:
+                </p>
+                <ul class="space-y-3 mb-8 text-sm text-slate-300 font-light">
+                    <li class="flex items-start gap-3"><span class="text-secondary mt-0.5">✓</span> Pemanfaatan AI dalam Kegiatan Pembelajaran Mendalam</li>
+                    <li class="flex items-start gap-3"><span class="text-secondary mt-0.5">✓</span> Peningkatan Kompetensi Manajerial Kepala Sekolah via AI</li>
+                    <li class="flex items-start gap-3"><span class="text-secondary mt-0.5">✓</span> Desain Pembelajaran Abad 21</li>
+                    <li class="flex items-start gap-3"><span class="text-secondary mt-0.5">✓</span> Praktik Pembuatan Web Sekolah & Digitalisasi Portofolio</li>
+                </ul>
+                <a href="https://wa.me/6285795941412?text=Halo%20Admin%20KHAAZ,%20kami%20tertarik%20mengundang%20untuk%20kegiatan%20In-House%20Training%20(IHT)%20Pelatihan%20AI..." 
+                   target="_blank"
+                   class="inline-flex items-center gap-2 bg-yellow text-dark text-sm px-6 py-3 rounded-full font-bold hover:bg-white transition-all shadow-[0_0_15px_rgba(255,221,22,0.3)] hover:-translate-y-1">
+                    Undang Kami Sekarang
+                </a>
             </div>
-        </div>
-    </section>
 
-    <!-- GALERI IHT -->
-    <section class="py-20 bg-white">
-        <div class="max-w-6xl mx-auto px-5 lg:px-8">
-            <div class="mb-12">
-                <h3 class="text-2xl font-bold text-dark border-l-4 border-yellow pl-4">Galeri Kegiatan In-House Training</h3>
-            </div>
-            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
-                <!-- Ganti link gambar ini dengan dokumentasi asli Anda nantinya -->
-                <img src="https://images.unsplash.com/photo-1573164713988-8665fc963095?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="IHT 1" class="w-full h-56 object-cover rounded-2xl shadow-sm border border-slate-100">
-                <img src="https://images.unsplash.com/photo-1544531586-fde5298cdd40?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="IHT 2" class="w-full h-56 object-cover rounded-2xl shadow-sm border border-slate-100">
-                <img src="https://images.unsplash.com/photo-1524178232363-1fb2b075b655?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="IHT 3" class="w-full h-56 object-cover rounded-2xl shadow-sm border border-slate-100 md:col-span-3 lg:col-span-1">
-            </div>
-        </div>
-    </section>
-
-    <!-- TESTIMONI -->
-    <section class="py-20 bg-slate-50 border-t border-slate-100">
-        <div class="max-w-6xl mx-auto px-5 lg:px-8">
-            <div class="text-center mb-12">
-                <h3 class="text-2xl font-bold text-dark">Apa Kata Rekan Pendidik?</h3>
-            </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <!-- Testimoni 1 -->
-                <div class="bg-white p-8 rounded-2xl shadow-sm border border-slate-100">
-                    <div class="text-yellow text-4xl mb-4">"</div>
-                    <p class="text-slate-600 text-sm font-light leading-relaxed mb-6 italic">Pelatihan yang diberikan sangat aplikatif. Pembuatan RPP yang biasanya memakan waktu berhari-hari kini bisa disusun dengan rapi dan terstruktur dalam hitungan menit menggunakan teknik prompting yang diajarkan.</p>
-                    <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 bg-blue-100 text-primary rounded-full flex items-center justify-center font-bold">G</div>
-                        <div>
-                            <p class="font-bold text-dark text-sm">Guru SDN Sindangwangi</p>
-                            <p class="text-xs text-slate-400">Peserta Pelatihan AI</p>
-                        </div>
-                    </div>
-                </div>
-                <!-- Testimoni 2 -->
-                <div class="bg-white p-8 rounded-2xl shadow-sm border border-slate-100">
-                    <div class="text-yellow text-4xl mb-4">"</div>
-                    <p class="text-slate-600 text-sm font-light leading-relaxed mb-6 italic">Pemateri dari KHAAZ Academy sangat menguasai bidang digitalisasi. Platform seperti Canva Edu dan Google AI Studio dijelaskan dengan sangat mudah dipahami oleh guru-guru senior sekalipun.</p>
-                    <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 bg-sky-100 text-secondary rounded-full flex items-center justify-center font-bold">K</div>
-                        <div>
-                            <p class="font-bold text-dark text-sm">Kepala Sekolah Rekanan</p>
-                            <p class="text-xs text-slate-400">Kabupaten Bogor</p>
-                        </div>
-                    </div>
+            <!-- Compact Tools Grid -->
+            <div class="w-full md:w-1/2 bg-white/5 border border-white/10 p-5 rounded-2xl backdrop-blur-sm">
+                <h3 class="font-semibold text-sm mb-4 text-center text-slate-200">Aplikasi yang Dikuasai:</h3>
+                <div class="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                    <div class="bg-white/10 p-2 rounded text-[10px] font-medium text-center hover:bg-primary/50 transition">Canva Edu</div>
+                    <div class="bg-white/10 p-2 rounded text-[10px] font-medium text-center hover:bg-primary/50 transition">ChatGPT</div>
+                    <div class="bg-white/10 p-2 rounded text-[10px] font-medium text-center hover:bg-primary/50 transition">Gemini</div>
+                    <div class="bg-white/10 p-2 rounded text-[10px] font-medium text-center hover:bg-primary/50 transition">Copilot</div>
+                    <div class="bg-white/10 p-2 rounded text-[10px] font-medium text-center hover:bg-primary/50 transition">Google AI Studio</div>
+                    <div class="bg-white/10 p-2 rounded text-[10px] font-medium text-center hover:bg-primary/50 transition">Genially</div>
+                    <div class="bg-white/10 p-2 rounded text-[10px] font-medium text-center hover:bg-primary/50 transition">Gamma App</div>
+                    <div class="bg-white/10 p-2 rounded text-[10px] font-medium text-center hover:bg-primary/50 transition">Lovable AI</div>
+                    <div class="bg-white/10 p-2 rounded text-[10px] font-medium text-center hover:bg-primary/50 transition">NotebookLM</div>
+                    <div class="bg-white/10 p-2 rounded text-[10px] font-medium text-center hover:bg-primary/50 transition">Visual Studio Code</div>
+                    <div class="bg-white/10 p-2 rounded text-[10px] font-medium text-center hover:bg-primary/50 transition">Apps Script</div>
+                    <div class="bg-white/10 p-2 rounded text-[10px] font-medium text-center hover:bg-primary/50 transition">dan lainnya</div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- KONTAK IHT (Call to Action) -->
-    <section id="iht-kontak" class="py-24 bg-primary text-white text-center px-5">
-        <div class="max-w-3xl mx-auto">
-            <h2 class="text-3xl md:text-4xl font-bold mb-6">Siap Meng-upgrade Kualitas Sekolah Anda?</h2>
-            <p class="text-blue-100 text-sm font-light mb-10 leading-relaxed">Hubungi tim kami untuk mendiskusikan kebutuhan kurikulum pelatihan, durasi In-House Training (IHT), dan penawaran khusus untuk sekolah Anda.</p>
+<!-- PROFIL FASILITATOR (CV MODERN) -->
+    <section class="py-12 bg-white border-t border-slate-100">
+        <div class="max-w-5xl mx-auto px-5">
+            <div class="text-center mb-12">
+                <h2 class="text-secondary font-bold tracking-wider text-[10px] uppercase mb-2">Fasilitator Utama Pelatihan AI</h2>
+                <h3 class="text-2xl md:text-3xl font-extrabold text-dark">Profil Pemateri</h3>
+            </div>
             
-            <a href="https://wa.me/6285795941412?text=Halo%20Bpk.%20Rofi/Admin%20KHAAZ,%20saya%20tertarik%20mengundang%20untuk%20kegiatan%20In-House%20Training%20(IHT)%20Pelatihan%20AI%20di%20Sekolah%20kami..." 
-               target="_blank"
-               class="inline-flex items-center justify-center gap-3 bg-yellow text-dark text-base px-8 py-4 rounded-full font-bold hover:bg-white transition-all shadow-xl hover:-translate-y-1">
-                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.183-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.765-5.77zm3.392 8.244c-.161.465-.87.89-1.229.932-.331.039-.773.08-1.922-.444-1.396-.638-2.302-2.073-2.373-2.17-.07-.097-.568-.756-.568-1.442 0-.685.352-1.023.477-1.155.124-.131.272-.164.364-.164.09 0 .179.001.258.005.083.004.194-.032.304.236.113.275.385.945.419 1.015.034.071.056.153.011.246-.044.093-.067.149-.134.225-.068.077-.142.164-.202.228-.063.067-.13.138-.057.264.073.125.324.536.694.869.479.432.883.559 1.009.622.125.063.199.053.274-.033.074-.085.318-.372.404-.5.086-.128.172-.107.288-.063.116.044.739.349.865.412.125.063.208.096.239.149.031.053.031.305-.13.771z"/></svg>
-                Hubungi via WhatsApp
-            </a>
+            <div class="bg-white rounded-3xl p-6 md:p-10 border border-slate-200 shadow-xl shadow-slate-200/40 flex flex-col md:flex-row gap-10 items-center md:items-start relative overflow-hidden">
+                <!-- Aksen Dekoratif -->
+                <div class="absolute top-0 right-0 w-64 h-64 bg-yellow/10 rounded-full blur-[80px] pointer-events-none"></div>
+                
+                <!-- Foto & Info Dasar -->
+                <div class="w-full md:w-1/3 flex flex-col items-center text-center z-10">
+                    <div class="w-40 h-40 rounded-full bg-blue-50 border-4 border-white shadow-lg overflow-hidden mb-5">
+                        <img src="https://i.ibb.co.com/PGMDMmpY/Chat-GPT-Image-10-Jun-2026-15-16-49.png" alt="Rofi Hadiansyah" class="w-full h-full object-cover">
+                    </div>
+                    <h4 class="text-xl font-bold text-dark mb-1">Rofi Hadiansyah, S.Pd.</h4>
+                    <p class="text-xs font-semibold text-primary uppercase tracking-wider mb-3">Master Trainer AI & EdTech</p>
+                </div>
+
+                <!-- Detail CV Lengkap -->
+                <div class="w-full md:w-2/3 z-10">
+                    <p class="text-slate-600 text-sm font-light leading-relaxed mb-6">
+                        Praktisi pendidikan yang berdedikasi dalam transformasi digital di lingkungan sekolah. Berpengalaman dalam mendampingi ratusan pendidik untuk mengintegrasikan teknologi Generative AI demi efisiensi manajerial dan inovasi pembelajaran abad 21.
+                    </p>
+                    
+                    <div class="space-y-6">
+                        <!-- Sertifikasi & Kompetensi -->
+                        <div>
+                            <h5 class="text-xs font-bold text-dark border-b border-slate-100 pb-2 mb-3">Sertifikasi Profesional</h5>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="bg-slate-100 text-slate-700 text-[10px] px-3 py-1.5 rounded-md font-semibold">Microsoft Certified Educator</span>
+                                <span class="bg-slate-100 text-slate-700 text-[10px] px-3 py-1.5 rounded-md font-semibold">Master Trainer Elevaite</span>
+                                <span class="bg-blue-50 text-primary text-[10px] px-3 py-1.5 rounded-md font-semibold">Guru Penggerak Angkatan 4</span>
+                            </div>
+                        </div>
+
+                        <!-- Pengalaman Strategis -->
+                        <div>
+                            <h5 class="text-xs font-bold text-dark border-b border-slate-100 pb-2 mb-3">Pengalaman Strategis</h5>
+                            <ul class="space-y-3 text-xs text-slate-600 font-light">
+                                <li class="flex items-start gap-3">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-yellow mt-1.5 flex-shrink-0"></span>
+                                    <span><strong>Kepala Sekolah</strong> - SDN Sindangwangi, Kec. Leuwisadeng.</span>
+                                </li>
+                                <li class="flex items-start gap-3">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-secondary mt-1.5 flex-shrink-0"></span>
+                                    <span><strong>Koordinator Pengajar Praktik</strong> - Calon Guru Penggerak (CGP) Angkatan 9.</span>
+                                </li>
+                                <li class="flex items-start gap-3">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-primary mt-1.5 flex-shrink-0"></span>
+                                    <span><strong>Tim Pengembang & Teknis</strong> - Aplikasi Simulasi TKA SD & Bimtek Digitalisasi Pembelajaran Dinas Pendidikan Kab. Bogor 2026.</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+<!-- ASISTEN AI & PLATFORM BELAJAR -->
+<section class="py-12 bg-slate-50">
+        <div class="max-w-5xl mx-auto px-5">
+            <div class="text-center mb-10">
+                <span class="inline-block px-3 py-1 rounded-full bg-blue-50 border border-blue-100 text-primary text-[10px] font-bold tracking-wider uppercase mb-3">
+                    Inovasi Digital
+                </span>
+                <h2 class="text-2xl md:text-3xl font-extrabold text-dark mb-3">Karya Asisten AI & Platform Belajar</h2>
+                <p class="text-slate-500 text-sm max-w-2xl mx-auto font-light">
+                    Asisten cerdas berbasis Google Gemini dan Learning Management System (LMS) yang dirancang khusus untuk mempermudah administrasi dan pembelajaran.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                
+                <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 flex flex-col h-full group">
+                    <div class="w-12 h-12 bg-blue-50 text-primary rounded-xl flex items-center justify-center font-extrabold text-sm mb-4 border border-blue-100">ATP</div>
+                    <h4 class="text-base font-bold text-dark mb-1">Simpel - ATP</h4>
+                    <p class="text-[10px] font-bold text-secondary uppercase tracking-wider mb-2">Alur Tujuan Pembelajaran</p>
+                    <p class="text-slate-500 text-xs font-light leading-relaxed mb-5 flex-grow">Asisten AI cerdas untuk merumuskan Tujuan Pembelajaran (TP) dan menyusun Alur Tujuan Pembelajaran (ATP) secara sistematis berdasarkan Kurikulum Merdeka.</p>
+                    <a href="https://gemini.google.com/gem/1xeEGRTHtMs3jkuqjSJH_bVq-y1KjwR0i?usp=sharing" target="_blank" class="block w-full text-center bg-slate-50 hover:bg-primary hover:text-white border border-slate-100 text-slate-600 text-xs font-semibold py-2.5 rounded-lg transition-colors">Akses Asisten &rarr;</a>
+                </div>
+
+                <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 flex flex-col h-full group">
+                    <div class="w-12 h-12 bg-yellow/20 text-yellow-600 rounded-xl flex items-center justify-center font-extrabold text-sm mb-4 border border-yellow/30">RPM</div>
+                    <h4 class="text-base font-bold text-dark mb-1">Simpel - RPM</h4>
+                    <p class="text-[10px] font-bold text-secondary uppercase tracking-wider mb-2">Rencana Pembelajaran Mendalam</p>
+                    <p class="text-slate-500 text-xs font-light leading-relaxed mb-5 flex-grow">Asisten AI khusus untuk membantu merancang perangkat mingguan dan menyusun Rencana Pekan Pembelajaran (RPM) yang kreatif, terstruktur, dan berdiferensiasi.</p>
+                    <a href="https://gemini.google.com/gem/1PCDjvBgsPo369udKp-w8GQ33u9-iVoeD?usp=sharing" target="_blank" class="block w-full text-center bg-slate-50 hover:bg-primary hover:text-white border border-slate-100 text-slate-600 text-xs font-semibold py-2.5 rounded-lg transition-colors">Akses Asisten &rarr;</a>
+                </div>
+
+                <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 flex flex-col h-full group">
+                    <div class="w-12 h-12 bg-green-50 text-green-600 rounded-xl flex items-center justify-center font-extrabold text-sm mb-4 border border-green-100">BK</div>
+                    <h4 class="text-base font-bold text-dark mb-1">Simpel - BK</h4>
+                    <p class="text-[10px] font-bold text-secondary uppercase tracking-wider mb-2">Bimbingan & Konseling Sekolah</p>
+                    <p class="text-slate-500 text-xs font-light leading-relaxed mb-5 flex-grow">Asisten AI khusus bagi penanganan bimbingan konseling siswa untuk memberikan usulan solusi kasus, analisis tindakan afektif, dan catatan konseling komprehensif.</p>
+                    <a href="https://gemini.google.com/gem/1VcxGE-D_FqafCXDdujBGWvodCEkdFqi5?usp=sharing" target="_blank" class="block w-full text-center bg-slate-50 hover:bg-primary hover:text-white border border-slate-100 text-slate-600 text-xs font-semibold py-2.5 rounded-lg transition-colors">Akses Asisten &rarr;</a>
+                </div>
+
+                <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 flex flex-col h-full group">
+                    <div class="w-12 h-12 bg-red-50 text-red-500 rounded-xl flex items-center justify-center font-extrabold text-sm mb-4 border border-red-100">SUM</div>
+                    <h4 class="text-base font-bold text-dark mb-1">Simpel - Sumatif</h4>
+                    <p class="text-[10px] font-bold text-secondary uppercase tracking-wider mb-2">Perancang Asesmen & Soal</p>
+                    <p class="text-slate-500 text-xs font-light leading-relaxed mb-5 flex-grow">Asisten AI untuk mempermudah perumusan kisi-kisi dan butir soal Asesmen Sumatif berkualitas tinggi yang selaras dengan indikator ketercapaian siswa.</p>
+                    <a href="https://gemini.google.com/gem/1b8bahg8KwDmR0eNVFf0gd45JU_rIqZQY?usp=sharing" target="_blank" class="block w-full text-center bg-slate-50 hover:bg-primary hover:text-white border border-slate-100 text-slate-600 text-xs font-semibold py-2.5 rounded-lg transition-colors">Akses Asisten &rarr;</a>
+                </div>
+
+                <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 flex flex-col h-full group">
+                    <div class="w-12 h-12 bg-purple-50 text-purple-600 rounded-xl flex items-center justify-center font-extrabold text-sm mb-4 border border-purple-100">SKC</div>
+                    <h4 class="text-base font-bold text-dark mb-1">SIKANCIL</h4>
+                    <p class="text-[10px] font-bold text-secondary uppercase tracking-wider mb-2">Storybook Illustrator</p>
+                    <p class="text-slate-500 text-xs font-light leading-relaxed mb-5 flex-grow">Asisten AI spesialis untuk menjembatani naskah cerita anak menjadi rangkaian ilustrasi visual yang profesional, konsisten, dan siap cetak (Sistem Ilustrasi Karakter & Cerita Lokal).</p>
+                    <a href="https://gemini.google.com/gem/1clqU2FoG6buSNcXKD-yJuVTq53Z_AjcG?usp=sharing" target="_blank" class="block w-full text-center bg-slate-50 hover:bg-primary hover:text-white border border-slate-100 text-slate-600 text-xs font-semibold py-2.5 rounded-lg transition-colors">Akses Asisten &rarr;</a>
+                </div>
+
+                <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 flex flex-col h-full group relative overflow-hidden">
+                    <div class="absolute top-4 -right-8 bg-yellow text-dark text-[9px] font-bold py-1 px-8 rotate-45">SISTEM</div>
+                    <div class="w-12 h-12 bg-dark text-white rounded-xl flex items-center justify-center font-extrabold text-sm mb-4 shadow-sm">LMS</div>
+                    <h4 class="text-base font-bold text-dark mb-1">LMS Sahabat Brilliant</h4>
+                    <p class="text-[10px] font-bold text-secondary uppercase tracking-wider mb-2">Sistem Manajemen Pembelajaran</p>
+                    <p class="text-slate-500 text-xs font-light leading-relaxed mb-5 flex-grow">Platform Learning Management System untuk kegiatan Bimtek Digitalisasi Pembelajaran Dinas Pendidikan Kabupaten Bogor.</p>
+                    <a href="https://sites.google.com/view/sahabat-brilliant/dashboard-utama" target="_blank" class="block w-full text-center bg-dark hover:bg-primary text-white border border-slate-100 text-xs font-semibold py-2.5 rounded-lg transition-colors">Kunjungi LMS &rarr;</a>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- GALERI & TESTIMONI COMPACT -->
+    <section class="py-16 bg-slate-50">
+        <div class="max-w-5xl mx-auto px-5">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+                
+                <!-- Galeri Ringkas -->
+                <div>
+                    <h3 class="text-xl font-bold text-dark mb-4 border-l-4 border-yellow pl-3">Galeri Pelatihan</h3>
+                    <div class="grid grid-cols-2 gap-3">
+                        <img src="https://images.unsplash.com/photo-1573164713988-8665fc963095?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80" alt="IHT 1" class="w-full h-32 object-cover rounded-xl shadow-sm">
+                        <img src="https://images.unsplash.com/photo-1544531586-fde5298cdd40?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80" alt="IHT 2" class="w-full h-32 object-cover rounded-xl shadow-sm">
+                        <img src="https://images.unsplash.com/photo-1573164713988-8665fc963095?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80" alt="IHT 1" class="w-full h-32 object-cover rounded-xl shadow-sm">
+                        <img src="https://images.unsplash.com/photo-1544531586-fde5298cdd40?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80" alt="IHT 2" class="w-full h-32 object-cover rounded-xl shadow-sm">
+                        <img src="https://images.unsplash.com/photo-1573164713988-8665fc963095?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80" alt="IHT 1" class="w-full h-32 object-cover rounded-xl shadow-sm">
+                        <img src="https://images.unsplash.com/photo-1544531586-fde5298cdd40?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80" alt="IHT 2" class="w-full h-32 object-cover rounded-xl shadow-sm">
+                    </div>
+                </div>
+
+                <!-- Testimoni Ringkas -->
+                <div>
+                    <h3 class="text-xl font-bold text-dark mb-4 border-l-4 border-secondary pl-3">Ulasan Sekolah dan Peserta</h3>
+                    <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-100">
+                        <p class="text-slate-600 text-xs font-light leading-relaxed mb-4 italic">"Pelatihan yang sangat aplikatif. Pembuatan RPP yang biasa makan waktu berhari-hari kini selesai dalam hitungan menit menggunakan teknik prompting yang diajarkan."</p>
+                        <div class="flex items-center gap-3">
+                            <div class="w-8 h-8 bg-blue-50 text-primary rounded-full flex items-center justify-center font-bold text-xs">G</div>
+                            <div>
+                                <p class="font-bold text-dark text-[11px]">Guru SDN Sindangwangi</p>
+                                <p class="text-[9px] text-slate-400">Peserta Pelatihan AI</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-100">
+                        <p class="text-slate-600 text-xs font-light leading-relaxed mb-4 italic">"Pelatihan yang sangat aplikatif. Pembuatan RPP yang biasa makan waktu berhari-hari kini selesai dalam hitungan menit menggunakan teknik prompting yang diajarkan."</p>
+                        <div class="flex items-center gap-3">
+                            <div class="w-8 h-8 bg-blue-50 text-primary rounded-full flex items-center justify-center font-bold text-xs">G</div>
+                            <div>
+                                <p class="font-bold text-dark text-[11px]">Guru SDN Sindangwangi</p>
+                                <p class="text-[9px] text-slate-400">Peserta Pelatihan AI</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-100">
+                        <p class="text-slate-600 text-xs font-light leading-relaxed mb-4 italic">"Pelatihan yang sangat aplikatif. Pembuatan RPP yang biasa makan waktu berhari-hari kini selesai dalam hitungan menit menggunakan teknik prompting yang diajarkan."</p>
+                        <div class="flex items-center gap-3">
+                            <div class="w-8 h-8 bg-blue-50 text-primary rounded-full flex items-center justify-center font-bold text-xs">G</div>
+                            <div>
+                                <p class="font-bold text-dark text-[11px]">Guru SDN Sindangwangi</p>
+                                <p class="text-[9px] text-slate-400">Peserta Pelatihan AI</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
         </div>
     </section>
 
@@ -185,6 +308,5 @@
     <a href="https://wa.me/6285795941412?text=Halo%20KHAAZ%20Learning%20Academy..." target="_blank" class="fixed bottom-6 right-6 w-14 h-14 bg-green-500 text-white rounded-full flex items-center justify-center shadow-lg shadow-green-500/30 hover:bg-green-600 hover:scale-110 transition-all duration-300 z-50">
         <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.183-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.765-5.77zm3.392 8.244c-.161.465-.87.89-1.229.932-.331.039-.773.08-1.922-.444-1.396-.638-2.302-2.073-2.373-2.17-.07-.097-.568-.756-.568-1.442 0-.685.352-1.023.477-1.155.124-.131.272-.164.364-.164.09 0 .179.001.258.005.083.004.194-.032.304.236.113.275.385.945.419 1.015.034.071.056.153.011.246-.044.093-.067.149-.134.225-.068.077-.142.164-.202.228-.063.067-.13.138-.057.264.073.125.324.536.694.869.479.432.883.559 1.009.622.125.063.199.053.274-.033.074-.085.318-.372.404-.5.086-.128.172-.107.288-.063.116.044.739.349.865.412.125.063.208.096.239.149.031.053.031.305-.13.771z"/></svg>
     </a>
-
 </body>
 </html>
