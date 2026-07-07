@@ -33,29 +33,42 @@
 <body class="text-slate-700 antialiased selection:bg-primary selection:text-white">
 
     <!-- FLOATING NAVBAR -->
-    <div class="fixed top-4 left-0 right-0 z-50 px-4">
-        <nav class="max-w-5xl mx-auto floating-nav shadow-[0_8px_30px_rgb(0,0,0,0.08)] border border-white/60 rounded-full px-5 py-3 flex justify-between items-center transition-all duration-300">
-            <a href="index.html" class="flex items-center pl-2">
-                <img src="https://i.ibb.co.com/Tf5mCxV/Logo-Utama-TP-1.png" alt="Logo KHAAZ" class="h-7 md:h-8 w-auto object-contain">
-            </a>
-            <div class="hidden md:flex space-x-8 items-center">
-                <a href="index.html" class="text-sm font-medium text-primary transition-colors">Beranda</a>
-                <a href="#program" class="text-sm font-medium text-slate-500 hover:text-primary transition-colors">Bimbel Siswa</a>
-                <a href="pelatihan-guru.html" class="text-sm font-medium text-slate-500 hover:text-primary transition-colors">Pelatihan Guru</a>
-                <a href="tentang-kami.html" class="text-sm font-medium text-slate-500 hover:text-primary transition-colors">Profil</a>
-                <a href="#pendaftaran" class="text-sm font-medium text-white bg-primary px-5 py-2.5 rounded-full hover:bg-blue-700 transition-all shadow-md shadow-blue-500/20">Daftar Bimbel</a>
+<div class="fixed top-4 left-0 right-0 z-50 px-4">
+        <nav class="max-w-5xl mx-auto floating-nav shadow-[0_8px_30px_rgb(0,0,0,0.08)] border border-white/60 rounded-[2rem] px-5 py-3 transition-all duration-300">
+            
+            <div class="flex justify-between items-center w-full">
+                <a href="index.html" class="flex items-center pl-2">
+                    <img src="https://i.ibb.co.com/Tf5mCxV/Logo-Utama-TP-1.png" alt="Logo KHAAZ" class="h-7 md:h-8 w-auto object-contain">
+                </a>
+                
+                <div class="hidden md:flex space-x-8 items-center">
+                    <a href="index.html" class="text-sm font-medium text-primary transition-colors">Beranda</a>
+                    <a href="#program" class="text-sm font-medium text-slate-500 hover:text-primary transition-colors">Bimbel Siswa</a>
+                    <a href="pelatihan-guru.html" class="text-sm font-medium text-slate-500 hover:text-primary transition-colors">Pelatihan Guru</a>
+                    <a href="tentang-kami.html" class="text-sm font-medium text-slate-500 hover:text-primary transition-colors">Profil</a>
+                    <a href="#pendaftaran" class="text-sm font-medium text-white bg-primary px-5 py-2.5 rounded-full hover:bg-blue-700 transition-all shadow-md shadow-blue-500/20">Daftar Bimbel</a>
+                </div>
+                
+                <button id="mobile-menu-btn" class="md:hidden text-slate-500 pr-2 focus:outline-none">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+                </button>
             </div>
-            <!-- Mobile Menu Icon -->
-            <button class="md:hidden text-slate-500 pr-2">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
-            </button>
+
+            <div id="mobile-menu" class="hidden md:hidden flex flex-col pt-4 pb-2 space-y-4 border-t border-slate-200/60 mt-3 px-2">
+                <a href="index.html" class="mobile-link text-sm font-medium text-primary">Beranda</a>
+                <a href="#program" class="mobile-link text-sm font-medium text-slate-500 hover:text-primary">Bimbel Siswa</a>
+                <a href="pelatihan-guru.html" class="mobile-link text-sm font-medium text-slate-500 hover:text-primary">Pelatihan Guru</a>
+                <a href="tentang-kami.html" class="mobile-link text-sm font-medium text-slate-500 hover:text-primary">Profil</a>
+                <a href="#pendaftaran" class="mobile-link text-sm font-medium text-white bg-primary px-5 py-3 rounded-xl text-center shadow-md">Daftar Bimbel</a>
+            </div>
+
         </nav>
     </div>
 
     <!-- HERO SECTION -->
     <section id="beranda" class="relative min-h-screen flex flex-col justify-center items-center text-center overflow-hidden pt-20">
         <div class="absolute inset-0 z-0">
-            <img src="https://images.unsplash.com/photo-1524178232363-1fb2b075b655?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80" alt="Background KHAAZ" class="w-full h-full object-cover object-center">
+            <img src="https://i.ibb.co.com/qY4LKhC3/1000636931-ecb59b90e4637db59f4f57daa0ed2372-10-4-2026-18-28-49.jpg" alt="Background KHAAZ" class="w-full h-full object-cover object-center">
             <div class="absolute inset-0 bg-slate-900/65"></div> 
         </div>
 
@@ -98,21 +111,21 @@
             <!-- Bento Grid Gallery -->
             <div class="grid grid-cols-2 md:grid-cols-4 gap-4 auto-rows-[150px] md:auto-rows-[200px]">
                 <div class="gallery-item col-span-2 row-span-2 relative overflow-hidden rounded-xl cursor-pointer group shadow-sm">
-                    <img src="https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Belajar Interaktif" class="gallery-img w-full h-full object-cover transition duration-700 ease-in-out group-hover:scale-105">
+                    <img src="https://i.ibb.co.com/G3bxjhwS/Whats-App-Image-2026-07-07-at-09-06-11-1.jpg" alt="Belajar Interaktif" class="gallery-img w-full h-full object-cover transition duration-700 ease-in-out group-hover:scale-105">
                     <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-5">
-                        <p class="text-white font-semibold">Metode Interaktif</p>
+                        <p class="text-white font-semibold">Pendekatan Personal</p>
                     </div>
                 </div>
                 <div class="gallery-item col-span-1 row-span-1 relative overflow-hidden rounded-xl cursor-pointer group shadow-sm">
-                    <img src="https://images.unsplash.com/photo-1509062522246-3755977927d7?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80" alt="Fokus" class="gallery-img w-full h-full object-cover transition duration-700 ease-in-out group-hover:scale-105">
+                    <img src="https://i.ibb.co.com/23Cf8ZVm/1000637989-b18061fc519e90e4f1ab76fcbafbcf43-11-4-2026-14-39-00.jpg" alt="Fokus" class="gallery-img w-full h-full object-cover transition duration-700 ease-in-out group-hover:scale-105">
                 </div>
                 <div class="gallery-item col-span-1 row-span-1 relative overflow-hidden rounded-xl cursor-pointer group shadow-sm">
-                    <img src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80" alt="Keceriaan Anak" class="gallery-img w-full h-full object-cover transition duration-700 ease-in-out group-hover:scale-105">
+                    <img src="https://i.ibb.co.com/1YymnkD6/IMG20260404190948.jpg" alt="Keceriaan Anak" class="gallery-img w-full h-full object-cover transition duration-700 ease-in-out group-hover:scale-105">
                 </div>
                 <div class="gallery-item col-span-2 row-span-1 relative overflow-hidden rounded-xl cursor-pointer group shadow-sm">
-                    <img src="https://images.unsplash.com/photo-1577896851231-70ef18881754?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Fasilitas KHAAZ" class="gallery-img w-full h-full object-cover transition duration-700 ease-in-out group-hover:scale-105">
+                    <img src="https://i.ibb.co.com/Z1Spy4Tj/1000636725-5f6e14c327350b6bc69e4c7ec9a6aa84-10-4-2026-13-30-19.jpg" alt="Fasilitas KHAAZ" class="gallery-img w-full h-full object-cover transition duration-700 ease-in-out group-hover:scale-105">
                     <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                        <p class="text-white font-medium text-sm">Fasilitas Nyaman & Edukatif</p>
+                        <p class="text-white font-medium text-sm">Pemberalajaran Terintegrasi</p>
                     </div>
                 </div>
             </div>
@@ -418,4 +431,21 @@
         });
     });
 </script>
+<script>
+        const btnMenu = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const mobileLinks = document.querySelectorAll('.mobile-link');
+
+        // Buka/Tutup menu saat tombol ikon 3 garis diklik
+        btnMenu.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Tutup menu otomatis saat salah satu link diklik (opsional, tapi sangat disarankan)
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+            });
+        });
+    </script>
 </html>

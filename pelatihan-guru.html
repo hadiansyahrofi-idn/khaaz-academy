@@ -23,18 +23,36 @@
 </head>
 <body class="text-slate-700 antialiased selection:bg-primary selection:text-white">
 
-    <div class="fixed top-4 left-0 right-0 z-50 px-4">
-        <nav class="max-w-5xl mx-auto floating-nav shadow-sm border border-slate-200 rounded-full px-5 py-3 flex justify-between items-center transition-all duration-300">
-            <a href="index.html" class="flex items-center pl-2">
-                <img src="https://i.ibb.co.com/Tf5mCxV/Logo-Utama-TP-1.png" alt="Logo KHAAZ" class="h-7 md:h-8 w-auto object-contain">
-            </a>
-            <div class="hidden md:flex space-x-8 items-center">
-                <a href="index.html" class="text-sm font-medium text-slate-500 hover:text-primary transition-colors">Beranda</a>
-                <a href="index.html#program" class="text-sm font-medium text-slate-500 hover:text-primary transition-colors">Bimbel Siswa</a>
-                <a href="pelatihan-guru.html" class="text-sm font-medium text-primary transition-colors">Pelatihan Guru</a>
-                <a href="tentang-kami.html" class="text-sm font-medium text-slate-500 hover:text-primary transition-colors">Profil</a>
-                <a href="https://wa.me/6285795941412" target="_blank" class="text-sm font-medium text-dark bg-yellow px-5 py-2.5 rounded-full hover:bg-yellow/80 transition-all shadow-md font-bold">Undang IHT</a>
+    <!-- FLOATING NAVBAR -->
+<div class="fixed top-4 left-0 right-0 z-50 px-4">
+        <nav class="max-w-5xl mx-auto floating-nav shadow-[0_8px_30px_rgb(0,0,0,0.08)] border border-white/60 rounded-[2rem] px-5 py-3 transition-all duration-300">
+            
+            <div class="flex justify-between items-center w-full">
+                <a href="index.html" class="flex items-center pl-2">
+                    <img src="https://i.ibb.co.com/Tf5mCxV/Logo-Utama-TP-1.png" alt="Logo KHAAZ" class="h-7 md:h-8 w-auto object-contain">
+                </a>
+                
+                <div class="hidden md:flex space-x-8 items-center">
+                    <a href="index.html" class="text-sm font-medium text-primary transition-colors">Beranda</a>
+                    <a href="index.html#program" class="text-sm font-medium text-slate-500 hover:text-primary transition-colors">Bimbel Siswa</a>
+                    <a href="pelatihan-guru.html" class="text-sm font-medium text-slate-500 hover:text-primary transition-colors">Pelatihan Guru</a>
+                    <a href="tentang-kami.html" class="text-sm font-medium text-slate-500 hover:text-primary transition-colors">Profil</a>
+                    <a href="#https://wa.me/6285795941412?text=Halo%20Admin%20KHAAZ,%20kami%20tertarik%20mengundang%20untuk%20kegiatan%20In-House%20Training%20(IHT)%20Pelatihan%20AI..." class="text-sm font-medium text-black bg-yellow px-5 py-2.5 rounded-full hover:bg-blue-700 transition-all shadow-md shadow-blue-500/20">Kontak Admin</a>
+                </div>
+                
+                <button id="mobile-menu-btn" class="md:hidden text-slate-500 pr-2 focus:outline-none">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+                </button>
             </div>
+
+            <div id="mobile-menu" class="hidden md:hidden flex flex-col pt-4 pb-2 space-y-4 border-t border-slate-200/60 mt-3 px-2">
+                <a href="index.html" class="mobile-link text-sm font-medium text-primary">Beranda</a>
+                <a href="index.html#program" class="mobile-link text-sm font-medium text-slate-500 hover:text-primary">Bimbel Siswa</a>
+                <a href="pelatihan-guru.html" class="mobile-link text-sm font-medium text-slate-500 hover:text-primary">Pelatihan Guru</a>
+                <a href="tentang-kami.html" class="mobile-link text-sm font-medium text-slate-500 hover:text-primary">Profil</a>
+                <a href="https://wa.me/6285795941412?text=Halo%20Admin%20KHAAZ,%20kami%20tertarik%20mengundang%20untuk%20kegiatan%20In-House%20Training%20(IHT)%20Pelatihan%20AI..." class="mobile-link text-sm font-medium text-black bg-yellow px-5 py-3 rounded-xl text-center shadow-md">Kontak Admin</a>
+            </div>
+
         </nav>
     </div>
 
@@ -226,12 +244,12 @@
                 <div>
                     <h3 class="text-xl font-bold text-dark mb-4 border-l-4 border-yellow pl-3">Galeri Pelatihan</h3>
                     <div class="grid grid-cols-2 gap-3">
-                        <img src="https://images.unsplash.com/photo-1573164713988-8665fc963095?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80" alt="IHT 1" class="w-full h-32 object-cover rounded-xl shadow-sm">
-                        <img src="https://images.unsplash.com/photo-1544531586-fde5298cdd40?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80" alt="IHT 2" class="w-full h-32 object-cover rounded-xl shadow-sm">
-                        <img src="https://images.unsplash.com/photo-1573164713988-8665fc963095?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80" alt="IHT 1" class="w-full h-32 object-cover rounded-xl shadow-sm">
-                        <img src="https://images.unsplash.com/photo-1544531586-fde5298cdd40?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80" alt="IHT 2" class="w-full h-32 object-cover rounded-xl shadow-sm">
-                        <img src="https://images.unsplash.com/photo-1573164713988-8665fc963095?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80" alt="IHT 1" class="w-full h-32 object-cover rounded-xl shadow-sm">
-                        <img src="https://images.unsplash.com/photo-1544531586-fde5298cdd40?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80" alt="IHT 2" class="w-full h-32 object-cover rounded-xl shadow-sm">
+                        <img src="https://i.ibb.co.com/Y7CK8LVP/Whats-App-Image-2026-07-07-at-09-06-14.jpg" alt="IHT 1" class="w-full h-32 object-cover rounded-xl shadow-sm">
+                        <img src="https://i.ibb.co.com/XZF1wpjb/Whats-App-Image-2026-07-07-at-09-06-13-2.jpg" alt="IHT 2" class="w-full h-32 object-cover rounded-xl shadow-sm">
+                        <img src="https://i.ibb.co.com/G4TJVyzk/Whats-App-Image-2026-07-07-at-09-06-13-1.jpg" alt="IHT 1" class="w-full h-32 object-cover rounded-xl shadow-sm">
+                        <img src="https://i.ibb.co.com/MDbB06q8/Whats-App-Image-2026-07-07-at-09-06-13.jpg" alt="IHT 2" class="w-full h-32 object-cover rounded-xl shadow-sm">
+                        <img src="https://i.ibb.co.com/b5R9LxYK/Whats-App-Image-2026-07-07-at-09-06-12-1.jpg" alt="IHT 1" class="w-full h-32 object-cover rounded-xl shadow-sm">
+                        <img src="https://i.ibb.co.com/ZRhqrsZx/Whats-App-Image-2026-07-07-at-09-06-12.jpg" alt="IHT 2" class="w-full h-32 object-cover rounded-xl shadow-sm">
                     </div>
                 </div>
 
@@ -309,4 +327,21 @@
         <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.183-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.765-5.77zm3.392 8.244c-.161.465-.87.89-1.229.932-.331.039-.773.08-1.922-.444-1.396-.638-2.302-2.073-2.373-2.17-.07-.097-.568-.756-.568-1.442 0-.685.352-1.023.477-1.155.124-.131.272-.164.364-.164.09 0 .179.001.258.005.083.004.194-.032.304.236.113.275.385.945.419 1.015.034.071.056.153.011.246-.044.093-.067.149-.134.225-.068.077-.142.164-.202.228-.063.067-.13.138-.057.264.073.125.324.536.694.869.479.432.883.559 1.009.622.125.063.199.053.274-.033.074-.085.318-.372.404-.5.086-.128.172-.107.288-.063.116.044.739.349.865.412.125.063.208.096.239.149.031.053.031.305-.13.771z"/></svg>
     </a>
 </body>
+<script>
+        const btnMenu = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const mobileLinks = document.querySelectorAll('.mobile-link');
+
+        // Buka/Tutup menu saat tombol ikon 3 garis diklik
+        btnMenu.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Tutup menu otomatis saat salah satu link diklik (opsional, tapi sangat disarankan)
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+            });
+        });
+</script>
 </html>
