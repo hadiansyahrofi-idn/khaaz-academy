@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bimbel Siswa | KHAAZ Learning Academy</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: { extend: { fontFamily: { sans: ['Inter', 'sans-serif'], }, colors: { primary: '#1d4ed8', secondary: '#0ea5e9', dark: '#0f172a', yellow: '#ffdd16' }, } }
+        }
+    </script>
+    <style>
+        body { background-color: #FAFAFA; }
+        .floating-nav { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(12px); border-radius: 2rem; }
+    </style>
+</head>
+<body class="text-slate-700 antialiased selection:bg-primary selection:text-white">
+
+    <!-- FLOATING NAVBAR -->
+<div class="fixed top-4 left-0 right-0 z-50 px-4">
+        <nav class="max-w-5xl mx-auto floating-nav shadow-[0_8px_30px_rgb(0,0,0,0.08)] border border-white/60 rounded-[2rem] px-5 py-3 transition-all duration-300">
+            
+            <div class="flex justify-between items-center w-full">
+                <a href="index.html" class="flex items-center pl-2">
+                    <img src="https://i.ibb.co.com/Tf5mCxV/Logo-Utama-TP-1.png" alt="Logo KHAAZ" class="h-7 md:h-8 w-auto object-contain">
+                </a>
+                
+                <div class="hidden md:flex space-x-8 items-center">
+                    <a href="index.html" class="text-sm font-medium text-primary transition-colors">Beranda</a>
+                    <a href="bimbel-siswa.html" class="text-sm font-medium text-slate-500 hover:text-primary transition-colors">Bimbel Siswa</a>
+                    <a href="pelatihan-guru.html" class="text-sm font-medium text-slate-500 hover:text-primary transition-colors">Pelatihan Guru</a>
+                    <a href="tentang-kami.html" class="text-sm font-medium text-slate-500 hover:text-primary transition-colors">Profil</a>
+                    <a href="#pendaftaran" class="text-sm font-medium text-white bg-primary px-5 py-2.5 rounded-full hover:bg-blue-700 transition-all shadow-md shadow-blue-500/20">Daftar Bimbel</a>
+                </div>
+                
+                <button id="mobile-menu-btn" class="md:hidden text-slate-500 pr-2 focus:outline-none">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+                </button>
+            </div>
+
+            <div id="mobile-menu" class="hidden md:hidden flex flex-col pt-4 pb-2 space-y-4 border-t border-slate-200/60 mt-3 px-2">
+                <a href="index.html" class="mobile-link text-sm font-medium text-primary">Beranda</a>
+                <a href="bimbel-siswa.html" class="mobile-link text-sm font-medium text-slate-500 hover:text-primary">Bimbel Siswa</a>
+                <a href="pelatihan-guru.html" class="mobile-link text-sm font-medium text-slate-500 hover:text-primary">Pelatihan Guru</a>
+                <a href="tentang-kami.html" class="mobile-link text-sm font-medium text-slate-500 hover:text-primary">Profil</a>
+                <a href="#pendaftaran" class="mobile-link text-sm font-medium text-white bg-primary px-5 py-3 rounded-xl text-center shadow-md">Daftar Bimbel</a>
+            </div>
+
+        </nav>
+    </div>
+
+    <!-- HEADER / HERO PENCARIAN JURNAL BELAJAR -->
+    <section class="pt-28 pb-16 bg-dark text-white relative overflow-hidden">
+        <div class="absolute top-0 left-0 w-80 h-80 bg-primary/20 rounded-full blur-[80px] pointer-events-none"></div>
+        <div class="max-w-4xl mx-auto px-5 relative z-10">
+            <div class="text-center mb-10">
+                <span class="inline-block px-3 py-1 rounded-full bg-white/10 border border-yellow/30 text-yellow text-[10px] font-bold tracking-wider uppercase mb-3">
+                    Transparansi Akademik
+                </span>
+                <h2 class="text-3xl font-bold mb-3">Pantau Progres Belajar Ananda</h2>
+                <p class="text-sm text-slate-300 font-light max-w-lg mx-auto">Silakan ketikkan nama lengkap atau nama panggilan anak Anda untuk melihat catatan harian (jurnal) dari tutor kami.</p>
+            </div>
+
+            <form id="searchJurnalForm" class="max-w-xl mx-auto relative mb-12">
+                <input type="text" id="inputNamaSiswa" required placeholder="Ketik nama siswa..." class="w-full bg-white/10 border border-white/20 text-white placeholder-slate-400 px-6 py-4 rounded-full outline-none focus:border-yellow focus:bg-white/20 transition backdrop-blur-md">
+                <button type="submit" class="absolute right-2 top-2 bg-yellow text-dark font-bold px-6 py-2 rounded-full hover:bg-white transition">Cari</button>
+            </form>
+
+            <div id="hasilJurnalContainer" class="max-w-2xl mx-auto space-y-4"></div>
+            
+            <div id="loaderJurnal" class="text-center text-sm font-semibold text-yellow hidden animate-pulse">
+                Sedang mencari data di sistem...
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION: LAYANAN PROGRAM (Sesuai Gambar) -->
+    <section class="py-16 bg-slate-50 border-b border-slate-100">
+       <div class="max-w-6xl mx-auto px-5 lg:px-8">
+            <div class="mb-12 text-center max-w-2xl mx-auto">
+                <h2 class="text-primary font-bold tracking-widest text-xs uppercase mb-3">Layanan Utama</h2>
+                <h3 class="text-3xl md:text-4xl font-extrabold text-dark mb-4">Program Bimbingan Belajar Siswa</h3>
+                <p class="text-sm text-slate-500 font-light leading-relaxed">Pilihan program terstruktur untuk memastikan fondasi akademik anak terbangun dengan kuat dan percaya diri.</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                <!-- Program 1 -->
+                <div class="bg-white border border-slate-100 p-8 rounded-2xl flex items-start gap-5 shadow-sm hover:shadow-md transition-shadow">
+                    <div class="w-12 h-12 bg-blue-50 text-primary rounded-xl flex items-center justify-center flex-shrink-0 text-xl">📚</div>
+                    <div>
+                        <h4 class="text-lg font-bold text-dark mb-1">Bimbingan Calistung</h4>
+                        <p class="text-slate-500 text-sm font-light leading-relaxed">Persiapan anak usia dini agar lancar membaca, menulis, dan berhitung.</p>
+                    </div>
+                </div>
+                <!-- Program 2 -->
+                <div class="bg-white border border-slate-100 p-8 rounded-2xl flex items-start gap-5 shadow-sm hover:shadow-md transition-shadow">
+                    <div class="w-12 h-12 bg-pink-50 text-pink-500 rounded-xl flex items-center justify-center flex-shrink-0 text-xl">🎒</div>
+                    <div>
+                        <h4 class="text-lg font-bold text-dark mb-1">Bimbel SD</h4>
+                        <p class="text-slate-500 text-sm font-light leading-relaxed">Pendampingan seluruh mata pelajaran dengan metode interaktif & pemecahan masalah.</p>
+                    </div>
+                </div>
+                <!-- Program 3 -->
+                <div class="bg-white border border-slate-100 p-8 rounded-2xl flex items-start gap-5 shadow-sm hover:shadow-md transition-shadow">
+                    <div class="w-12 h-12 bg-slate-100 text-slate-700 rounded-xl flex items-center justify-center flex-shrink-0 text-xl">🎓</div>
+                    <div>
+                        <h4 class="text-lg font-bold text-dark mb-1">Bimbel SMP</h4>
+                        <p class="text-slate-500 text-sm font-light leading-relaxed">Fokus pada penalaran dan logika guna meraih prestasi akademik optimal.</p>
+                    </div>
+                </div>
+                <!-- Program 4 -->
+                <div class="bg-white border border-slate-100 p-8 rounded-2xl flex items-start gap-5 shadow-sm hover:shadow-md transition-shadow">
+                    <div class="w-12 h-12 bg-sky-50 text-secondary rounded-xl flex items-center justify-center flex-shrink-0 text-xl">🎯</div>
+                    <div>
+                        <h4 class="text-lg font-bold text-dark mb-1">Persiapan TKA SD/SMP</h4>
+                        <p class="text-slate-500 text-sm font-light leading-relaxed">Latihan soal dan simulasi komprehensif untuk seleksi Tes Kemampuan Akademik.</p>
+                    </div>
+                </div>
+            </div>
+        </div> 
+    </section>
+
+    <!-- INFO SKEMA BELAJAR (Reguler vs Private) -->
+    <section class="py-16 bg-white border-b border-slate-100">
+        <div class="max-w-5xl mx-auto px-5">
+            <h2 class="text-2xl font-bold text-dark mb-8 text-center">Skema Pembelajaran</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="bg-blue-50 p-6 rounded-3xl border border-blue-100">
+                    <h3 class="font-bold text-primary mb-2 text-lg">Kelas Reguler (Maks. 5 Siswa)</h3>
+                    <p class="text-sm text-slate-600 mb-4 font-light">Pembelajaran kolaboratif dalam kelompok kecil untuk melatih interaksi sosial dan diskusi yang sehat.</p>
+                    <ul class="text-xs text-slate-600 font-medium space-y-2">
+                        <li>🗓️ Jadwal: 2x Pertemuan / Minggu</li>
+                        <li>💳 Biaya Bulanan: Rp 150.000 (8x Pertemuan)</li>
+                        <li>💳 Biaya Per Datang: Rp 20.000</li>
+                    </ul>
+                </div>
+                <div class="bg-yellow/20 p-6 rounded-3xl border border-yellow/40">
+                    <h3 class="font-bold text-yellow-700 mb-2 text-lg">Kelas Private (1 on 1)</h3>
+                    <p class="text-sm text-slate-600 mb-4 font-light">Fokus eksklusif untuk mengejar ketertinggalan atau mendalami materi secara personal dan intensif.</p>
+                    <ul class="text-xs text-slate-600 font-medium space-y-2">
+                        <li>🗓️ Jadwal: 2x Pertemuan / Minggu</li>
+                        <li>💳 Biaya Bulanan (Wajib): Rp 200.000 (8x Pertemuan)</li>
+                        <li>⏰ Jam Fleksibel Sesuai Kesepakatan Guru</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- JADWAL BIMBEL UMUM -->
+    <section class="py-16 bg-slate-50">
+        <div class="max-w-4xl mx-auto px-5 text-center">
+            <h2 class="text-2xl font-bold text-dark mb-3">Waktu Operasional Belajar</h2>
+            <p class="text-sm text-slate-500 font-light mb-8">Setiap siswa yang telah berstatus "Aktif" akan dialokasikan ke dalam dua sesi di bawah ini berdasarkan ketersediaan kelas.</p>
+            
+            <div class="flex flex-col sm:flex-row justify-center gap-6">
+                <div class="bg-white px-8 py-6 rounded-2xl shadow-sm border border-slate-200">
+                    <span class="text-3xl mb-2 block">☀️</span>
+                    <h4 class="font-bold text-dark mb-1">Sesi Siang</h4>
+                    <p class="text-xl font-extrabold text-primary">13:00 - 15:00 WIB</p>
+                </div>
+                <div class="bg-white px-8 py-6 rounded-2xl shadow-sm border border-slate-200">
+                    <span class="text-3xl mb-2 block">🌇</span>
+                    <h4 class="font-bold text-dark mb-1">Sesi Sore</h4>
+                    <p class="text-xl font-extrabold text-secondary">15:30 - 17:30 WIB</p>
+                </div>
+            </div>
+            <p class="text-xs text-slate-400 mt-6 italic">*Jadwal pasti ananda akan diinformasikan secara langsung oleh Admin via WhatsApp setelah pendaftaran diverifikasi.</p>
+        </div>
+    </section>
+
+    <footer id="kontak" class="bg-white pt-16 pb-8 border-t border-slate-200">
+        <div class="max-w-6xl mx-auto px-5 lg:px-8">
+            <div class="flex flex-col md:flex-row justify-between items-start gap-10 mb-12">
+                <div class="md:w-1/3">
+                    <img src="https://i.ibb.co.com/Tf5mCxV/Logo-Utama-TP-1.png" alt="Logo KHAAZ" class="h-9 w-auto object-contain mb-4">
+                    <p class="text-slate-500 text-xs leading-relaxed font-light">Membangun ekosistem pendidikan yang memberdayakan siswa dan merangkul teknologi AI untuk pendidik masa depan.</p>
+                </div>
+
+                <div class="flex flex-col sm:flex-row gap-10 sm:gap-20">
+                    <div>
+                        <h4 class="text-dark text-sm font-semibold mb-3">Tautan Laman</h4>
+                        <ul class="space-y-2 text-xs text-slate-500 font-light">
+                            <li><a href="index.html" class="hover:text-primary transition-colors">Beranda Utama</a></li>
+                            <li><a href="pelatihan-guru.html" class="hover:text-primary transition-colors">Program Pelatihan AI</a></li>
+                            <li><a href="tentang-kami.html" class="hover:text-primary transition-colors">Tentang Kami & Profil</a></li>
+                            <li><a href="admin.html" class="font-bold text-primary hover:font-bold hover:text-yellow transition-colors">Administrator</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="text-dark text-sm font-semibold mb-3">Kontak & Lokasi</h4>
+                        <ul class="space-y-2 text-xs text-slate-500 font-light max-w-xs">
+                            <li class="flex items-start gap-2"><span class="mt-0.5">📍</span> Perum Bukit Sakinah Blok A4/11 RT 01 RW 10 Ds. Barengkok Kec. Leuwiliang Kab. Bogor</li>
+                            <li>📞 +62 857-9594-1412</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-slate-100 pt-6 text-center text-[11px] text-slate-400 font-light">
+                <p>&copy; 2026 KHAAZ Learning Academy.</p>
+            </div>
+        </div>
+    </footer>
+
+    <a href="https://wa.me/6285795941412?text=Halo%20KHAAZ%20Learning%20Academy..." target="_blank" class="fixed bottom-6 right-6 w-14 h-14 bg-green-500 text-white rounded-full flex items-center justify-center shadow-lg shadow-green-500/30 hover:bg-green-600 hover:scale-110 transition-all duration-300 z-50">
+        <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.183-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.765-5.77zm3.392 8.244c-.161.465-.87.89-1.229.932-.331.039-.773.08-1.922-.444-1.396-.638-2.302-2.073-2.373-2.17-.07-.097-.568-.756-.568-1.442 0-.685.352-1.023.477-1.155.124-.131.272-.164.364-.164.09 0 .179.001.258.005.083.004.194-.032.304.236.113.275.385.945.419 1.015.034.071.056.153.011.246-.044.093-.067.149-.134.225-.068.077-.142.164-.202.228-.063.067-.13.138-.057.264.073.125.324.536.694.869.479.432.883.559 1.009.622.125.063.199.053.274-.033.074-.085.318-.372.404-.5.086-.128.172-.107.288-.063.116.044.739.349.865.412.125.063.208.096.239.149.031.053.031.305-.13.771z"/></svg>
+    </a>
+
+    <!-- SCRIPT MOBILE MENU -->
+    <script>
+        const btnMenu = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        btnMenu.addEventListener('click', () => mobileMenu.classList.toggle('hidden'));
+    </script>
+
+    <!-- SCRIPT KONEKSI KE DATABASE JURNAL -->
+    <script>
+        // =========================================================================
+        // PENTING: Ganti tulisan di bawah ini dengan URL API Admin KHAAZ Anda!
+        // =========================================================================
+        const API_URL = 'https://script.google.com/macros/s/AKfycbzA8SfMkBpWkIQ5ZMqOWwLL8z0uSaWMBbOqXVayEs_cmA_egfqDMpJKyfhCVVp_l1on/exec'; 
+        
+        document.getElementById('searchJurnalForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            // Validasi jika API URL belum diganti
+            if (API_URL === 'PASTE_URL_WEB_APP_API_ADMIN_DISINI') {
+                alert("Mohon maaf, sistem database sedang dalam pemeliharaan (API_URL belum dimasukkan).");
+                return;
+            }
+
+            const nama = document.getElementById('inputNamaSiswa').value;
+            const container = document.getElementById('hasilJurnalContainer');
+            const loader = document.getElementById('loaderJurnal');
+            
+            container.innerHTML = '';
+            loader.classList.remove('hidden');
+
+            try {
+                // Proses pencarian ke Google Apps Script
+                const response = await fetch(API_URL + "?action=getJurnal&nama=" + encodeURIComponent(nama));
+                const data = await response.json();
+                
+                if(data.error) throw new Error(data.error);
+
+                if(data.length === 0) {
+                    container.innerHTML = `<div class="bg-white/5 border border-white/10 p-6 rounded-2xl text-center backdrop-blur-sm"><p class="text-slate-300 text-sm">Tidak ada riwayat jurnal ditemukan untuk nama <strong>"${nama}"</strong>. Pastikan nama yang diketik benar atau hubungi admin.</p></div>`;
+                } else {
+                    let html = `<h4 class="text-sm font-bold text-yellow mb-4 border-b border-white/20 pb-2">Ditemukan ${data.length} catatan belajar:</h4>`;
+                    
+                    data.forEach(j => {
+                        let tgl = new Date(j['Tanggal Belajar']).toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+                        if(tgl === 'Invalid Date') tgl = j['Tanggal Belajar'];
+
+                        html += `
+                        <div class="bg-white text-slate-700 p-5 rounded-2xl shadow-lg border-l-4 border-primary hover:scale-[1.01] transition-transform">
+                            <div class="flex justify-between items-start mb-2">
+                                <h5 class="font-bold text-dark text-sm">${j['Nama Siswa']}</h5>
+                                <span class="bg-blue-50 text-primary text-[9px] font-bold px-2 py-0.5 rounded uppercase tracking-widest">${j['Program']}</span>
+                            </div>
+                            <p class="text-[10px] text-slate-400 font-semibold mb-3">📅 ${tgl} | 👤 Pengajar: ${j['Nama Pengajar']}</p>
+                            <div class="bg-slate-50 border border-slate-100 p-3 rounded-xl">
+                                <p class="text-xs text-slate-600 font-medium leading-relaxed"><strong>Catatan/Materi:</strong><br>${j['Materi/Catatan']}</p>
+                            </div>
+                        </div>`;
+                    });
+                    container.innerHTML = html;
+                }
+
+            } catch (error) {
+                container.innerHTML = `<div class="bg-red-500/20 border border-red-500/50 text-red-200 p-4 rounded-xl text-center text-sm">Terjadi kendala teknis saat mencari data: ${error.message}</div>`;
+            } finally {
+                loader.classList.add('hidden');
+            }
+        });
+    </script>
+</body>
+</html>

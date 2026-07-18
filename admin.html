@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard | KHAAZ Learning Academy</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: { extend: { fontFamily: { sans: ['Inter', 'sans-serif'], }, colors: { primary: '#1d4ed8', secondary: '#0ea5e9', dark: '#0f172a', yellow: '#ffdd16' } } }
+        }
+    </script>
+    <style>
+        body { background-color: #f1f5f9; }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; animation: fadeIn 0.3s; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .menu-btn.active { background-color: #eff6ff; color: #1d4ed8; border-right: 4px solid #1d4ed8; font-weight: 700; }
+        .cb-custom { width: 1.25rem; height: 1.25rem; accent-color: #1d4ed8; cursor: pointer; }
+    </style>
+</head>
+<body class="text-slate-700 antialiased flex h-screen overflow-hidden">
+
+    <!-- SIDEBAR MENU -->
+    <aside class="w-64 bg-white border-r border-slate-200 flex flex-col h-full flex-shrink-0 z-20 shadow-sm hidden md:flex">
+        <div class="p-6 border-b border-slate-100 text-center">
+            <img src="https://i.ibb.co.com/Tf5mCxV/Logo-Utama-TP-1.png" alt="KHAAZ" class="h-8 mx-auto mb-2">
+            <span class="text-[10px] font-bold text-slate-400 tracking-widest uppercase">Admin Panel</span>
+        </div>
+        <nav class="flex-grow py-4 flex flex-col space-y-1">
+            <button onclick="switchTab('siswa', this)" class="menu-btn active w-full text-left px-6 py-3 text-sm font-medium text-slate-600 hover:bg-slate-50 transition flex items-center gap-3">
+                <span class="text-lg">👥</span> Daftar Siswa
+            </button>
+            <button onclick="switchTab('jadwal', this)" class="menu-btn w-full text-left px-6 py-3 text-sm font-medium text-slate-600 hover:bg-slate-50 transition flex items-center gap-3">
+                <span class="text-lg">🗓️</span> Atur Jadwal
+            </button>
+            <button onclick="switchTab('jurnal', this)" class="menu-btn w-full text-left px-6 py-3 text-sm font-medium text-slate-600 hover:bg-slate-50 transition flex items-center gap-3">
+                <span class="text-lg">📝</span> Isi Jurnal Belajar
+            </button>
+            <button onclick="switchTab('keuangan', this)" class="menu-btn w-full text-left px-6 py-3 text-sm font-medium text-slate-600 hover:bg-slate-50 transition flex items-center gap-3">
+                <span class="text-lg">💳</span> Pembayaran
+            </button>
+        </nav>
+        <div class="p-4 border-t border-slate-100">
+            <a href="index.html" class="block w-full text-center bg-slate-100 text-slate-600 text-xs font-bold py-2.5 rounded-lg hover:bg-slate-200 transition">Kembali ke Web</a>
+        </div>
+    </aside>
+
+    <!-- MOBILE HEADER (Muncul hanya di HP) -->
+    <div class="md:hidden fixed top-0 left-0 right-0 bg-white border-b border-slate-200 px-4 py-3 flex justify-between items-center z-50">
+        <img src="https://i.ibb.co.com/Tf5mCxV/Logo-Utama-TP-1.png" alt="KHAAZ" class="h-6">
+        <select onchange="switchTab(this.value, null)" class="text-xs font-bold bg-blue-50 text-primary border border-blue-100 px-3 py-1.5 rounded-lg outline-none">
+            <option value="siswa">👥 Daftar Siswa</option>
+            <option value="jadwal">🗓️ Atur Jadwal</option>
+            <option value="jurnal">📝 Jurnal Belajar</option>
+            <option value="keuangan">💳 Pembayaran</option>
+        </select>
+    </div>
+
+    <!-- MAIN CONTENT AREA -->
+    <main class="flex-grow h-full overflow-y-auto bg-slate-50 pt-16 md:pt-0">
+        <div class="max-w-5xl mx-auto p-6 md:p-10">
+            
+            <!-- Global Loader -->
+            <div id="loader" class="bg-blue-100 text-primary text-center py-3 rounded-xl font-medium text-sm mb-6 border border-blue-200 hidden animate-pulse">
+                ⏳ Sedang menyinkronkan data dengan server...
+            </div>
+
+            <!-- TAB 1: MANAJEMEN SISWA -->
+            <section id="tab-siswa" class="tab-content active">
+                <div class="flex justify-between items-end mb-6">
+                    <div>
+                        <h1 class="text-2xl font-bold text-dark">Data Pendaftar & Siswa</h1>
+                        <p class="text-sm text-slate-500 mt-1 font-light">Kelompokkan dan ubah status aktivasi siswa.</p>
+                    </div>
+                    <button onclick="loadData()" class="bg-white border border-slate-200 text-slate-600 px-4 py-2 rounded-lg text-sm font-semibold shadow-sm hover:bg-slate-100 transition">
+                        ↻ Refresh Data
+                    </button>
+                </div>
+
+                <!-- Bulk Action Panel -->
+                <div id="bulkActionPanel" class="hidden bg-blue-50 border border-blue-200 p-4 rounded-xl shadow-sm mb-6 flex flex-col md:flex-row justify-between items-center gap-4 transition-all">
+                    <div class="flex items-center gap-3 w-full md:w-auto">
+                        <input type="checkbox" id="selectAllCB" onchange="toggleSelectAll(this)" class="cb-custom">
+                        <span class="text-sm font-bold text-primary"><span id="selectedCount">0</span> Terpilih</span>
+                    </div>
+                    <div class="flex gap-2 w-full md:w-auto">
+                        <select id="bulkStatusSelect" class="text-xs font-semibold text-slate-600 border border-slate-300 rounded-lg px-3 outline-none">
+                            <option value="Aktif">Ubah ke: Aktif</option>
+                            <option value="Non-aktif">Ubah ke: Berhenti</option>
+                            <option value="Baru Daftar">Ubah ke: Baru Daftar</option>
+                        </select>
+                        <button onclick="applyBulkStatus()" class="bg-primary text-white text-xs font-bold px-4 py-2 rounded-lg shadow-sm">Terapkan</button>
+                    </div>
+                </div>
+
+                <!-- Container Data Dikelompokkan (Dirender via JS) -->
+                <div id="groupedStudentContainer" class="space-y-8">
+                    <div class="text-center py-10 text-slate-400 text-sm">Belum ada data dimuat.</div>
+                </div>
+            </section>
+
+            <!-- TAB 2: ATUR JADWAL -->
+            <section id="tab-jadwal" class="tab-content">
+                <h1 class="text-2xl font-bold text-dark mb-1">Set Jadwal Bimbel</h1>
+                <p class="text-sm text-slate-500 font-light mb-6">Tentukan jadwal 2x seminggu untuk siswa aktif.</p>
+
+                <div class="bg-white p-6 md:p-8 rounded-2xl border border-slate-100 shadow-sm max-w-2xl">
+                    <form id="formJadwal" class="space-y-5">
+                        <div>
+                            <label class="text-[11px] font-bold text-slate-400 uppercase tracking-widest">Pilih Siswa (Hanya Aktif)</label>
+                            <select id="jadwalSiswa" required class="w-full mt-1.5 px-4 py-3 text-sm border border-slate-200 rounded-xl focus:border-primary outline-none text-slate-700"></select>
+                        </div>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="text-[11px] font-bold text-slate-400 uppercase tracking-widest">Hari Ke-1</label>
+                                <select id="jadwalHari1" class="w-full mt-1.5 px-4 py-3 text-sm border border-slate-200 rounded-xl outline-none"><option>Senin</option><option>Selasa</option><option>Rabu</option><option>Kamis</option><option>Jumat</option><option>Sabtu</option></select>
+                            </div>
+                            <div>
+                                <label class="text-[11px] font-bold text-slate-400 uppercase tracking-widest">Hari Ke-2</label>
+                                <select id="jadwalHari2" class="w-full mt-1.5 px-4 py-3 text-sm border border-slate-200 rounded-xl outline-none"><option>Senin</option><option>Selasa</option><option>Rabu</option><option>Kamis</option><option>Jumat</option><option>Sabtu</option></select>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="text-[11px] font-bold text-slate-400 uppercase tracking-widest">Sesi Jam Belajar</label>
+                            <select id="jadwalJam" class="w-full mt-1.5 px-4 py-3 text-sm border border-slate-200 rounded-xl outline-none">
+                                <option>13:00 - 15:00 WIB</option>
+                                <option>15:30 - 17:30 WIB</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="w-full bg-primary text-white py-3.5 rounded-xl text-sm font-bold shadow-md hover:bg-blue-800 transition">Simpan Jadwal Siswa</button>
+                    </form>
+                </div>
+            </section>
+
+            <!-- TAB 3: JURNAL BELAJAR -->
+            <section id="tab-jurnal" class="tab-content">
+                <h1 class="text-2xl font-bold text-dark mb-1">Pengisian Jurnal Belajar</h1>
+                <p class="text-sm text-slate-500 font-light mb-6">Jurnal ini akan otomatis bisa dicari oleh orang tua di halaman web.</p>
+                <div class="bg-white p-6 md:p-8 rounded-2xl border border-slate-100 shadow-sm max-w-2xl">
+                    <form id="formJurnal" class="space-y-5">
+                        <div>
+                            <label class="text-[11px] font-bold text-slate-400 uppercase tracking-widest">Tanggal</label>
+                            <input type="date" id="jurnalTanggal" required class="w-full mt-1.5 px-4 py-3 text-sm border border-slate-200 rounded-xl outline-none">
+                        </div>
+                        <div>
+                            <label class="text-[11px] font-bold text-slate-400 uppercase tracking-widest">Siswa (Aktif)</label>
+                            <select id="jurnalSiswa" required class="w-full mt-1.5 px-4 py-3 text-sm border border-slate-200 rounded-xl outline-none text-slate-700"></select>
+                        </div>
+                        <div>
+                            <label class="text-[11px] font-bold text-slate-400 uppercase tracking-widest">Materi & Evaluasi</label>
+                            <textarea id="jurnalCatatan" rows="3" required placeholder="Tulis catatan progres belajar hari ini..." class="w-full mt-1.5 px-4 py-3 text-sm border border-slate-200 rounded-xl outline-none"></textarea>
+                        </div>
+                        <div>
+                            <label class="text-[11px] font-bold text-slate-400 uppercase tracking-widest">Nama Guru/Pengajar</label>
+                            <input type="text" id="jurnalPengajar" required class="w-full mt-1.5 px-4 py-3 text-sm border border-slate-200 rounded-xl outline-none">
+                        </div>
+                        <button type="submit" class="w-full bg-dark text-white py-3.5 rounded-xl text-sm font-bold shadow-md hover:bg-slate-800">Publikasi Jurnal</button>
+                    </form>
+                </div>
+            </section>
+
+            <!-- TAB 4: KEUANGAN -->
+            <section id="tab-keuangan" class="tab-content">
+                <h1 class="text-2xl font-bold text-dark mb-1">Catatan Pembayaran</h1>
+                <p class="text-sm text-slate-500 font-light mb-6">Validasi pembayaran masuk (Reguler/Private).</p>
+                <div class="bg-white p-6 md:p-8 rounded-2xl border border-slate-100 shadow-sm max-w-2xl">
+                    <form id="formBayar" class="space-y-5">
+                        <div>
+                            <label class="text-[11px] font-bold text-slate-400 uppercase tracking-widest">Tanggal Bayar</label>
+                            <input type="date" id="bayarTanggal" required class="w-full mt-1.5 px-4 py-3 text-sm border border-slate-200 rounded-xl outline-none">
+                        </div>
+                        <div>
+                            <label class="text-[11px] font-bold text-slate-400 uppercase tracking-widest">Siswa</label>
+                            <select id="bayarSiswa" required onchange="handlePaymentLogic()" class="w-full mt-1.5 px-4 py-3 text-sm border border-slate-200 rounded-xl outline-none text-slate-700"></select>
+                            <p id="bayarInfo" class="text-[10px] text-primary mt-1 font-semibold"></p>
+                        </div>
+                        <div>
+                            <label class="text-[11px] font-bold text-slate-400 uppercase tracking-widest">Jenis Bayar</label>
+                            <select id="bayarJenis" required onchange="handlePaymentNominal()" class="w-full mt-1.5 px-4 py-3 text-sm border border-slate-200 rounded-xl outline-none">
+                                <option value="">-- Pilih Paket --</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="text-[11px] font-bold text-slate-400 uppercase tracking-widest">Nominal (Otomatis)</label>
+                            <input type="number" id="bayarNominal" required readonly class="w-full mt-1.5 px-4 py-3 text-lg font-bold bg-slate-50 border border-slate-200 rounded-xl outline-none text-slate-800">
+                        </div>
+                        <button type="submit" class="w-full bg-green-600 text-white py-3.5 rounded-xl text-sm font-bold shadow-md hover:bg-green-700">Simpan Kas</button>
+                    </form>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <!-- KODE JAVASCRIPT LOGIKA ADMIN -->
+    <script>
+        // MASUKKAN URL GAS ANDA DI SINI
+        const API_URL = 'https://script.google.com/macros/s/AKfycbzA8SfMkBpWkIQ5ZMqOWwLL8z0uSaWMBbOqXVayEs_cmA_egfqDMpJKyfhCVVp_l1on/exec';
+        let studentsData = [];
+
+        // Tab Switcher
+        function switchTab(tabId, btnElement) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.getElementById('tab-' + tabId).classList.add('active');
+            
+            if(btnElement) {
+                document.querySelectorAll('.menu-btn').forEach(el => el.classList.remove('active'));
+                btnElement.classList.add('active');
+            }
+        }
+
+        // Tanggal Default
+        document.getElementById('jurnalTanggal').valueAsDate = new Date();
+        document.getElementById('bayarTanggal').valueAsDate = new Date();
+
+        function formatWA(phoneString) {
+            if (!phoneString) return '';
+            let no = phoneString.toString().replace(/[^0-9]/g, ''); 
+            if (no.startsWith('0')) return '62' + no.substring(1); 
+            if (no.startsWith('8')) return '62' + no; 
+            return no;
+        }
+
+        async function loadData() {
+            const loader = document.getElementById('loader');
+            loader.classList.remove('hidden');
+            document.getElementById('bulkActionPanel').classList.add('hidden');
+            
+            try {
+                const response = await fetch(API_URL + "?action=getStudents");
+                studentsData = await response.json();
+                renderGroupedStudents();
+                populateSelects();
+            } catch (error) {
+                alert("Gagal memuat: " + error.message);
+            } finally {
+                loader.classList.add('hidden');
+            }
+        }
+
+        // Render Siswa Dikelompokkan Berdasarkan Program
+        function renderGroupedStudents() {
+            const container = document.getElementById('groupedStudentContainer');
+            container.innerHTML = '';
+
+            if (studentsData.length === 0) {
+                container.innerHTML = '<div class="text-center py-10 text-slate-400">Belum ada siswa terdaftar.</div>';
+                return;
+            }
+
+            document.getElementById('bulkActionPanel').classList.remove('hidden');
+            
+            // Kelompokkan data
+            const grouped = studentsData.reduce((acc, obj) => {
+                let prog = obj['Program'] || 'Program Tidak Diketahui';
+                if (!acc[prog]) acc[prog] = [];
+                acc[prog].push(obj);
+                return acc;
+            }, {});
+
+            // Looping per kelompok program
+            for (let program in grouped) {
+                let programHtml = `
+                <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
+                    <div class="bg-slate-100/50 px-5 py-3 border-b border-slate-100 flex justify-between items-center">
+                        <h3 class="font-bold text-dark text-sm uppercase tracking-wider flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-primary"></span> ${program}
+                        </h3>
+                        <span class="text-[10px] font-bold text-primary bg-blue-50 px-2 py-1 rounded-lg">${grouped[program].length} Siswa</span>
+                    </div>
+                    <div class="divide-y divide-slate-100">`;
+                
+                grouped[program].forEach(s => {
+                    const status = s.Status || 'Baru Daftar';
+                    let statusColor = status === 'Aktif' ? 'text-green-600 bg-green-50' : (status === 'Baru Daftar' ? 'text-primary bg-blue-50' : 'text-slate-500 bg-slate-100');
+                    const waClean = formatWA(s['Nomor WA']);
+                    const waLink = waClean ? `https://wa.me/${waClean}?text=Halo...` : '#';
+
+                    programHtml += `
+                        <div class="p-5 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 hover:bg-slate-50 transition">
+                            <div class="flex items-start gap-4">
+                                <input type="checkbox" class="cb-custom student-cb mt-1" value="${s['Nama Lengkap']}" onchange="checkSelection()">
+                                <div>
+                                    <h4 class="font-bold text-dark text-sm mb-1">${s['Nama Lengkap']} <span class="ml-2 px-2 py-0.5 rounded text-[9px] font-bold uppercase ${statusColor}">${status}</span></h4>
+                                    <p class="text-xs text-slate-500">${s['Metode']} | Kls: ${s['Kelas']} | Asal: ${s['Asal Sekolah']}</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-2 ml-8 md:ml-0 w-full md:w-auto mt-2 md:mt-0">
+                                <a href="${waLink}" target="_blank" class="bg-[#25D366] text-white text-[10px] font-bold px-3 py-1.5 rounded-lg">WA</a>
+                                <select id="status_${s['Nama Lengkap'].replace(/\s/g, '')}" class="text-[11px] font-semibold text-slate-600 border border-slate-200 rounded-lg px-2 py-1.5 outline-none">
+                                    <option value="Baru Daftar" ${status==='Baru Daftar'?'selected':''}>Baru Daftar</option>
+                                    <option value="Aktif" ${status==='Aktif'?'selected':''}>Aktif</option>
+                                    <option value="Non-aktif" ${status==='Non-aktif'?'selected':''}>Non-aktif</option>
+                                </select>
+                                <button onclick="updateStatusSatuan('${s['Nama Lengkap']}', this)" class="bg-dark text-white text-[10px] font-bold px-3 py-1.5 rounded-lg">Ubah</button>
+                            </div>
+                        </div>`;
+                });
+                programHtml += `</div></div>`;
+                container.innerHTML += programHtml;
+            }
+        }
+
+        // Dropdown Form
+        function populateSelects() {
+            const activeStudents = studentsData.filter(s => s.Status === 'Aktif');
+            let options = '<option value="">-- Pilih Siswa Aktif --</option>';
+            activeStudents.forEach(s => { options += `<option value="${s['Nama Lengkap']}">${s['Nama Lengkap']}</option>`; });
+            
+            document.getElementById('jadwalSiswa').innerHTML = options;
+            document.getElementById('jurnalSiswa').innerHTML = options;
+            document.getElementById('bayarSiswa').innerHTML = options;
+        }
+
+        // Pembayaran Logic (Reguler vs Private)
+        function handlePaymentLogic() {
+            const name = document.getElementById('bayarSiswa').value;
+            const student = studentsData.find(s => s['Nama Lengkap'] === name);
+            if(!student) return;
+
+            const isPrivate = student.Metode.toLowerCase().includes('private');
+            document.getElementById('bayarInfo').innerText = isPrivate ? "PRIVATE (Wajib Bulanan)" : "REGULER";
+            document.getElementById('bayarJenis').innerHTML = isPrivate ? 
+                `<option value="">-- Pilih Paket --</option><option value="Bulanan">Paket 1 Bulan (Rp 200.000)</option>` : 
+                `<option value="">-- Pilih Paket --</option><option value="Bulanan">Paket 1 Bulan (Rp 150.000)</option><option value="Per Pertemuan">Per Pertemuan (Rp 20.000)</option>`;
+            document.getElementById('bayarNominal').value = '';
+        }
+
+        function handlePaymentNominal() {
+            const val = document.getElementById('bayarJenis').value;
+            const isPrivate = document.getElementById('bayarInfo').innerText.includes('PRIVATE');
+            if(val === 'Bulanan') document.getElementById('bayarNominal').value = isPrivate ? 200000 : 150000;
+            else if (val === 'Per Pertemuan') document.getElementById('bayarNominal').value = 20000;
+            else document.getElementById('bayarNominal').value = '';
+        }
+
+        // Post Wrapper API
+        async function apiPost(payload, btnElement) {
+            const ogText = btnElement.innerHTML;
+            btnElement.innerHTML = '⏳';
+            btnElement.disabled = true;
+            try {
+                const res = await fetch(API_URL, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(payload) });
+                const r = await res.json();
+                if(r.status === 'success') { alert('Berhasil!'); return true; }
+                else throw new Error(r.error);
+            } catch (e) { alert("Error: " + e.message); return false; } 
+            finally { btnElement.innerHTML = ogText; btnElement.disabled = false; }
+        }
+
+        // Submits
+        async function updateStatusSatuan(nama, btn) {
+            const val = document.getElementById('status_'+nama.replace(/\s/g, '')).value;
+            if(await apiPost({ action: 'updateStatus', namaSiswa: nama, statusBaru: val }, btn)) loadData();
+        }
+
+        async function applyBulkStatus() {
+            const checks = document.querySelectorAll('.student-cb:checked');
+            if(checks.length === 0) return;
+            const names = Array.from(checks).map(c => c.value);
+            const val = document.getElementById('bulkStatusSelect').value;
+            if(!confirm(`Ubah ${names.length} siswa menjadi ${val}?`)) return;
+            if(await apiPost({ action: 'updateBulkStatus', namaSiswaArray: names, statusBaru: val }, document.querySelector('#bulkActionPanel button'))) loadData();
+        }
+
+        document.getElementById('formJadwal').addEventListener('submit', async e => {
+            e.preventDefault();
+            const student = studentsData.find(s => s['Nama Lengkap'] === document.getElementById('jadwalSiswa').value);
+            const payload = { action: 'saveJadwal', namaSiswa: student['Nama Lengkap'], program: student.Program, metodeBimbel: student.Metode, hari1: document.getElementById('jadwalHari1').value, hari2: document.getElementById('jadwalHari2').value, jamBelajar: document.getElementById('jadwalJam').value };
+            if(await apiPost(payload, e.target.querySelector('button'))) e.target.reset();
+        });
+
+        document.getElementById('formJurnal').addEventListener('submit', async e => {
+            e.preventDefault();
+            const student = studentsData.find(s => s['Nama Lengkap'] === document.getElementById('jurnalSiswa').value);
+            const payload = { action: 'saveJurnal', tanggal: document.getElementById('jurnalTanggal').value, namaSiswa: student['Nama Lengkap'], program: student.Program, catatan: document.getElementById('jurnalCatatan').value, pengajar: document.getElementById('jurnalPengajar').value };
+            if(await apiPost(payload, e.target.querySelector('button'))) { e.target.reset(); document.getElementById('jurnalTanggal').valueAsDate = new Date(); }
+        });
+
+        document.getElementById('formBayar').addEventListener('submit', async e => {
+            e.preventDefault();
+            const payload = { action: 'savePembayaran', tanggal: document.getElementById('bayarTanggal').value, namaSiswa: document.getElementById('bayarSiswa').value, metodeBimbel: document.getElementById('bayarInfo').innerText.includes('PRIVATE')?'Private':'Reguler', jenisPembayaran: document.getElementById('bayarJenis').value, nominal: document.getElementById('bayarNominal').value, keterangan: 'Via Admin' };
+            if(await apiPost(payload, e.target.querySelector('button'))) { e.target.reset(); document.getElementById('bayarTanggal').valueAsDate = new Date(); document.getElementById('bayarInfo').innerText = ''; }
+        });
+
+        // Utils
+        function checkSelection() {
+            const checks = document.querySelectorAll('.student-cb:checked');
+            document.getElementById('selectedCount').innerText = checks.length;
+            document.getElementById('selectAllCB').checked = (checks.length > 0 && checks.length === document.querySelectorAll('.student-cb').length);
+        }
+        function toggleSelectAll(cb) { document.querySelectorAll('.student-cb').forEach(c => c.checked = cb.checked); checkSelection(); }
+
+        if(API_URL.includes('script.google.com')) loadData();
+    </script>
+</body>
+</html>
