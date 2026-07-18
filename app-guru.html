@@ -3,506 +3,435 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>GuruHub | KHAAZ Learning Academy</title>
-    
+    <title>App Guru | KHAAZ Learning</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
     <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: { sans: ['Inter', 'sans-serif'], },
-                    colors: { primary: '#1d4ed8', secondary: '#0ea5e9', dark: '#0f172a', yellow: '#ffdd16', surface: '#f8fafc' },
-                }
-            }
-        }
+        tailwind.config = { theme: { extend: { fontFamily: { sans: ['Inter', 'sans-serif'], }, colors: { primary: '#1d4ed8', dark: '#0f172a', yellow: '#ffdd16' } } } }
     </script>
     <style>
-        body { background-color: #e2e8f0; -webkit-tap-highlight-color: transparent; }
-        .mobile-wrapper { max-width: 480px; margin: 0 auto; min-height: 100vh; background-color: #f8fafc; position: relative; box-shadow: 0 0 40px rgba(0,0,0,0.1); overflow-x: hidden; }
-        .view-section { display: none; padding-bottom: 90px; }
-        .view-section.active { display: block; animation: fadeSlideUp 0.4s ease forwards; }
-        @keyframes fadeSlideUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
-        .bottom-nav { background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-top: 1px solid rgba(226, 232, 240, 0.8); }
-        .nav-item { color: #94a3b8; transition: all 0.3s; }
-        .nav-item.active { color: #1d4ed8; }
-        .nav-item.active svg { stroke-width: 2.5; transform: translateY(-2px); }
-        .nav-indicator { position: absolute; bottom: -8px; width: 4px; height: 4px; background-color: #1d4ed8; border-radius: 50%; opacity: 0; transition: opacity 0.3s; }
-        .nav-item.active .nav-indicator { opacity: 1; }
-        .no-scrollbar::-webkit-scrollbar { display: none; }
-        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-        .input-modern { @apply w-full mt-1.5 px-4 py-3 text-sm bg-white border border-slate-200 rounded-xl focus:border-primary focus:ring-2 focus:ring-blue-100 outline-none transition-all shadow-sm; }
+        body { background-color: #f8fafc; -webkit-tap-highlight-color: transparent; }
+        .tab-content, .sub-tab-content { display: none; }
+        .tab-content.active, .sub-tab-content.active { display: block; animation: fadeIn 0.3s; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+        .nav-btn.active { color: #1d4ed8; }
+        .nav-btn.active .icon-bg { background-color: #eff6ff; border-radius: 12px; }
+        .sub-menu-btn.active { background-color: #1d4ed8; color: white; border-color: #1d4ed8; }
+        details > summary { list-style: none; }
+        details > summary::-webkit-details-marker { display: none; }
+        /* Mengurangi padding agar pas di HP */
+        .mobile-container { padding-bottom: 140px; } 
     </style>
 </head>
-<body class="text-slate-700 antialiased">
+<body class="text-slate-700 antialiased h-screen overflow-hidden relative flex flex-col">
 
+    <!-- HEADER -->
+    <header class="bg-white border-b border-slate-200 px-5 py-4 flex justify-between items-center z-40 shadow-sm flex-shrink-0">
+        <div class="flex items-center gap-3">
+            <img src="https://i.ibb.co.com/Tf5mCxV/Logo-Utama-TP-1.png" alt="KHAAZ" class="h-6">
+            <span class="text-[10px] font-bold text-slate-400 border-l border-slate-200 pl-3">APP GURU</span>
+        </div>
+        <button onclick="loadData()" class="text-primary p-2 bg-blue-50 rounded-full active:scale-95 transition">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
+        </button>
+    </header>
+
+    <!-- TOAST NOTIFICATION -->
+    <div id="toast-container" class="fixed top-20 left-1/2 transform -translate-x-1/2 z-[9999] flex flex-col gap-2 pointer-events-none w-[90%] max-w-sm"></div>
+
+    <!-- MAIN SCROLLABLE AREA -->
+    <main class="flex-grow overflow-y-auto mobile-container p-4">
+        <div id="loader" class="bg-blue-100 text-primary text-center py-3 rounded-xl font-medium text-xs mb-4 border border-blue-200 hidden animate-pulse">
+            ⏳ Sinkronisasi data...
+        </div>
+
+        <!-- TAB 1: SISWA -->
+        <section id="tab-siswa" class="tab-content active">
+            <h1 class="text-xl font-bold text-dark mb-1">Daftar Siswa</h1>
+            <p class="text-xs text-slate-500 mb-5">Klik ubah untuk aktivasi siswa.</p>
+            <div id="studentContainer" class="space-y-4 text-sm"></div>
+        </section>
+
+        <!-- TAB 2: JADWAL -->
+        <section id="tab-jadwal" class="tab-content">
+            <div class="flex justify-between items-center mb-5">
+                <h1 class="text-xl font-bold text-dark">Jadwal Bimbel</h1>
+            </div>
+            <div class="flex p-1 bg-slate-200 rounded-lg mb-5">
+                <button onclick="switchSubTab('jadwal-form', this, 'sub-btn-jadwal')" class="sub-btn-jadwal active w-1/2 py-2 text-xs font-bold text-slate-600 rounded-md transition">Input Jadwal</button>
+                <button onclick="switchSubTab('jadwal-list', this, 'sub-btn-jadwal'); loadAllJadwal();" class="sub-btn-jadwal w-1/2 py-2 text-xs font-bold text-slate-600 rounded-md transition">Papan Jadwal</button>
+            </div>
+
+            <div id="jadwal-form" class="sub-tab-content active">
+                <form id="formJadwal" class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+                    <div><label class="text-[10px] font-bold text-slate-400 uppercase">Siswa Aktif</label><select id="jadwalSiswa" required class="w-full mt-1 px-3 py-2.5 text-sm border border-slate-200 rounded-xl outline-none"></select></div>
+                    <div class="grid grid-cols-2 gap-3">
+                        <div><label class="text-[10px] font-bold text-slate-400 uppercase">Hari 1</label><select id="jadwalHari1" class="w-full mt-1 px-3 py-2.5 text-sm border border-slate-200 rounded-xl outline-none"><option>Senin</option><option>Selasa</option><option>Rabu</option><option>Kamis</option><option>Jumat</option><option>Sabtu</option></select></div>
+                        <div><label class="text-[10px] font-bold text-slate-400 uppercase">Hari 2</label><select id="jadwalHari2" class="w-full mt-1 px-3 py-2.5 text-sm border border-slate-200 rounded-xl outline-none"><option>Senin</option><option>Selasa</option><option>Rabu</option><option>Kamis</option><option>Jumat</option><option>Sabtu</option></select></div>
+                    </div>
+                    <div><label class="text-[10px] font-bold text-slate-400 uppercase">Sesi Belajar</label><select id="jadwalJam" class="w-full mt-1 px-3 py-2.5 text-sm border border-slate-200 rounded-xl outline-none"><option>13:00 - 15:00 WIB</option><option>15:30 - 17:30 WIB</option></select></div>
+                    <button type="submit" class="w-full bg-primary text-white py-3 rounded-xl text-sm font-bold shadow-md">Simpan Jadwal</button>
+                </form>
+            </div>
+            <div id="jadwal-list" class="sub-tab-content"><div id="jadwalTableContainer" class="space-y-4"></div></div>
+        </section>
+
+        <!-- TAB 3: JURNAL -->
+        <section id="tab-jurnal" class="tab-content">
+            <div class="flex justify-between items-center mb-5">
+                <h1 class="text-xl font-bold text-dark">Jurnal Mengajar</h1>
+            </div>
+            <div class="flex p-1 bg-slate-200 rounded-lg mb-5">
+                <button onclick="switchSubTab('jurnal-form', this, 'sub-btn-jurnal')" class="sub-btn-jurnal active w-1/2 py-2 text-xs font-bold text-slate-600 rounded-md transition">Isi Jurnal</button>
+                <button onclick="switchSubTab('jurnal-list', this, 'sub-btn-jurnal'); loadAllJurnal();" class="sub-btn-jurnal w-1/2 py-2 text-xs font-bold text-slate-600 rounded-md transition">Riwayat</button>
+            </div>
+
+            <div id="jurnal-form" class="sub-tab-content active">
+                <form id="formJurnal" class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+                    <div><label class="text-[10px] font-bold text-slate-400 uppercase">Tanggal</label><input type="date" id="jurnalTanggal" required class="w-full mt-1 px-3 py-2.5 text-sm border border-slate-200 rounded-xl outline-none"></div>
+                    <div><label class="text-[10px] font-bold text-slate-400 uppercase">Siswa Aktif</label><select id="jurnalSiswa" required class="w-full mt-1 px-3 py-2.5 text-sm border border-slate-200 rounded-xl outline-none"></select></div>
+                    <div><label class="text-[10px] font-bold text-slate-400 uppercase">Materi & Catatan</label><textarea id="jurnalCatatan" rows="3" required class="w-full mt-1 px-3 py-2.5 text-sm border border-slate-200 rounded-xl outline-none"></textarea></div>
+                    
+                    <!-- FITUR BARU: REFLEKSI -->
+                    <div>
+                        <label class="text-[10px] font-bold text-slate-400 uppercase">Refleksi Hasil Belajar</label>
+                        <select id="jurnalRefleksi" required class="w-full mt-1 px-3 py-2.5 text-sm border border-slate-200 rounded-xl outline-none text-dark font-medium">
+                            <option value="Sangat Baik">Sangat Baik</option>
+                            <option value="Baik" selected>Baik</option>
+                            <option value="Cukup Baik">Cukup Baik</option>
+                            <option value="Perlu Bimbingan">Perlu Bimbingan</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="text-[11px] font-bold text-slate-400 uppercase tracking-widest">Nama Guru/Pengajar</label>
+                        <select id="jurnalPengajar" required class="w-full mt-1.5 px-4 py-3 text-sm border border-slate-200 rounded-xl outline-none text-dark font-medium">
+                            <option value="">-- Pilih Guru --</option>
+                            <option value="Rofi Hadiansyah">Rofi Hadiansyah</option>
+                            <option value="Sri Wahyuni">Sri Wahyuni</option>
+                        </select>
+                    </div>
+</div>
+                    <button type="submit" class="w-full bg-dark text-white py-3 rounded-xl text-sm font-bold shadow-md">Publikasi</button>
+                </form>
+            </div>
+            <div id="jurnal-list" class="sub-tab-content"><div id="jurnalTableContainer" class="space-y-3"></div></div>
+        </section>
+
+        <!-- TAB 4: KEUANGAN -->
+        <section id="tab-keuangan" class="tab-content">
+            <div class="flex justify-between items-center mb-5">
+                <h1 class="text-xl font-bold text-dark">Kas Pembayaran</h1>
+            </div>
+            <div class="flex p-1 bg-slate-200 rounded-lg mb-5">
+                <button onclick="switchSubTab('bayar-form', this, 'sub-btn-bayar')" class="sub-btn-bayar active w-1/2 py-2 text-xs font-bold text-slate-600 rounded-md transition">Input Kas</button>
+                <button onclick="switchSubTab('bayar-list', this, 'sub-btn-bayar'); loadAllPembayaran();" class="sub-btn-bayar w-1/2 py-2 text-xs font-bold text-slate-600 rounded-md transition">Riwayat</button>
+            </div>
+
+            <div id="bayar-form" class="sub-tab-content active">
+                <form id="formBayar" class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+                    <div><label class="text-[10px] font-bold text-slate-400 uppercase">Tanggal</label><input type="date" id="bayarTanggal" required class="w-full mt-1 px-3 py-2.5 text-sm border border-slate-200 rounded-xl outline-none"></div>
+                    <div><label class="text-[10px] font-bold text-slate-400 uppercase">Siswa</label><select id="bayarSiswa" required onchange="handlePaymentLogic()" class="w-full mt-1 px-3 py-2.5 text-sm border border-slate-200 rounded-xl outline-none"></select><p id="bayarInfo" class="text-[9px] text-primary mt-1 font-bold"></p></div>
+                    <div><label class="text-[10px] font-bold text-slate-400 uppercase">Jenis Bayar</label><select id="bayarJenis" required onchange="handlePaymentNominal()" class="w-full mt-1 px-3 py-2.5 text-sm border border-slate-200 rounded-xl outline-none"><option value="">-- Pilih --</option></select></div>
+                    <div><label class="text-[10px] font-bold text-slate-400 uppercase">Nominal</label><input type="number" id="bayarNominal" required readonly class="w-full mt-1 px-3 py-2.5 text-lg font-bold bg-slate-50 border border-slate-200 rounded-xl outline-none"></div>
+                    <button type="submit" class="w-full bg-green-600 text-white py-3 rounded-xl text-sm font-bold shadow-md">Simpan Kas</button>
+                </form>
+            </div>
+            <div id="bayar-list" class="sub-tab-content"><div id="bayarTableContainer" class="space-y-3"></div></div>
+        </section>
+        <!-- Tambahkan div ini sebagai spacer -->
+        <div style="height: 80px;"></div>
+    </main>
+
+    <!-- BOTTOM NAVIGATION (MOBILE APP STYLE) -->
+    <nav class="fixed bottom-0 left-0 right-0 bg-white border-t border-slate-200 flex justify-around items-center h-16 pb-1 px-2 z-50 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)] flex-shrink-0">
+        <button onclick="switchTab('siswa', this)" class="nav-btn active flex flex-col items-center justify-center w-16 text-slate-400 transition">
+            <div class="icon-bg p-1.5"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg></div>
+            <span class="text-[10px] font-semibold mt-0.5">Siswa</span>
+        </button>
+        <button onclick="switchTab('jadwal', this)" class="nav-btn flex flex-col items-center justify-center w-16 text-slate-400 transition">
+            <div class="icon-bg p-1.5"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg></div>
+            <span class="text-[10px] font-semibold mt-0.5">Jadwal</span>
+        </button>
+        <button onclick="switchTab('jurnal', this)" class="nav-btn flex flex-col items-center justify-center w-16 text-slate-400 transition">
+            <div class="icon-bg p-1.5"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg></div>
+            <span class="text-[10px] font-semibold mt-0.5">Jurnal</span>
+        </button>
+        <button onclick="switchTab('keuangan', this)" class="nav-btn flex flex-col items-center justify-center w-16 text-slate-400 transition">
+            <div class="icon-bg p-1.5"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path></svg></div>
+            <span class="text-[10px] font-semibold mt-0.5">Kas</span>
+        </button>
+    </nav>
+
+    <!-- SCRIPTS -->
     <script>
-        const API_URL = 'https://script.google.com/macros/s/AKfycbwIjZjUxTuVjkVJdEA6X7baVBEdF6gEMy8NsHpAeeN1eiQhYhpBKqko0TCdLrM2oIRmQA/exec'; 
-        let studentsData = []; 
-    </script>
+        const API_URL = 'https://script.google.com/macros/s/AKfycbzA8SfMkBpWkIQ5ZMqOWwLL8z0uSaWMBbOqXVayEs_cmA_egfqDMpJKyfhCVVp_l1on/exec';
+        let studentsData = [];
 
-    <div class="mobile-wrapper flex flex-col relative">
-        
-        <div id="toastNotification" class="fixed top-4 left-1/2 transform -translate-x-1/2 z-[100] transition-all duration-300 opacity-0 -translate-y-10 pointer-events-none w-[90%] max-w-[400px]">
-            <div id="toastContent" class="px-4 py-3 rounded-xl shadow-2xl text-sm font-semibold flex items-center gap-3">
-                <span id="toastIcon"></span>
-                <span id="toastMessage" class="flex-1"></span>
-            </div>
-        </div>
+        // --- TOAST MODERN (POPUP) ---
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            const bgColor = type === 'success' ? 'bg-[#25D366]' : 'bg-red-500';
+            const icon = type === 'success' ? '✅' : '⚠️';
+            toast.className = `${bgColor} text-white px-4 py-3 rounded-xl shadow-lg font-medium text-xs flex items-center gap-2 transform transition-all duration-300 translate-y-[-100%] opacity-0`;
+            toast.innerHTML = `<span>${icon}</span> <span>${message}</span>`;
+            container.appendChild(toast);
+            setTimeout(() => toast.classList.remove('translate-y-[-100%]', 'opacity-0'), 10);
+            setTimeout(() => { toast.classList.add('translate-y-[-100%]', 'opacity-0'); setTimeout(() => toast.remove(), 300); }, 2500);
+        }
 
-        <header class="bg-white/90 backdrop-blur-md px-5 py-4 flex justify-between items-center sticky top-0 z-40 border-b border-slate-100">
-            <div class="flex items-center gap-3">
-                <img src="https://i.ibb.co.com/Tf5mCxV/Logo-Utama-TP-1.png" alt="KHAAZ" class="h-5">
-            </div>
-            <div class="flex items-center gap-3">
-                <button onclick="loadStudents()" class="text-slate-400 hover:text-primary transition p-1" title="Sinkronkan Data">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
-                </button>
-                <div class="w-8 h-8 rounded-full bg-gradient-to-tr from-primary to-secondary text-white flex items-center justify-center font-bold text-xs shadow-md">
-                    G
-                </div>
-            </div>
-        </header>
+        // --- MANAJEMEN TAB ---
+        function switchTab(tabId, btnElement) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.getElementById('tab-' + tabId).classList.add('active');
+            if(btnElement) {
+                document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
+                btnElement.classList.add('active');
+            }
+        }
+        function switchSubTab(tabId, btnElement, btnClass) {
+            document.querySelectorAll(`.sub-tab-content`).forEach(el => {
+                if(el.id.startsWith(tabId.split('-')[0])) el.classList.remove('active');
+            });
+            document.getElementById(tabId).classList.add('active');
+            document.querySelectorAll(`.${btnClass}`).forEach(el => el.classList.remove('active'));
+            btnElement.classList.add('active');
+        }
 
-        <div id="globalLoader" class="hidden bg-dark text-white text-[11px] text-center py-2 font-medium tracking-wide">
-            <span class="animate-pulse">Menyinkronkan data dengan server...</span>
-        </div>
-
-        <section id="view-home" class="view-section active p-5">
-            <div class="mb-6 mt-2">
-                <h1 class="text-2xl font-extrabold text-dark tracking-tight">Ruang Pengajar</h1>
-                <p class="text-sm text-slate-500 font-light mt-1">Sistem informasi operasional bimbingan belajar.</p>
-            </div>
-            
-            <div class="grid grid-cols-2 gap-4 mb-6">
-                <div class="bg-gradient-to-br from-primary to-blue-800 p-5 rounded-2xl text-white shadow-[0_10px_20px_rgba(29,78,216,0.2)] relative overflow-hidden">
-                    <div class="absolute -right-4 -top-4 opacity-10">
-                        <svg class="w-24 h-24" fill="currentColor" viewBox="0 0 24 24"><path d="M12 14l9-5-9-5-9 5 9 5z"></path></svg>
-                    </div>
-                    <p class="text-[10px] font-semibold uppercase tracking-wider text-blue-200 mb-1">Siswa Aktif</p>
-                    <h3 id="statTotalSiswa" class="text-4xl font-bold">0</h3>
-                </div>
-                
-                <div class="bg-white border border-slate-100 p-5 rounded-2xl shadow-sm flex flex-col justify-center">
-                    <svg class="w-6 h-6 text-secondary mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-                    <p class="text-[10px] text-slate-400 font-semibold uppercase tracking-wider mb-0.5">Tahun Ajaran</p>
-                    <h3 class="text-lg font-bold text-dark">2026/2027</h3>
-                </div>
-            </div>
-
-            <div class="bg-yellow/10 border border-yellow/30 rounded-2xl p-5 flex items-start gap-4">
-                <div class="w-10 h-10 rounded-full bg-yellow/20 text-yellow-600 flex items-center justify-center flex-shrink-0">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                </div>
-                <div>
-                    <h4 class="text-sm font-bold text-dark">Pengingat Operasional</h4>
-                    <p class="text-xs text-slate-500 mt-1.5 leading-relaxed">Pastikan pengisian Jurnal Belajar Harian dilakukan setelah kelas selesai untuk memudahkan pencetakan rapor bulan depan.</p>
-                </div>
-            </div>
-        </section>
-
-        <section id="view-siswa" class="view-section p-5">
-            <div class="mb-5">
-                <h2 class="text-xl font-bold text-dark tracking-tight">Manajemen Siswa</h2>
-                <p class="text-xs text-slate-500 mt-1">Daftar siswa & pengaturan jadwal pertemuan.</p>
-            </div>
-
-            <div class="flex gap-2 overflow-x-auto pb-3 mb-2 text-xs no-scrollbar font-medium">
-                <button class="bg-dark text-white px-5 py-2 rounded-full shadow-md">Semua</button>
-                <button class="bg-white border border-slate-200 text-slate-500 px-5 py-2 rounded-full">Calistung</button>
-                <button class="bg-white border border-slate-200 text-slate-500 px-5 py-2 rounded-full">Bimbel SD</button>
-                <button class="bg-white border border-slate-200 text-slate-500 px-5 py-2 rounded-full">Private</button>
-            </div>
-
-            <div id="studentListContainer" class="space-y-4">
-                <div class="text-center flex flex-col items-center justify-center py-16 text-slate-400">
-                    <svg class="w-10 h-10 mb-3 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
-                    <p class="text-xs">Menunggu data dari server...</p>
-                </div>
-            </div>
-        </section>
-
-        <section id="view-jurnal" class="view-section p-5">
-            <div class="mb-5">
-                <h2 class="text-xl font-bold text-dark tracking-tight">Jurnal Akademik</h2>
-                <p class="text-xs text-slate-500 mt-1">Input progres harian siswa.</p>
-            </div>
-            
-            <div class="bg-white p-6 rounded-3xl border border-slate-100 shadow-[0_5px_15px_rgba(0,0,0,0.03)]">
-                <form id="formJurnal" class="space-y-5">
-                    <div>
-                        <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1">Tgl Pertemuan</label>
-                        <input type="date" id="jurnalTanggal" required class="input-modern">
-                    </div>
-                    <div>
-                        <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1">Pilih Siswa</label>
-                        <select id="jurnalSiswa" required class="input-modern text-slate-600">
-                            <option value="">-- Sentuh untuk Memilih --</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1">Program Studi</label>
-                        <input type="text" id="jurnalProgram" readonly class="input-modern bg-slate-50 text-slate-500" placeholder="Terisi otomatis">
-                    </div>
-                    <div>
-                        <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1">Materi & Evaluasi</label>
-                        <textarea id="jurnalCatatan" rows="3" required placeholder="Tuliskan perkembangan siswa hari ini..." class="input-modern resize-none"></textarea>
-                    </div>
-                    <div>
-                        <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1">Fasilitator/Pengajar</label>
-                        <input type="text" id="jurnalPengajar" required placeholder="Nama Anda" class="input-modern">
-                    </div>
-                    <div class="pt-2">
-                        <button type="submit" class="w-full bg-dark text-white py-4 rounded-xl font-semibold text-sm hover:bg-slate-800 transition-colors shadow-lg">
-                            Simpan Jurnal Baru
-                        </button>
-                    </div>
-                </form>
-            </div>
-            
-            <button onclick="showToast('Fitur PDF akan aktif di akhir bulan berjalan.', 'info')" class="w-full mt-6 bg-blue-50 text-primary py-4 rounded-xl font-semibold text-sm flex items-center justify-center gap-2 transition hover:bg-blue-100">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
-                Cetak Laporan Bulanan
-            </button>
-        </section>
-
-        <section id="view-bayar" class="view-section p-5">
-            <div class="mb-5">
-                <h2 class="text-xl font-bold text-dark tracking-tight">Administrasi Kas</h2>
-                <p class="text-xs text-slate-500 mt-1">Pencatatan mutasi pembayaran bimbel.</p>
-            </div>
-
-            <div class="bg-white p-6 rounded-3xl border border-slate-100 shadow-[0_5px_15px_rgba(0,0,0,0.03)]">
-                <form id="formBayar" class="space-y-5">
-                    <div>
-                        <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1">Tgl Transaksi</label>
-                        <input type="date" id="bayarTanggal" required class="input-modern">
-                    </div>
-                    <div>
-                        <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1">Pilih Siswa</label>
-                        <select id="bayarSiswa" required onchange="handleStudentPaymentLogic()" class="input-modern text-slate-600">
-                            <option value="">-- Sentuh untuk Memilih --</option>
-                        </select>
-                        <p id="bayarMetodeText" class="text-[10px] text-primary mt-1.5 ml-1 font-semibold"></p>
-                    </div>
-                    <div>
-                        <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1">Paket Pembayaran</label>
-                        <select id="bayarJenis" required onchange="handlePaymentAmount()" class="input-modern text-slate-600">
-                            <option value="">-- Menunggu Pilihan Siswa --</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1">Nominal Dikunci (Rp)</label>
-                        <input type="number" id="bayarNominal" required readonly class="input-modern bg-slate-50 text-dark font-bold text-base tracking-wide" placeholder="0">
-                    </div>
-                    <div class="pt-2">
-                        <button type="submit" class="w-full bg-green-600 text-white py-4 rounded-xl font-semibold text-sm hover:bg-green-700 transition-colors shadow-lg shadow-green-600/20">
-                            Catat Lunas
-                        </button>
-                    </div>
-                </form>
-            </div>
-        </section>
-
-        <nav class="bottom-nav fixed bottom-0 w-full max-w-[480px] flex justify-around items-center pb-safe pt-3 pb-3 z-50 rounded-t-3xl shadow-[0_-10px_30px_rgba(0,0,0,0.05)]">
-            <button onclick="switchView('home', this)" class="nav-item active flex flex-col items-center relative w-16 group">
-                <svg class="w-6 h-6 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
-                <span class="text-[9px] font-semibold tracking-wide">Beranda</span>
-                <span class="nav-indicator"></span>
-            </button>
-            <button onclick="switchView('siswa', this)" class="nav-item flex flex-col items-center relative w-16 group">
-                <svg class="w-6 h-6 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
-                <span class="text-[9px] font-semibold tracking-wide">Siswa</span>
-                <span class="nav-indicator"></span>
-            </button>
-            <button onclick="switchView('jurnal', this)" class="nav-item flex flex-col items-center relative w-16 group">
-                <svg class="w-6 h-6 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
-                <span class="text-[9px] font-semibold tracking-wide">Jurnal</span>
-                <span class="nav-indicator"></span>
-            </button>
-            <button onclick="switchView('bayar', this)" class="nav-item flex flex-col items-center relative w-16 group">
-                <svg class="w-6 h-6 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
-                <span class="text-[9px] font-semibold tracking-wide">Dana</span>
-                <span class="nav-indicator"></span>
-            </button>
-        </nav>
-
-        <div id="modalJadwal" class="hidden fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-50 flex items-center justify-center p-5 max-w-[480px] mx-auto transition-all">
-            <div class="bg-white w-full p-6 rounded-3xl shadow-2xl">
-                <h3 class="text-xl font-extrabold mb-1 tracking-tight text-dark">Jadwal Pertemuan</h3>
-                <p class="text-xs text-slate-500 mb-5 border-b border-slate-100 pb-3">Atur jadwal untuk <span id="jadwalNama" class="font-bold text-primary"></span></p>
-                <form id="formJadwal" class="space-y-4">
-                    <div class="flex gap-4">
-                        <div class="w-1/2">
-                            <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Hari Ke-1</label>
-                            <select id="jadwalHari1" class="input-modern py-2"><option>Senin</option><option>Selasa</option><option>Rabu</option><option>Kamis</option><option>Jumat</option><option>Sabtu</option></select>
-                        </div>
-                        <div class="w-1/2">
-                            <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Hari Ke-2</label>
-                            <select id="jadwalHari2" class="input-modern py-2"><option>Senin</option><option>Selasa</option><option>Rabu</option><option>Kamis</option><option>Jumat</option><option>Sabtu</option></select>
-                        </div>
-                    </div>
-                    <div>
-                        <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Sesi Jam</label>
-                        <select id="jadwalJam" class="input-modern py-2">
-                            <option>13:00 - 15:00 WIB</option>
-                            <option>15:30 - 17:30 WIB</option>
-                        </select>
-                    </div>
-                    <div class="flex gap-3 pt-4">
-                        <button type="button" onclick="document.getElementById('modalJadwal').classList.add('hidden')" class="w-1/2 bg-slate-100 text-slate-600 py-3 rounded-xl text-sm font-semibold hover:bg-slate-200">Batal</button>
-                        <button type="submit" class="w-1/2 bg-primary text-white py-3 rounded-xl text-sm font-semibold hover:bg-blue-700 shadow-md">Simpan</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-
-    </div>
-
-    <script>
         document.getElementById('jurnalTanggal').valueAsDate = new Date();
         document.getElementById('bayarTanggal').valueAsDate = new Date();
 
-        // FUNGSI TOAST MODERN MENGGANTIKAN ALERT
-        function showToast(message, type = 'success') {
-            const toast = document.getElementById('toastNotification');
-            const content = document.getElementById('toastContent');
-            const icon = document.getElementById('toastIcon');
-            const text = document.getElementById('toastMessage');
-
-            text.innerText = message;
-            
-            if (type === 'success') {
-                content.className = 'px-4 py-3 rounded-xl shadow-2xl text-sm font-semibold flex items-center gap-3 bg-white border-l-4 border-green-500 text-slate-700';
-                icon.innerHTML = '✅';
-            } else if (type === 'error') {
-                content.className = 'px-4 py-3 rounded-xl shadow-2xl text-sm font-semibold flex items-center gap-3 bg-white border-l-4 border-red-500 text-slate-700';
-                icon.innerHTML = '❌';
-            } else {
-                content.className = 'px-4 py-3 rounded-xl shadow-2xl text-sm font-semibold flex items-center gap-3 bg-white border-l-4 border-blue-500 text-slate-700';
-                icon.innerHTML = '💡';
-            }
-
-            toast.classList.remove('opacity-0', '-translate-y-10');
-            toast.classList.add('opacity-100', 'translate-y-0');
-
-            setTimeout(() => {
-                toast.classList.remove('opacity-100', 'translate-y-0');
-                toast.classList.add('opacity-0', '-translate-y-10');
-            }, 3500);
+        function formatWA(phoneString) {
+            if (!phoneString) return '';
+            let no = phoneString.toString().replace(/[^0-9]/g, ''); 
+            if (no.startsWith('0')) return '62' + no.substring(1); 
+            if (no.startsWith('8')) return '62' + no; 
+            return no;
         }
 
-        function switchView(viewId, element) {
-            document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
-            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
-            document.getElementById('view-' + viewId).classList.add('active');
-            element.classList.add('active');
-            if(viewId === 'siswa' && studentsData.length === 0) loadStudents();
-        }
-
-        function toggleLoader(show) {
-            const loader = document.getElementById('globalLoader');
-            show ? loader.classList.remove('hidden') : loader.classList.add('hidden');
-        }
-
-        async function loadStudents() {
-            toggleLoader(true);
+        // --- FETCH DATA ---
+        async function loadData() {
+            const loader = document.getElementById('loader');
+            loader.classList.remove('hidden');
             try {
-                const response = await fetch(API_URL + "?action=getStudents");
-                if (!response.ok) throw new Error("Terjadi masalah jaringan saat menghubungi server.");
-                
-                const data = await response.json();
-                
-                if (data.error) throw new Error(data.error); // Menangkap error dari GAS
-
-                studentsData = data;
-                document.getElementById('statTotalSiswa').innerText = studentsData.length;
-                renderStudentList();
+                const res = await fetch(API_URL + "?action=getStudents");
+                studentsData = await res.json();
+                renderStudents();
                 populateSelects();
-            } catch (error) {
-                showToast("Gagal memuat: " + error.message, 'error');
-                document.getElementById('studentListContainer').innerHTML = `<div class="text-center text-xs text-red-500 py-10 font-bold">Koneksi Database Gagal.</div>`;
-            } finally {
-                toggleLoader(false);
-            }
+            } catch (error) { showToast("Gagal memuat: " + error.message, 'error'); } 
+            finally { loader.classList.add('hidden'); }
         }
 
-        function renderStudentList() {
-            const container = document.getElementById('studentListContainer');
+        function renderStudents() {
+            const container = document.getElementById('studentContainer');
             container.innerHTML = '';
+            if (studentsData.length === 0) return container.innerHTML = '<div class="text-center py-6 text-slate-400">Tidak ada data.</div>';
             
-            if(studentsData.length === 0) {
-                container.innerHTML = '<div class="text-center text-xs text-slate-400 py-10">Belum ada data siswa di Spreadsheet.</div>';
-                return;
-            }
+            const sortedData = [...studentsData].sort((a,b) => (a.Status||'Baru') === 'Baru Daftar' ? -1 : 1);
 
-            studentsData.forEach(s => {
-                const isPrivate = s.Metode && s.Metode.toLowerCase().includes('private');
-                const badgeClass = isPrivate ? 'bg-yellow/20 text-yellow-700 border-yellow/40' : 'bg-blue-50 text-primary border-blue-100';
-                const initial = s['Nama Lengkap'] ? s['Nama Lengkap'].charAt(0).toUpperCase() : '?';
+            sortedData.forEach(s => {
+                const status = s.Status || 'Baru Daftar';
+                let sc = status === 'Aktif' ? 'text-green-600 bg-green-50 border-green-200' : (status === 'Baru Daftar' ? 'text-primary bg-blue-50 border-blue-200' : 'text-slate-500 bg-slate-100 border-slate-200');
+                const waLink = formatWA(s['Nomor WA']) ? `https://wa.me/${formatWA(s['Nomor WA'])}` : '#';
 
-                const card = `
-                <div class="bg-white p-4 rounded-2xl border border-slate-100 shadow-[0_2px_10px_rgba(0,0,0,0.02)] flex flex-col">
-                    <div class="flex gap-3 items-center mb-3">
-                        <div class="w-10 h-10 rounded-full bg-slate-100 text-slate-500 font-bold flex items-center justify-center flex-shrink-0">${initial}</div>
-                        <div class="flex-grow">
-                            <h4 class="font-bold text-dark text-sm truncate max-w-[200px]">${s['Nama Lengkap']}</h4>
-                            <p class="text-[10px] text-slate-400 font-medium">${s['Kelas']} | ${s['Asal Sekolah']}</p>
+                container.innerHTML += `
+                    <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200">
+                        <div class="flex justify-between items-start mb-2">
+                            <div>
+                                <h4 class="font-bold text-dark mb-0.5">${s['Nama Lengkap']}</h4>
+                                <p class="text-[10px] text-slate-500">${s['Program']} - ${s['Metode']}</p>
+                            </div>
+                            <span class="px-2 py-1 rounded text-[9px] font-bold uppercase border ${sc}">${status}</span>
                         </div>
-                        <span class="${badgeClass} border px-2 py-1 rounded-md text-[9px] font-bold uppercase tracking-wider">${isPrivate ? 'Private' : 'Reguler'}</span>
-                    </div>
-                    <div class="flex gap-2">
-                        <div class="bg-slate-50 border border-slate-100 px-3 py-1.5 rounded-lg flex-grow">
-                            <p class="text-[9px] text-slate-400 uppercase font-semibold">Program</p>
-                            <p class="text-[11px] font-bold text-dark">${s['Program']}</p>
+                        <div class="flex gap-2 mt-3 pt-3 border-t border-slate-100">
+                            <a href="${waLink}" target="_blank" class="bg-[#25D366] text-white text-xs font-bold px-3 py-2 rounded-lg flex items-center justify-center">WA</a>
+                            <select id="status_${s['Nama Lengkap'].replace(/\s/g, '')}" class="text-[11px] font-semibold text-slate-600 border border-slate-200 rounded-lg px-2 py-1 outline-none flex-grow bg-slate-50">
+                                <option value="Baru Daftar" ${status==='Baru Daftar'?'selected':''}>Baru Daftar</option>
+                                <option value="Aktif" ${status==='Aktif'?'selected':''}>Aktif</option>
+                                <option value="Non-aktif" ${status==='Non-aktif'?'selected':''}>Non-aktif</option>
+                            </select>
+                            <button onclick="updateStatusSatuan('${s['Nama Lengkap']}', this)" class="bg-dark text-white text-[10px] font-bold px-3 py-2 rounded-lg whitespace-nowrap">Ubah</button>
                         </div>
-                        <button onclick="openModalJadwal('${s['Nama Lengkap']}', '${s['Program']}', '${s['Metode']}')" class="bg-white border border-slate-200 text-slate-600 px-4 py-1.5 rounded-lg text-xs font-semibold hover:border-primary hover:text-primary transition flex items-center justify-center shadow-sm">
-                            Atur Jadwal
-                        </button>
-                    </div>
-                </div>`;
-                container.innerHTML += card;
+                    </div>`;
             });
         }
 
+        // --- FETCH DAFTAR TAMPILAN ACCORDION (HP VERSION) ---
+        async function loadAllJadwal() {
+            const cont = document.getElementById('jadwalTableContainer');
+            cont.innerHTML = '<p class="text-center py-4 text-xs">Memuat...</p>';
+            try {
+                const res = await fetch(API_URL + "?action=getAllJadwal");
+                const data = await res.json();
+                if(data.length === 0) return cont.innerHTML = '<p class="text-center py-4 text-xs">Belum ada jadwal.</p>';
+                
+                const grouped = data.reduce((acc, r) => {
+                    let prog = r['Program'] || 'Lainnya';
+                    let hariJam = `${r['Hari 1']} & ${r['Hari 2']} (${r['Jam Belajar']})`;
+                    if(!acc[prog]) acc[prog] = {};
+                    if(!acc[prog][hariJam]) acc[prog][hariJam] = [];
+                    acc[prog][hariJam].push(r); return acc;
+                }, {});
+
+                let html = '';
+                for(let prog in grouped) {
+                    html += `<div class="bg-white rounded-xl shadow-sm border border-slate-200 mb-3 overflow-hidden">
+                                <div class="bg-slate-100 px-4 py-2 border-b border-slate-200"><h3 class="font-bold text-dark text-xs uppercase">${prog}</h3></div>
+                                <div class="divide-y divide-slate-100">`;
+                    for(let hj in grouped[prog]) {
+                        html += `<div class="p-3"><h4 class="font-bold text-primary text-[10px] mb-2">🗓️ ${hj}</h4><div class="flex flex-wrap gap-1.5">`;
+                        grouped[prog][hj].forEach(s => { html += `<span class="bg-blue-50 border border-blue-100 text-slate-700 text-[10px] px-2 py-1 rounded-md font-medium">${s['Nama Siswa']}</span>`; });
+                        html += `</div></div>`;
+                    }
+                    html += `</div></div>`;
+                }
+                cont.innerHTML = html;
+            } catch(e) { cont.innerHTML = '<p class="text-red-500 py-4 text-xs">Gagal memuat.</p>'; }
+        }
+
+        async function loadAllJurnal() {
+            const cont = document.getElementById('jurnalTableContainer');
+            cont.innerHTML = '<p class="text-center py-4 text-xs">Memuat...</p>';
+            try {
+                const res = await fetch(API_URL + "?action=getAllJurnal");
+                const data = await res.json();
+                if(data.length === 0) return cont.innerHTML = '<p class="text-center py-4 text-xs">Belum ada jurnal.</p>';
+                
+                const grouped = data.reduce((acc, r) => { let n = r['Nama Siswa'] || 'Lainnya'; if(!acc[n]) acc[n] = []; acc[n].push(r); return acc; }, {});
+
+                let html = '';
+                for(let nama in grouped) {
+                    html += `<details class="group bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm outline-none">
+                                <summary class="cursor-pointer font-bold p-4 bg-slate-50 flex justify-between items-center text-dark text-sm outline-none">
+                                    <span>${nama} <span class="text-[9px] bg-primary text-white px-1.5 py-0.5 rounded ml-1">${grouped[nama].length}</span></span>
+                                    <span class="text-slate-400 group-open:rotate-180 transition-transform">▼</span>
+                                </summary>
+                                <div class="p-3 border-t border-slate-200 bg-white space-y-4">`;
+                    grouped[nama].forEach(j => {
+                        let tgl = new Date(j['Tanggal Belajar']).toLocaleDateString('id-ID');
+                        
+                        // Menentukan warna badge refleksi
+                        let refColor = "bg-slate-100 text-slate-600";
+                        if(j['Refleksi'] === 'Sangat Baik') refColor = "bg-green-100 text-green-700";
+                        else if(j['Refleksi'] === 'Baik') refColor = "bg-blue-100 text-primary";
+                        else if(j['Refleksi'] === 'Perlu Bimbingan') refColor = "bg-red-100 text-red-600";
+
+                        html += `<div class="border-l-2 border-primary pl-3">
+                                    <div class="flex justify-between items-start mb-1">
+                                        <p class="text-[10px] text-slate-400">📅 ${tgl} | 👤 ${j['Nama Pengajar']}</p>
+                                        <span class="text-[9px] px-1.5 py-0.5 rounded font-bold ${refColor}">${j['Refleksi'] || '-'}</span>
+                                    </div>
+                                    <p class="text-xs text-slate-600 font-medium">${j['Materi/Catatan']}</p>
+                                 </div>`;
+                    });
+                    html += `</div></details>`;
+                }
+                cont.innerHTML = html;
+            } catch(e) { cont.innerHTML = '<p class="text-red-500 py-4 text-xs">Gagal memuat.</p>'; }
+        }
+
+        async function loadAllPembayaran() {
+            const cont = document.getElementById('bayarTableContainer');
+            cont.innerHTML = '<p class="text-center py-4 text-xs">Memuat...</p>';
+            try {
+                const res = await fetch(API_URL + "?action=getAllPembayaran");
+                const data = await res.json();
+                if(data.length === 0) return cont.innerHTML = '<p class="text-center py-4 text-xs">Belum ada pembayaran.</p>';
+                
+                const grouped = data.reduce((acc, r) => { let n = r['Nama Siswa'] || 'Lainnya'; if(!acc[n]) acc[n] = []; acc[n].push(r); return acc; }, {});
+
+                let html = '';
+                for(let nama in grouped) {
+                    html += `<details class="group bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm outline-none">
+                                <summary class="cursor-pointer font-bold p-4 bg-slate-50 flex justify-between items-center text-dark text-sm outline-none">
+                                    <span>${nama}</span><span class="text-slate-400 group-open:rotate-180 transition-transform">▼</span>
+                                </summary>
+                                <div class="p-3 border-t border-slate-200 bg-white space-y-3">`;
+                    grouped[nama].forEach(r => {
+                        let tgl = new Date(r['Tanggal Bayar']).toLocaleDateString('id-ID');
+                        let nom = parseInt(r['Nominal (Rp)']||0).toLocaleString('id-ID', {style:'currency', currency:'IDR'});
+                        html += `<div class="flex justify-between items-center bg-slate-50 p-3 rounded-xl border border-slate-100">
+                                    <div><p class="text-[10px] text-slate-500 mb-0.5">${tgl}</p><p class="text-xs font-bold text-dark">${r['Jenis Pembayaran']}</p></div>
+                                    <p class="text-xs font-bold text-green-600">${nom}</p>
+                                 </div>`;
+                    });
+                    html += `</div></details>`;
+                }
+                cont.innerHTML = html;
+            } catch(e) { cont.innerHTML = '<p class="text-red-500 py-4 text-xs">Gagal memuat.</p>'; }
+        }
+
+        // --- LOGIKA FORM ---
         function populateSelects() {
-            const selectJurnal = document.getElementById('jurnalSiswa');
-            const selectBayar = document.getElementById('bayarSiswa');
-            
-            let options = '<option value="">-- Sentuh untuk Memilih --</option>';
-            studentsData.forEach(s => {
-                options += `<option value="${s['Nama Lengkap']}">${s['Nama Lengkap']}</option>`;
-            });
-
-            selectJurnal.innerHTML = options;
-            selectBayar.innerHTML = options;
+            const activeStudents = studentsData.filter(s => s.Status === 'Aktif');
+            let options = '<option value="">-- Pilih --</option>';
+            activeStudents.forEach(s => { options += `<option value="${s['Nama Lengkap']}">${s['Nama Lengkap']}</option>`; });
+            document.getElementById('jadwalSiswa').innerHTML = options; document.getElementById('jurnalSiswa').innerHTML = options; document.getElementById('bayarSiswa').innerHTML = options;
         }
 
-        document.getElementById('jurnalSiswa').addEventListener('change', function() {
-            const student = studentsData.find(s => s['Nama Lengkap'] === this.value);
-            if(student) document.getElementById('jurnalProgram').value = student.Program;
-        });
-
-        function handleStudentPaymentLogic() {
+        function handlePaymentLogic() {
             const name = document.getElementById('bayarSiswa').value;
             const student = studentsData.find(s => s['Nama Lengkap'] === name);
-            const jenisSelect = document.getElementById('bayarJenis');
-            const metodeText = document.getElementById('bayarMetodeText');
-            
             if(!student) return;
-
-            const method = student.Metode.toLowerCase();
-            if(method.includes('private')) {
-                metodeText.innerHTML = "Status Siswa: <span class='text-yellow-600'>PRIVATE (Wajib Bulanan)</span>";
-                jenisSelect.innerHTML = `<option value="">-- Pilih Paket --</option><option value="Bulanan">Paket 1 Bulan (8x Tatap Muka)</option>`;
-            } else {
-                metodeText.innerHTML = "Status Siswa: <span class='text-primary'>REGULER</span>";
-                jenisSelect.innerHTML = `<option value="">-- Pilih Paket --</option><option value="Bulanan">Paket 1 Bulan (8x Tatap Muka)</option><option value="Per Pertemuan">Bayar Per Pertemuan</option>`;
-            }
+            const isPrivate = student.Metode.toLowerCase().includes('private');
+            document.getElementById('bayarInfo').innerText = isPrivate ? "PRIVATE (Wajib Bulanan)" : "REGULER";
+            document.getElementById('bayarJenis').innerHTML = isPrivate ? `<option value="">-- Pilih --</option><option value="Bulanan">Paket 1 Bulan (Rp 200.000)</option>` : `<option value="">-- Pilih --</option><option value="Bulanan">Paket 1 Bulan (Rp 150.000)</option><option value="Per Pertemuan">Per Pertemuan (Rp 20.000)</option>`;
             document.getElementById('bayarNominal').value = '';
         }
 
-        function handlePaymentAmount() {
+        function handlePaymentNominal() {
             const val = document.getElementById('bayarJenis').value;
-            const inputNominal = document.getElementById('bayarNominal');
-            if(val === 'Bulanan') {
-                const name = document.getElementById('bayarSiswa').value;
-                const isPrivate = studentsData.find(s => s['Nama Lengkap'] === name).Metode.toLowerCase().includes('private');
-                inputNominal.value = isPrivate ? 200000 : 150000;
-            } else if (val === 'Per Pertemuan') {
-                inputNominal.value = 20000;
-            } else {
-                inputNominal.value = '';
-            }
+            const isPrivate = document.getElementById('bayarInfo').innerText.includes('PRIVATE');
+            if(val === 'Bulanan') document.getElementById('bayarNominal').value = isPrivate ? 200000 : 150000;
+            else if (val === 'Per Pertemuan') document.getElementById('bayarNominal').value = 20000;
+            else document.getElementById('bayarNominal').value = '';
         }
 
-        async function postDataToGAS(payload, buttonElement) {
-            const ogText = buttonElement.innerHTML;
-            buttonElement.innerHTML = 'Menyimpan... ⏳';
-            buttonElement.disabled = true;
-
+        async function apiPost(payload, btnElement) {
+            const ogText = btnElement.innerHTML; btnElement.innerHTML = '⏳'; btnElement.disabled = true;
             try {
-                const res = await fetch(API_URL, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-                    body: JSON.stringify(payload)
-                });
-                
-                const responseData = await res.json();
-                
-                if(responseData.status === 'success') {
-                    showToast('Data berhasil disimpan ke Spreadsheet!', 'success');
-                    return true;
-                } else {
-                    throw new Error(responseData.error || 'Terjadi kesalahan sistem.');
-                }
-            } catch(e) {
-                showToast('Gagal menyimpan: ' + e.message, 'error');
-                return false;
-            } finally {
-                buttonElement.innerHTML = ogText;
-                buttonElement.disabled = false;
-            }
+                const res = await fetch(API_URL, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(payload) });
+                const r = await res.json();
+                if(r.status === 'success') { showToast('Berhasil disimpan!'); return true; } else throw new Error(r.error);
+            } catch (e) { showToast("Error: " + e.message, 'error'); return false; } 
+            finally { btnElement.innerHTML = ogText; btnElement.disabled = false; }
         }
 
-        document.getElementById('formJurnal').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const payload = {
-                action: 'saveJurnal',
-                tanggal: document.getElementById('jurnalTanggal').value,
-                namaSiswa: document.getElementById('jurnalSiswa').value,
-                program: document.getElementById('jurnalProgram').value,
-                catatan: document.getElementById('jurnalCatatan').value,
-                pengajar: document.getElementById('jurnalPengajar').value
-            };
-            const success = await postDataToGAS(payload, e.target.querySelector('button'));
-            if(success) { e.target.reset(); document.getElementById('jurnalTanggal').valueAsDate = new Date(); }
-        });
-
-        document.getElementById('formBayar').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const payload = {
-                action: 'savePembayaran',
-                tanggal: document.getElementById('bayarTanggal').value,
-                namaSiswa: document.getElementById('bayarSiswa').value,
-                metodeBimbel: document.getElementById('bayarMetodeText').innerText.includes('PRIVATE') ? 'Private' : 'Reguler',
-                jenisPembayaran: document.getElementById('bayarJenis').value,
-                nominal: document.getElementById('bayarNominal').value,
-                keterangan: 'Lunas via Aplikasi Guru'
-            };
-            const success = await postDataToGAS(payload, e.target.querySelector('button'));
-            if(success) { e.target.reset(); document.getElementById('bayarTanggal').valueAsDate = new Date(); document.getElementById('bayarMetodeText').innerText = ''; }
-        });
-
-        let activeJadwalStudent = {};
-        function openModalJadwal(nama, program, metode) {
-            activeJadwalStudent = { nama, program, metode };
-            document.getElementById('jadwalNama').innerText = nama;
-            document.getElementById('modalJadwal').classList.remove('hidden');
+        async function updateStatusSatuan(nama, btn) {
+            const val = document.getElementById('status_'+nama.replace(/\s/g, '')).value;
+            if(await apiPost({ action: 'updateStatus', namaSiswa: nama, statusBaru: val }, btn)) loadData();
         }
 
-        document.getElementById('formJadwal').addEventListener('submit', async (e) => {
+        document.getElementById('formJadwal').addEventListener('submit', async e => {
             e.preventDefault();
-            const payload = {
-                action: 'saveJadwal',
-                namaSiswa: activeJadwalStudent.nama,
-                program: activeJadwalStudent.program,
-                metodeBimbel: activeJadwalStudent.metode,
-                hari1: document.getElementById('jadwalHari1').value,
-                hari2: document.getElementById('jadwalHari2').value,
-                jamBelajar: document.getElementById('jadwalJam').value
-            };
-            const success = await postDataToGAS(payload, e.target.querySelector('button[type="submit"]'));
-            if(success) document.getElementById('modalJadwal').classList.add('hidden');
+            const s = studentsData.find(x => x['Nama Lengkap'] === document.getElementById('jadwalSiswa').value);
+            const p = { action: 'saveJadwal', namaSiswa: s['Nama Lengkap'], program: s.Program, metodeBimbel: s.Metode, hari1: document.getElementById('jadwalHari1').value, hari2: document.getElementById('jadwalHari2').value, jamBelajar: document.getElementById('jadwalJam').value };
+            if(await apiPost(p, e.target.querySelector('button'))) e.target.reset();
         });
 
-        // Trigger inisial 
-        if(API_URL.includes('script.google.com')) {
-            loadStudents();
-        } else {
-            showToast('API URL belum dikonfigurasi.', 'error');
-        }
+        document.getElementById('formJurnal').addEventListener('submit', async e => {
+            e.preventDefault();
+            const s = studentsData.find(x => x['Nama Lengkap'] === document.getElementById('jurnalSiswa').value);
+            const p = { 
+                action: 'saveJurnal', 
+                tanggal: document.getElementById('jurnalTanggal').value, 
+                namaSiswa: s['Nama Lengkap'], 
+                program: s.Program, 
+                catatan: document.getElementById('jurnalCatatan').value, 
+                pengajar: document.getElementById('jurnalPengajar').value,
+                refleksi: document.getElementById('jurnalRefleksi').value // TERMASUK REFLEKSI
+            };
+            if(await apiPost(p, e.target.querySelector('button'))) { e.target.reset(); document.getElementById('jurnalTanggal').valueAsDate = new Date(); }
+        });
+
+        document.getElementById('formBayar').addEventListener('submit', async e => {
+            e.preventDefault();
+            const p = { action: 'savePembayaran', tanggal: document.getElementById('bayarTanggal').value, namaSiswa: document.getElementById('bayarSiswa').value, metodeBimbel: document.getElementById('bayarInfo').innerText.includes('PRIVATE')?'Private':'Reguler', jenisPembayaran: document.getElementById('bayarJenis').value, nominal: document.getElementById('bayarNominal').value, keterangan: 'Via App Guru' };
+            if(await apiPost(p, e.target.querySelector('button'))) { e.target.reset(); document.getElementById('bayarTanggal').valueAsDate = new Date(); document.getElementById('bayarInfo').innerText = ''; }
+        });
+
+        // Jalankan saat dibuka
+        loadData();
     </script>
 </body>
 </html>

@@ -16,6 +16,9 @@
     <style>
         body { background-color: #FAFAFA; }
         .floating-nav { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(12px); border-radius: 2rem; }
+        /* Style untuk menyembunyikan panah bawaan HTML pada Accordion */
+        details > summary { list-style: none; }
+        details > summary::-webkit-details-marker { display: none; }
     </style>
 </head>
 <body class="text-slate-700 antialiased selection:bg-primary selection:text-white">
@@ -250,24 +253,43 @@
                 if(data.length === 0) {
                     container.innerHTML = `<div class="bg-white/5 border border-white/10 p-6 rounded-2xl text-center backdrop-blur-sm"><p class="text-slate-300 text-sm">Tidak ada riwayat jurnal ditemukan untuk nama <strong>"${nama}"</strong>. Pastikan nama yang diketik benar atau hubungi admin.</p></div>`;
                 } else {
+                    // Group data berdasarkan Nama Siswa
+                    const grouped = data.reduce((acc, r) => {
+                        let n = r['Nama Siswa'] || 'Tidak Diketahui';
+                        if(!acc[n]) acc[n] = [];
+                        acc[n].push(r);
+                        return acc;
+                    }, {});
+
                     let html = `<h4 class="text-sm font-bold text-yellow mb-4 border-b border-white/20 pb-2">Ditemukan ${data.length} catatan belajar:</h4>`;
                     
-                    data.forEach(j => {
-                        let tgl = new Date(j['Tanggal Belajar']).toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
-                        if(tgl === 'Invalid Date') tgl = j['Tanggal Belajar'];
-
+                    for(let studentName in grouped) {
                         html += `
-                        <div class="bg-white text-slate-700 p-5 rounded-2xl shadow-lg border-l-4 border-primary hover:scale-[1.01] transition-transform">
-                            <div class="flex justify-between items-start mb-2">
-                                <h5 class="font-bold text-dark text-sm">${j['Nama Siswa']}</h5>
-                                <span class="bg-blue-50 text-primary text-[9px] font-bold px-2 py-0.5 rounded uppercase tracking-widest">${j['Program']}</span>
-                            </div>
-                            <p class="text-[10px] text-slate-400 font-semibold mb-3">📅 ${tgl} | 👤 Pengajar: ${j['Nama Pengajar']}</p>
-                            <div class="bg-slate-50 border border-slate-100 p-3 rounded-xl">
-                                <p class="text-xs text-slate-600 font-medium leading-relaxed"><strong>Catatan/Materi:</strong><br>${j['Materi/Catatan']}</p>
-                            </div>
-                        </div>`;
-                    });
+                        <details class="group bg-white/10 border border-white/20 rounded-xl overflow-hidden shadow-lg backdrop-blur-md mb-4 outline-none">
+                            <summary class="cursor-pointer font-bold p-4 hover:bg-white/10 transition flex justify-between items-center text-white outline-none select-none">
+                                <span>${studentName} <span class="text-[10px] bg-yellow text-dark px-2 py-0.5 rounded ml-2 font-bold">${grouped[studentName].length} Catatan</span></span>
+                                <span class="text-slate-400 group-open:rotate-180 transition-transform">▼</span>
+                            </summary>
+                            <div class="p-4 border-t border-white/10 bg-black/20 space-y-4">`;
+                        
+                        grouped[studentName].forEach(j => {
+                            let tgl = new Date(j['Tanggal Belajar']).toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+                            if(tgl === 'Invalid Date') tgl = j['Tanggal Belajar'];
+
+                            html += `
+                                <div class="border-l-2 border-yellow pl-4">
+                                    <div class="flex justify-between items-start mb-1">
+                                        <p class="text-xs text-yellow/80 font-semibold">📅 ${tgl}</p>
+                                        <span class="bg-primary/50 text-white text-[9px] font-bold px-2 py-0.5 rounded uppercase tracking-widest">${j['Program']}</span>
+                                    </div>
+                                    <p class="text-[10px] text-slate-400 mb-2">👤 Pengajar: ${j['Nama Pengajar']}</p>
+                                    <div class="bg-white/5 border border-white/10 p-3 rounded-xl">
+                                        <p class="text-xs text-slate-200 font-medium leading-relaxed">${j['Materi/Catatan']}</p>
+                                    </div>
+                                </div>`;
+                        });
+                        html += `</div></details>`;
+                    }
                     container.innerHTML = html;
                 }
 
