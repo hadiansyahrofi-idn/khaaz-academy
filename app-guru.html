@@ -3,171 +3,185 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>KHAAZ Learning Academy App</title>
+    <title>App Guru | KHAAZ Learning</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Mono:wght@700&display=swap" rel="stylesheet">
     <link rel="icon" type="image/png" href="Logo Only (TP).png">
-    <script>
-        tailwind.config = { theme: { extend: { fontFamily: { sans: ['Inter', 'sans-serif'], }, colors: { primary: '#1d4ed8', dark: '#0f172a', yellow: '#ffdd16' } } } }
-    </script>
+    <script>tailwind.config = { theme: { extend: { fontFamily: { sans: ['Inter', 'sans-serif'], mono: ['Space Mono', 'monospace'] }, colors: { primary: '#1d4ed8', dark: '#0f172a', yellow: '#ffdd16' } } } }</script>
     <style>
         body { background-color: #f8fafc; -webkit-tap-highlight-color: transparent; }
         .tab-content, .sub-tab-content { display: none; }
         .tab-content.active, .sub-tab-content.active { display: block; animation: fadeIn 0.3s; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
-        .nav-btn.active { color: #1d4ed8; }
-        .nav-btn.active .icon-bg { background-color: #eff6ff; border-radius: 12px; }
+        .nav-btn.active { color: #1d4ed8; } .nav-btn.active .icon-bg { background-color: #eff6ff; border-radius: 12px; }
         .sub-menu-btn.active { background-color: #1d4ed8; color: white; border-color: #1d4ed8; }
-        details > summary { list-style: none; }
-        details > summary::-webkit-details-marker { display: none; }
-        /* Mengurangi padding agar pas di HP */
-        .mobile-container { padding-bottom: 140px; } 
+        .mobile-container { padding-bottom: 120px; } 
     </style>
 </head>
 <body class="text-slate-700 antialiased h-screen overflow-hidden relative flex flex-col">
 
     <!-- HEADER -->
     <header class="bg-white border-b border-slate-200 px-5 py-4 flex justify-between items-center z-40 shadow-sm flex-shrink-0">
-        <div class="flex items-center gap-3">
-            <img src="https://i.ibb.co.com/Tf5mCxV/Logo-Utama-TP-1.png" alt="KHAAZ" class="h-6">
-            <span class="text-[10px] font-bold text-slate-400 border-l border-slate-200 pl-3">KHAAZ Learning Academy App</span>
-        </div>
-        <button onclick="loadData()" class="text-primary p-2 bg-blue-50 rounded-full active:scale-95 transition">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
-        </button>
+        <div class="flex items-center gap-3"><img src="https://i.ibb.co.com/Tf5mCxV/Logo-Utama-TP-1.png" alt="KHAAZ" class="h-6"><span class="text-[10px] font-bold text-slate-400 border-l border-slate-200 pl-3">APP GURU</span></div>
+        <button onclick="loadData()" class="text-primary p-2 bg-blue-50 rounded-full active:scale-95 transition flex items-center gap-2 text-[10px] font-bold"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>Sync</button>
     </header>
 
-    <!-- TOAST NOTIFICATION -->
     <div id="toast-container" class="fixed top-20 left-1/2 transform -translate-x-1/2 z-[9999] flex flex-col gap-2 pointer-events-none w-[90%] max-w-sm"></div>
+
+    <a href="index.html" class="fixed bottom-24 right-5 w-12 h-12 bg-yellow text-dark rounded-full flex items-center justify-center shadow-lg shadow-yellow/40 hover:scale-110 active:scale-95 transition-transform z-50">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"></path></svg>
+    </a>
+
+    <!-- MODAL EDIT SISWA -->
+    <div id="editModal" class="fixed inset-0 z-[100] bg-black/60 hidden items-center justify-center p-4 backdrop-blur-sm">
+        <div class="bg-white rounded-3xl p-6 w-full max-w-sm shadow-2xl relative max-h-[90vh] overflow-y-auto">
+            <button onclick="closeEditModal()" class="absolute top-4 right-4 text-slate-400 hover:text-red-500 font-bold text-xl">&times;</button>
+            <h2 class="text-lg font-bold text-dark mb-1">Data Lengkap Siswa</h2>
+            <form id="formEditSiswa" class="space-y-3 mt-4">
+                <input type="hidden" id="editOldNama">
+                <div><label class="text-[10px] font-bold text-slate-500 uppercase">Nama Lengkap</label><input type="text" id="editNama" required class="w-full mt-1 px-3 py-2 text-sm border border-slate-200 rounded-lg outline-none bg-slate-50"></div>
+                <div class="grid grid-cols-2 gap-3"><div><label class="text-[10px] font-bold text-slate-500 uppercase">Nomor WA</label><input type="tel" id="editWA" required class="w-full mt-1 px-3 py-2 text-sm border border-slate-200 rounded-lg outline-none bg-slate-50"></div><div><label class="text-[10px] font-bold text-slate-500 uppercase">Kelas</label><input type="text" id="editKelas" required class="w-full mt-1 px-3 py-2 text-sm border border-slate-200 rounded-lg outline-none bg-slate-50"></div></div>
+                <div><label class="text-[10px] font-bold text-slate-500 uppercase">Asal Sekolah</label><input type="text" id="editAsal" required class="w-full mt-1 px-3 py-2 text-sm border border-slate-200 rounded-lg outline-none bg-slate-50"></div>
+                <div><label class="text-[10px] font-bold text-slate-500 uppercase">Program</label><select id="editProgram" class="w-full mt-1 px-3 py-2 text-sm border border-slate-200 rounded-lg outline-none bg-slate-50"><option>Bimbingan Calistung</option><option>Bimbel SD</option><option>Bimbel SMP</option><option>Persiapan TKA SD</option><option>Persiapan TKA SMP</option></select></div>
+                <div><label class="text-[10px] font-bold text-slate-500 uppercase">Metode</label><select id="editMetode" class="w-full mt-1 px-3 py-2 text-sm border border-slate-200 rounded-lg outline-none bg-slate-50"><option>Reguler (Maks 5 Siswa)</option><option>Private (1 on 1)</option></select></div>
+                <div class="pt-2"><button type="submit" class="w-full bg-primary text-white py-3 rounded-xl text-sm font-bold shadow-md">Simpan Perubahan</button></div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL EDIT JADWAL -->
+    <div id="editJadwalModal" class="fixed inset-0 z-[100] bg-black/60 hidden items-center justify-center p-4 backdrop-blur-sm">
+        <div class="bg-white rounded-3xl p-5 w-full max-w-sm shadow-2xl relative max-h-[90vh] overflow-y-auto">
+            <button onclick="closeEditJadwalModal()" class="absolute top-4 right-4 text-slate-400 hover:text-red-500 font-bold text-xl">&times;</button>
+            <h2 class="text-lg font-bold text-dark mb-1">Edit: <span id="editJadwalNamaSiswa" class="text-primary text-sm block truncate"></span></h2>
+            <form id="formEditJadwalAPI" class="space-y-3 mt-4">
+                <input type="hidden" id="editJadwalNama">
+                <div class="grid grid-cols-2 gap-3 p-3 bg-slate-50 rounded-xl border border-slate-100">
+                    <div><label class="text-[9px] font-bold text-slate-400 uppercase">Hari 1</label><select id="editJadwalHari1" class="w-full mt-1 px-2 py-2 text-xs border border-slate-200 rounded-lg outline-none"><option value="-">- Kosong -</option><option value="Senin">Senin</option><option value="Selasa">Selasa</option><option value="Rabu">Rabu</option><option value="Kamis">Kamis</option><option value="Jumat">Jumat</option><option value="Sabtu">Sabtu</option></select></div>
+                    <div><label class="text-[9px] font-bold text-slate-400 uppercase">Jam Sesi 1</label><select id="editJadwalJam1" class="w-full mt-1 px-2 py-2 text-xs border border-slate-200 rounded-lg outline-none"><option value="-">- Kosong -</option><option value="13:00 - 15:00 WIB">13:00 - 15:00 WIB</option><option value="15:30 - 17:30 WIB">15:30 - 17:30 WIB</option></select></div>
+                </div>
+                <div class="grid grid-cols-2 gap-3 p-3 bg-slate-50 rounded-xl border border-slate-100">
+                    <div><label class="text-[9px] font-bold text-slate-400 uppercase">Hari 2</label><select id="editJadwalHari2" class="w-full mt-1 px-2 py-2 text-xs border border-slate-200 rounded-lg outline-none"><option value="-">- Kosong -</option><option value="Senin">Senin</option><option value="Selasa">Selasa</option><option value="Rabu">Rabu</option><option value="Kamis">Kamis</option><option value="Jumat">Jumat</option><option value="Sabtu">Sabtu</option></select></div>
+                    <div><label class="text-[9px] font-bold text-slate-400 uppercase">Jam Sesi 2</label><select id="editJadwalJam2" class="w-full mt-1 px-2 py-2 text-xs border border-slate-200 rounded-lg outline-none"><option value="-">- Kosong -</option><option value="13:00 - 15:00 WIB">13:00 - 15:00 WIB</option><option value="15:30 - 17:30 WIB">15:30 - 17:30 WIB</option></select></div>
+                </div>
+                <div class="grid grid-cols-2 gap-3 p-3 bg-slate-50 rounded-xl border border-slate-100">
+                    <div><label class="text-[9px] font-bold text-slate-400 uppercase">Hari 3</label><select id="editJadwalHari3" class="w-full mt-1 px-2 py-2 text-xs border border-slate-200 rounded-lg outline-none"><option value="-">- Kosong -</option><option value="Senin">Senin</option><option value="Selasa">Selasa</option><option value="Rabu">Rabu</option><option value="Kamis">Kamis</option><option value="Jumat">Jumat</option><option value="Sabtu">Sabtu</option></select></div>
+                    <div><label class="text-[9px] font-bold text-slate-400 uppercase">Jam Sesi 3</label><select id="editJadwalJam3" class="w-full mt-1 px-2 py-2 text-xs border border-slate-200 rounded-lg outline-none"><option value="-">- Kosong -</option><option value="13:00 - 15:00 WIB">13:00 - 15:00 WIB</option><option value="15:30 - 17:30 WIB">15:30 - 17:30 WIB</option></select></div>
+                </div>
+                <div class="pt-2"><button type="submit" class="w-full bg-primary text-white py-3 rounded-xl text-sm font-bold shadow-md">Simpan Perubahan Jadwal</button></div>
+            </form>
+        </div>
+    </div>
 
     <!-- MAIN SCROLLABLE AREA -->
     <main class="flex-grow overflow-y-auto mobile-container p-4">
-        <div id="loader" class="bg-blue-100 text-primary text-center py-3 rounded-xl font-medium text-xs mb-4 border border-blue-200 hidden animate-pulse">
-            ⏳ Sinkronisasi data...
-        </div>
+        <div id="loader" class="bg-blue-100 text-primary text-center py-3 rounded-xl font-medium text-xs mb-4 border border-blue-200 hidden animate-pulse">⏳ Sinkronisasi data...</div>
 
         <!-- TAB 1: SISWA -->
         <section id="tab-siswa" class="tab-content active">
             <h1 class="text-xl font-bold text-dark mb-1">Daftar Siswa</h1>
-            <p class="text-xs text-slate-500 mb-5">Klik ubah untuk aktivasi siswa.</p>
-            <div id="studentContainer" class="space-y-4 text-sm"></div>
+            <div id="studentContainer" class="space-y-4 text-sm mt-4"></div>
         </section>
 
         <!-- TAB 2: JADWAL -->
         <section id="tab-jadwal" class="tab-content">
-            <div class="flex justify-between items-center mb-5">
-                <h1 class="text-xl font-bold text-dark">Jadwal Bimbel</h1>
+            <h1 class="text-xl font-bold text-dark mb-4">Jadwal Bimbel</h1>
+            <div class="flex p-1 bg-slate-200 rounded-lg mb-4">
+                <button onclick="switchSubTab('jadwal-form', this, 'sub-btn-jadwal')" class="sub-btn-jadwal px-4 py-2 text-xs font-bold text-slate-600 rounded-md transition">Input Baru</button>
+                <button onclick="switchSubTab('jadwal-list', this, 'sub-btn-jadwal'); loadAllJadwal();" class="sub-btn-jadwal active w-full py-2 text-xs font-bold text-slate-600 rounded-md transition">Papan Harian</button>
             </div>
-            <div class="flex p-1 bg-slate-200 rounded-lg mb-5">
-                <button onclick="switchSubTab('jadwal-form', this, 'sub-btn-jadwal')" class="sub-btn-jadwal active w-1/2 py-2 text-xs font-bold text-slate-600 rounded-md transition">Input Jadwal</button>
-                <button onclick="switchSubTab('jadwal-list', this, 'sub-btn-jadwal'); loadAllJadwal();" class="sub-btn-jadwal w-1/2 py-2 text-xs font-bold text-slate-600 rounded-md transition">Papan Jadwal</button>
-            </div>
-
-            <div id="jadwal-form" class="sub-tab-content active">
+            <div id="jadwal-form" class="sub-tab-content">
                 <form id="formJadwal" class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-4">
-                    <div><label class="text-[10px] font-bold text-slate-400 uppercase">Siswa Aktif</label><select id="jadwalSiswa" required class="w-full mt-1 px-3 py-2.5 text-sm border border-slate-200 rounded-xl outline-none"></select></div>
-                    <div class="grid grid-cols-2 gap-3">
-                        <div><label class="text-[10px] font-bold text-slate-400 uppercase">Hari 1</label><select id="jadwalHari1" class="w-full mt-1 px-3 py-2.5 text-sm border border-slate-200 rounded-xl outline-none"><option>Senin</option><option>Selasa</option><option>Rabu</option><option>Kamis</option><option>Jumat</option><option>Sabtu</option></select></div>
-                        <div><label class="text-[10px] font-bold text-slate-400 uppercase">Hari 2</label><select id="jadwalHari2" class="w-full mt-1 px-3 py-2.5 text-sm border border-slate-200 rounded-xl outline-none"><option>Senin</option><option>Selasa</option><option>Rabu</option><option>Kamis</option><option>Jumat</option><option>Sabtu</option></select></div>
-                    </div>
-                    <div><label class="text-[10px] font-bold text-slate-400 uppercase">Sesi Belajar</label><select id="jadwalJam" class="w-full mt-1 px-3 py-2.5 text-sm border border-slate-200 rounded-xl outline-none"><option>13:00 - 15:00 WIB</option><option>15:30 - 17:30 WIB</option></select></div>
+                    <div><label class="text-[10px] font-bold text-slate-400 uppercase">Siswa Aktif</label><select id="jadwalSiswa" required class="w-full mt-1 px-3 py-2.5 text-sm border border-slate-200 rounded-xl outline-none bg-slate-50"></select></div>
+                    <div class="grid grid-cols-2 gap-3"><div><label class="text-[10px] font-bold text-slate-400 uppercase">Hari 1</label><select id="jadwalHari1" class="w-full mt-1 px-3 py-2.5 text-sm border border-slate-200 rounded-xl outline-none"><option value="-">- Kosong -</option><option value="Senin">Senin</option><option value="Selasa">Selasa</option><option value="Rabu">Rabu</option><option value="Kamis">Kamis</option><option value="Jumat">Jumat</option><option value="Sabtu">Sabtu</option></select></div><div><label class="text-[10px] font-bold text-slate-400 uppercase">Jam Sesi 1</label><select id="jadwalJam1" class="w-full mt-1 px-3 py-2.5 text-sm border border-slate-200 rounded-xl outline-none"><option value="-">- Kosong -</option><option value="13:00 - 15:00 WIB">13:00 - 15:00 WIB</option><option value="15:30 - 17:30 WIB">15:30 - 17:30 WIB</option></select></div></div>
+                    <div class="grid grid-cols-2 gap-3"><div><label class="text-[10px] font-bold text-slate-400 uppercase">Hari 2</label><select id="jadwalHari2" class="w-full mt-1 px-3 py-2.5 text-sm border border-slate-200 rounded-xl outline-none"><option value="-">- Kosong -</option><option value="Senin">Senin</option><option value="Selasa">Selasa</option><option value="Rabu">Rabu</option><option value="Kamis">Kamis</option><option value="Jumat">Jumat</option><option value="Sabtu">Sabtu</option></select></div><div><label class="text-[10px] font-bold text-slate-400 uppercase">Jam Sesi 2</label><select id="jadwalJam2" class="w-full mt-1 px-3 py-2.5 text-sm border border-slate-200 rounded-xl outline-none"><option value="-">- Kosong -</option><option value="13:00 - 15:00 WIB">13:00 - 15:00 WIB</option><option value="15:30 - 17:30 WIB">15:30 - 17:30 WIB</option></select></div></div>
+                    <div class="grid grid-cols-2 gap-3 bg-yellow/10 p-3 rounded-xl border border-yellow/30"><div><label class="text-[10px] font-bold text-yellow-700 uppercase">Hari 3 (Opsional)</label><select id="jadwalHari3" class="w-full mt-1 px-3 py-2.5 text-sm border border-yellow/20 rounded-xl outline-none"><option value="-">- Kosong -</option><option value="Senin">Senin</option><option value="Selasa">Selasa</option><option value="Rabu">Rabu</option><option value="Kamis">Kamis</option><option value="Jumat">Jumat</option><option value="Sabtu">Sabtu</option></select></div><div><label class="text-[10px] font-bold text-yellow-700 uppercase">Jam Sesi 3</label><select id="jadwalJam3" class="w-full mt-1 px-3 py-2.5 text-sm border border-yellow/20 rounded-xl outline-none"><option value="-">- Kosong -</option><option value="13:00 - 15:00 WIB">13:00 - 15:00 WIB</option><option value="15:30 - 17:30 WIB">15:30 - 17:30 WIB</option></select></div></div>
                     <button type="submit" class="w-full bg-primary text-white py-3 rounded-xl text-sm font-bold shadow-md">Simpan Jadwal</button>
                 </form>
             </div>
-            <div id="jadwal-list" class="sub-tab-content"><div id="jadwalTableContainer" class="space-y-4"></div></div>
+            <div id="jadwal-list" class="sub-tab-content active"><div id="jadwalTableContainer" class="space-y-4"></div></div>
         </section>
 
         <!-- TAB 3: JURNAL -->
         <section id="tab-jurnal" class="tab-content">
-            <div class="flex justify-between items-center mb-5">
-                <h1 class="text-xl font-bold text-dark">Jurnal Mengajar</h1>
-            </div>
-            <div class="flex p-1 bg-slate-200 rounded-lg mb-5">
+            <h1 class="text-xl font-bold text-dark mb-4">Jurnal Mengajar</h1>
+            <div class="flex p-1 bg-slate-200 rounded-lg mb-4">
                 <button onclick="switchSubTab('jurnal-form', this, 'sub-btn-jurnal')" class="sub-btn-jurnal active w-1/2 py-2 text-xs font-bold text-slate-600 rounded-md transition">Isi Jurnal</button>
-                <button onclick="switchSubTab('jurnal-list', this, 'sub-btn-jurnal'); loadAllJurnal();" class="sub-btn-jurnal w-1/2 py-2 text-xs font-bold text-slate-600 rounded-md transition">Riwayat</button>
+                <button onclick="switchSubTab('jurnal-list', this, 'sub-btn-jurnal'); loadAllJurnal();" class="sub-btn-jurnal w-1/2 py-2 text-xs font-bold text-slate-600 rounded-md transition">Riwayat Jurnal</button>
             </div>
-
+            
             <div id="jurnal-form" class="sub-tab-content active">
                 <form id="formJurnal" class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-4">
-                    <div><label class="text-[10px] font-bold text-slate-400 uppercase">Tanggal</label><input type="date" id="jurnalTanggal" required class="w-full mt-1 px-3 py-2.5 text-sm border border-slate-200 rounded-xl outline-none"></div>
-                    <div><label class="text-[10px] font-bold text-slate-400 uppercase">Siswa Aktif</label><select id="jurnalSiswa" required class="w-full mt-1 px-3 py-2.5 text-sm border border-slate-200 rounded-xl outline-none"></select></div>
-                    <div><label class="text-[10px] font-bold text-slate-400 uppercase">Materi & Catatan</label><textarea id="jurnalCatatan" rows="3" required class="w-full mt-1 px-3 py-2.5 text-sm border border-slate-200 rounded-xl outline-none"></textarea></div>
+                    <div><label class="text-[10px] font-bold text-slate-400 uppercase">Tanggal</label><input type="date" id="jurnalTanggal" required class="w-full mt-1 px-3 py-2.5 text-sm border border-slate-200 rounded-xl outline-none bg-slate-50"></div>
+                    <div><label class="text-[10px] font-bold text-slate-400 uppercase">Siswa Aktif</label><select id="jurnalSiswa" required class="w-full mt-1 px-3 py-2.5 text-sm border border-slate-200 rounded-xl outline-none bg-slate-50"></select></div>
                     
-                    <!-- FITUR BARU: REFLEKSI -->
+                    <!-- MATERI & CATATAN TERBARU -->
+                    <div><label class="text-[10px] font-bold text-slate-400 uppercase">Materi/Topik Belajar</label><textarea id="jurnalMateri" rows="2" required class="w-full mt-1 px-3 py-2.5 text-sm border border-slate-200 rounded-xl outline-none bg-slate-50"></textarea></div>
+                    <div><label class="text-[10px] font-bold text-slate-400 uppercase">Catatan Pembelajaran (Progres)</label><textarea id="jurnalCatatanPembelajaran" rows="2" required class="w-full mt-1 px-3 py-2.5 text-sm border border-slate-200 rounded-xl outline-none bg-slate-50"></textarea></div>
+                    
                     <div>
-                        <label class="text-[10px] font-bold text-slate-400 uppercase">Refleksi Hasil Belajar</label>
-                        <select id="jurnalRefleksi" required class="w-full mt-1 px-3 py-2.5 text-sm border border-slate-200 rounded-xl outline-none text-dark font-medium">
-                            <option value="Sangat Baik">Sangat Baik</option>
-                            <option value="Baik" selected>Baik</option>
-                            <option value="Cukup Baik">Cukup Baik</option>
-                            <option value="Perlu Bimbingan">Perlu Bimbingan</option>
+                        <label class="text-[10px] font-bold text-slate-400 uppercase">Hasil Belajar</label>
+                        <select id="jurnalHasilBelajar" required class="w-full mt-1 px-3 py-2.5 text-sm border border-slate-200 rounded-xl outline-none text-dark font-medium bg-slate-50">
+                            <option value="Sangat Baik">Sangat Baik</option><option value="Baik" selected>Baik</option><option value="Cukup Baik">Cukup Baik</option><option value="Perlu Bimbingan">Perlu Bimbingan</option>
                         </select>
                     </div>
                     <div>
-                        <label class="text-[11px] font-bold text-slate-400 uppercase tracking-widest">Nama Guru/Pengajar</label>
-                        <select id="jurnalPengajar" required class="w-full mt-1.5 px-4 py-3 text-sm border border-slate-200 rounded-xl outline-none text-dark font-medium">
-                            <option value="">-- Pilih Guru --</option>
-                            <option value="Rofi Hadiansyah">Rofi Hadiansyah</option>
-                            <option value="Sri Wahyuni">Sri Wahyuni</option>
+                        <label class="text-[10px] font-bold text-slate-400 uppercase">Nama Guru</label>
+                        <select id="jurnalPengajar" required class="w-full mt-1 px-3 py-2.5 text-sm border border-slate-200 rounded-xl outline-none text-dark font-medium bg-slate-50">
+                            <option value="">-- Pilih Guru --</option><option value="Rofi Hadiansyah">Rofi Hadiansyah</option><option value="Sri Wahyuni">Sri Wahyuni</option>
                         </select>
                     </div>
-                    <button type="submit" class="w-full bg-dark text-white py-3 rounded-xl text-sm font-bold shadow-md">Publikasi</button>
+                    <button type="submit" class="w-full bg-dark text-white py-3 rounded-xl text-sm font-bold shadow-md">Publikasi Jurnal</button>
                 </form>
             </div>
-            <div id="jurnal-list" class="sub-tab-content"><div id="jurnalTableContainer" class="space-y-3"></div></div>
+            <div id="jurnal-list" class="sub-tab-content">
+                <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200 mb-4">
+                    <label class="text-[10px] font-bold text-slate-400 uppercase">Filter Berdasarkan Siswa</label>
+                    <select id="filterJurnalSiswa" onchange="renderFilteredJurnal()" class="w-full mt-1.5 px-3 py-2.5 text-sm border border-slate-200 rounded-xl outline-none bg-slate-50"><option value="">-- Tunggu Data --</option></select>
+                </div>
+                <div id="jurnalTableContainer" class="space-y-3"><p class="text-center py-4 text-xs text-slate-400">Pilih siswa di atas untuk melihat riwayat jurnal.</p></div>
+            </div>
         </section>
 
-        <!-- TAB 4: KEUANGAN -->
+        <!-- TAB 4: KEUANGAN (KAS) -->
         <section id="tab-keuangan" class="tab-content">
-            <div class="flex justify-between items-center mb-5">
-                <h1 class="text-xl font-bold text-dark">Kas Pembayaran</h1>
-            </div>
-            <div class="flex p-1 bg-slate-200 rounded-lg mb-5">
+            <h1 class="text-xl font-bold text-dark mb-4">Kas Pembayaran</h1>
+            <div class="flex p-1 bg-slate-200 rounded-lg mb-4">
                 <button onclick="switchSubTab('bayar-form', this, 'sub-btn-bayar')" class="sub-btn-bayar active w-1/2 py-2 text-xs font-bold text-slate-600 rounded-md transition">Input Kas</button>
                 <button onclick="switchSubTab('bayar-list', this, 'sub-btn-bayar'); loadAllPembayaran();" class="sub-btn-bayar w-1/2 py-2 text-xs font-bold text-slate-600 rounded-md transition">Riwayat</button>
             </div>
-
             <div id="bayar-form" class="sub-tab-content active">
                 <form id="formBayar" class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-4">
-                    <div><label class="text-[10px] font-bold text-slate-400 uppercase">Tanggal</label><input type="date" id="bayarTanggal" required class="w-full mt-1 px-3 py-2.5 text-sm border border-slate-200 rounded-xl outline-none"></div>
-                    <div><label class="text-[10px] font-bold text-slate-400 uppercase">Siswa</label><select id="bayarSiswa" required onchange="handlePaymentLogic()" class="w-full mt-1 px-3 py-2.5 text-sm border border-slate-200 rounded-xl outline-none"></select><p id="bayarInfo" class="text-[9px] text-primary mt-1 font-bold"></p></div>
-                    <div><label class="text-[10px] font-bold text-slate-400 uppercase">Jenis Bayar</label><select id="bayarJenis" required onchange="handlePaymentNominal()" class="w-full mt-1 px-3 py-2.5 text-sm border border-slate-200 rounded-xl outline-none"><option value="">-- Pilih --</option></select></div>
-                    <div><label class="text-[10px] font-bold text-slate-400 uppercase">Nominal</label><input type="number" id="bayarNominal" required readonly class="w-full mt-1 px-3 py-2.5 text-lg font-bold bg-slate-50 border border-slate-200 rounded-xl outline-none"></div>
+                    <div><label class="text-[10px] font-bold text-slate-400 uppercase">Tanggal</label><input type="date" id="bayarTanggal" required class="w-full mt-1 px-3 py-2.5 text-sm border border-slate-200 rounded-xl outline-none bg-slate-50"></div>
+                    <div><label class="text-[10px] font-bold text-slate-400 uppercase">Siswa</label><select id="bayarSiswa" required onchange="handlePaymentLogic()" class="w-full mt-1 px-3 py-2.5 text-sm border border-slate-200 rounded-xl outline-none bg-slate-50"></select><p id="bayarInfo" class="text-[9px] text-primary mt-1 font-bold"></p></div>
+                    <div><label class="text-[10px] font-bold text-slate-400 uppercase">Jenis Bayar</label><select id="bayarJenis" required onchange="handlePaymentNominal()" class="w-full mt-1 px-3 py-2.5 text-sm border border-slate-200 rounded-xl outline-none bg-slate-50"><option value="">-- Pilih --</option></select></div>
+                    <div><label class="text-[10px] font-bold text-slate-400 uppercase">Nominal</label><input type="number" id="bayarNominal" required readonly class="w-full mt-1 px-3 py-2.5 text-lg font-bold bg-slate-100 border border-slate-200 rounded-xl outline-none text-slate-800 font-mono"></div>
                     <button type="submit" class="w-full bg-green-600 text-white py-3 rounded-xl text-sm font-bold shadow-md">Simpan Kas</button>
                 </form>
             </div>
-            <div id="bayar-list" class="sub-tab-content"><div id="bayarTableContainer" class="space-y-3"></div></div>
+            <div id="bayar-list" class="sub-tab-content">
+                <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200 mb-4">
+                    <label class="text-[10px] font-bold text-slate-400 uppercase">Filter Berdasarkan Siswa</label>
+                    <select id="filterKasSiswa" onchange="renderFilteredKas()" class="w-full mt-1.5 px-3 py-2.5 text-sm border border-slate-200 rounded-xl outline-none bg-slate-50"><option value="">-- Tunggu Data --</option></select>
+                </div>
+                <div id="bayarTableContainer" class="space-y-4"><p class="text-center py-4 text-xs text-slate-400">Pilih siswa di atas untuk melihat riwayat pembayaran.</p></div>
+            </div>
         </section>
-        <!-- Tambahkan div ini sebagai spacer -->
         <div style="height: 100px;"></div>
     </main>
 
-    <!-- BOTTOM NAVIGATION (MOBILE APP STYLE) -->
     <nav class="fixed bottom-0 left-0 right-0 bg-white border-t border-slate-200 flex justify-around items-center h-16 pb-1 px-2 z-50 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)] flex-shrink-0">
-        <button onclick="switchTab('siswa', this)" class="nav-btn active flex flex-col items-center justify-center w-16 text-slate-400 transition">
-            <div class="icon-bg p-1.5"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg></div>
-            <span class="text-[10px] font-semibold mt-0.5">Siswa</span>
-        </button>
-        <button onclick="switchTab('jadwal', this)" class="nav-btn flex flex-col items-center justify-center w-16 text-slate-400 transition">
-            <div class="icon-bg p-1.5"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg></div>
-            <span class="text-[10px] font-semibold mt-0.5">Jadwal</span>
-        </button>
-        <button onclick="switchTab('jurnal', this)" class="nav-btn flex flex-col items-center justify-center w-16 text-slate-400 transition">
-            <div class="icon-bg p-1.5"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg></div>
-            <span class="text-[10px] font-semibold mt-0.5">Jurnal</span>
-        </button>
-        <button onclick="switchTab('keuangan', this)" class="nav-btn flex flex-col items-center justify-center w-16 text-slate-400 transition">
-            <div class="icon-bg p-1.5"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path></svg></div>
-            <span class="text-[10px] font-semibold mt-0.5">Kas</span>
-        </button>
+        <button onclick="switchTab('siswa', this)" class="nav-btn active flex flex-col items-center justify-center w-16 text-slate-400 transition"><div class="icon-bg p-1.5"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg></div><span class="text-[10px] font-semibold mt-0.5">Siswa</span></button>
+        <button onclick="switchTab('jadwal', this)" class="nav-btn flex flex-col items-center justify-center w-16 text-slate-400 transition"><div class="icon-bg p-1.5"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg></div><span class="text-[10px] font-semibold mt-0.5">Jadwal</span></button>
+        <button onclick="switchTab('jurnal', this)" class="nav-btn flex flex-col items-center justify-center w-16 text-slate-400 transition"><div class="icon-bg p-1.5"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg></div><span class="text-[10px] font-semibold mt-0.5">Jurnal</span></button>
+        <button onclick="switchTab('keuangan', this)" class="nav-btn flex flex-col items-center justify-center w-16 text-slate-400 transition"><div class="icon-bg p-1.5"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path></svg></div><span class="text-[10px] font-semibold mt-0.5">Kas</span></button>
     </nav>
 
-    <!-- SCRIPTS -->
     <script>
+        // PASTIKAN API_URL INI ADALAH URL DEPLOYMENT TERBARU ANDA
         const API_URL = 'https://script.google.com/macros/s/AKfycbzA8SfMkBpWkIQ5ZMqOWwLL8z0uSaWMBbOqXVayEs_cmA_egfqDMpJKyfhCVVp_l1on/exec';
-        let studentsData = [];
+        let studentsData = []; let globalJurnalData = []; let globalKasData = []; let globalJadwalData = []; 
 
-        // --- TOAST MODERN (POPUP) ---
         function showToast(message, type = 'success') {
             const container = document.getElementById('toast-container');
             const toast = document.createElement('div');
@@ -180,19 +194,13 @@
             setTimeout(() => { toast.classList.add('translate-y-[-100%]', 'opacity-0'); setTimeout(() => toast.remove(), 300); }, 2500);
         }
 
-        // --- MANAJEMEN TAB ---
         function switchTab(tabId, btnElement) {
             document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
             document.getElementById('tab-' + tabId).classList.add('active');
-            if(btnElement) {
-                document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
-                btnElement.classList.add('active');
-            }
+            if(btnElement) { document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active')); btnElement.classList.add('active'); }
         }
         function switchSubTab(tabId, btnElement, btnClass) {
-            document.querySelectorAll(`.sub-tab-content`).forEach(el => {
-                if(el.id.startsWith(tabId.split('-')[0])) el.classList.remove('active');
-            });
+            document.querySelectorAll(`.sub-tab-content`).forEach(el => { if(el.id.startsWith(tabId.split('-')[0])) el.classList.remove('active'); });
             document.getElementById(tabId).classList.add('active');
             document.querySelectorAll(`.${btnClass}`).forEach(el => el.classList.remove('active'));
             btnElement.classList.add('active');
@@ -202,177 +210,190 @@
         document.getElementById('bayarTanggal').valueAsDate = new Date();
 
         function formatWA(phoneString) {
-            if (!phoneString) return '';
-            let no = phoneString.toString().replace(/[^0-9]/g, ''); 
-            if (no.startsWith('0')) return '62' + no.substring(1); 
-            if (no.startsWith('8')) return '62' + no; 
-            return no;
+            if (!phoneString) return ''; let no = phoneString.toString().replace(/[^0-9]/g, ''); 
+            if (no.startsWith('0')) return '62' + no.substring(1); if (no.startsWith('8')) return '62' + no; return no;
         }
 
-        // --- FETCH DATA ---
         async function loadData() {
-            const loader = document.getElementById('loader');
-            loader.classList.remove('hidden');
+            const loader = document.getElementById('loader'); loader.classList.remove('hidden');
             try {
-                const res = await fetch(API_URL + "?action=getStudents");
-                studentsData = await res.json();
-                renderStudents();
-                populateSelects();
-            } catch (error) { showToast("Gagal memuat: " + error.message, 'error'); } 
-            finally { loader.classList.add('hidden'); }
+                const res = await fetch(API_URL + "?action=getStudents"); studentsData = await res.json();
+                renderStudents(); populateSelects();
+            } catch (error) { showToast("Gagal memuat: " + error.message, 'error'); } finally { loader.classList.add('hidden'); }
         }
 
         function renderStudents() {
-            const container = document.getElementById('studentContainer');
-            container.innerHTML = '';
+            const container = document.getElementById('studentContainer'); container.innerHTML = '';
             if (studentsData.length === 0) return container.innerHTML = '<div class="text-center py-6 text-slate-400">Tidak ada data.</div>';
             
-            const sortedData = [...studentsData].sort((a,b) => (a.Status||'Baru') === 'Baru Daftar' ? -1 : 1);
-
+            const sortedData = [...studentsData].reverse();
             sortedData.forEach(s => {
                 const status = s.Status || 'Baru Daftar';
                 let sc = status === 'Aktif' ? 'text-green-600 bg-green-50 border-green-200' : (status === 'Baru Daftar' ? 'text-primary bg-blue-50 border-blue-200' : 'text-slate-500 bg-slate-100 border-slate-200');
                 const waLink = formatWA(s['Nomor WA']) ? `https://wa.me/${formatWA(s['Nomor WA'])}` : '#';
+                const dataString = encodeURIComponent(JSON.stringify(s));
 
                 container.innerHTML += `
                     <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200">
-                        <div class="flex justify-between items-start mb-2">
-                            <div>
-                                <h4 class="font-bold text-dark mb-0.5">${s['Nama Lengkap']}</h4>
-                                <p class="text-[10px] text-slate-500">${s['Program']} - ${s['Metode']}</p>
-                            </div>
-                            <span class="px-2 py-1 rounded text-[9px] font-bold uppercase border ${sc}">${status}</span>
-                        </div>
-                        <div class="flex gap-2 mt-3 pt-3 border-t border-slate-100">
-                            <a href="${waLink}" target="_blank" class="bg-[#25D366] text-white text-xs font-bold px-3 py-2 rounded-lg flex items-center justify-center">WA</a>
-                            <select id="status_${s['Nama Lengkap'].replace(/\s/g, '')}" class="text-[11px] font-semibold text-slate-600 border border-slate-200 rounded-lg px-2 py-1 outline-none flex-grow bg-slate-50">
-                                <option value="Baru Daftar" ${status==='Baru Daftar'?'selected':''}>Baru Daftar</option>
-                                <option value="Aktif" ${status==='Aktif'?'selected':''}>Aktif</option>
-                                <option value="Non-aktif" ${status==='Non-aktif'?'selected':''}>Non-aktif</option>
-                            </select>
-                            <button onclick="updateStatusSatuan('${s['Nama Lengkap']}', this)" class="bg-dark text-white text-[10px] font-bold px-3 py-2 rounded-lg whitespace-nowrap">Ubah</button>
-                        </div>
+                        <div class="flex justify-between items-start mb-2"><div><h4 class="font-bold text-dark mb-0.5">${s['Nama Lengkap']}</h4><p class="text-[10px] text-slate-500">${s['Program']} - ${s['Metode']}</p></div><span class="px-2 py-1 rounded text-[9px] font-bold uppercase border ${sc}">${status}</span></div>
+                        <div class="flex gap-2 mt-3 pt-3 border-t border-slate-100"><button onclick="openEditModal('${dataString}')" class="bg-blue-50 text-primary border border-blue-100 text-[10px] font-bold px-3 py-2 rounded-lg flex-grow hover:bg-blue-100 transition">Lihat Data</button><a href="${waLink}" target="_blank" class="bg-[#25D366] text-white text-xs font-bold px-3 py-2 rounded-lg flex items-center justify-center shadow-sm">WA</a></div>
+                        <div class="flex gap-2 mt-2"><select id="status_${s['Nama Lengkap'].replace(/\s/g, '')}" class="text-[11px] font-semibold text-slate-600 border border-slate-200 rounded-lg px-2 py-1.5 outline-none flex-grow bg-slate-50"><option value="Baru Daftar" ${status==='Baru Daftar'?'selected':''}>Baru Daftar</option><option value="Aktif" ${status==='Aktif'?'selected':''}>Aktif</option><option value="Non-aktif" ${status==='Non-aktif'?'selected':''}>Non-aktif</option></select><button onclick="updateStatusSatuan('${s['Nama Lengkap']}', this)" class="bg-dark text-white text-[10px] font-bold px-4 py-1.5 rounded-lg whitespace-nowrap shadow-sm">Ubah Status</button></div>
                     </div>`;
             });
         }
 
-        // --- FETCH DAFTAR TAMPILAN ACCORDION (HP VERSION) ---
-        async function loadAllJadwal() {
-            const cont = document.getElementById('jadwalTableContainer');
-            cont.innerHTML = '<p class="text-center py-4 text-xs">Memuat...</p>';
-            try {
-                const res = await fetch(API_URL + "?action=getAllJadwal");
-                const data = await res.json();
-                if(data.length === 0) return cont.innerHTML = '<p class="text-center py-4 text-xs">Belum ada jadwal.</p>';
-                
-                const grouped = data.reduce((acc, r) => {
-                    let prog = r['Program'] || 'Lainnya';
-                    let hariJam = `${r['Hari 1']} & ${r['Hari 2']} (${r['Jam Belajar']})`;
-                    if(!acc[prog]) acc[prog] = {};
-                    if(!acc[prog][hariJam]) acc[prog][hariJam] = [];
-                    acc[prog][hariJam].push(r); return acc;
-                }, {});
+        function openEditModal(dataStr) {
+            const s = JSON.parse(decodeURIComponent(dataStr));
+            document.getElementById('editOldNama').value = s['Nama Lengkap']; document.getElementById('editNama').value = s['Nama Lengkap']; document.getElementById('editWA').value = formatWA(s['Nomor WA']); document.getElementById('editKelas').value = s['Kelas']; document.getElementById('editAsal').value = s['Asal Sekolah']; document.getElementById('editProgram').value = s['Program']; document.getElementById('editMetode').value = s['Metode']; document.getElementById('editModal').style.display = 'flex';
+        }
+        function closeEditModal() { document.getElementById('editModal').style.display = 'none'; }
+        
+        document.getElementById('formEditSiswa').addEventListener('submit', async e => {
+            e.preventDefault();
+            const p = { action: 'editDataSiswa', oldNama: document.getElementById('editOldNama').value, newNama: document.getElementById('editNama').value, newWA: document.getElementById('editWA').value, newKelas: document.getElementById('editKelas').value, newAsal: document.getElementById('editAsal').value, newProgram: document.getElementById('editProgram').value, newMetode: document.getElementById('editMetode').value };
+            if(await apiPost(p, e.target.querySelector('button'))) { closeEditModal(); loadData(); }
+        });
 
-                let html = '';
-                for(let prog in grouped) {
-                    html += `<div class="bg-white rounded-xl shadow-sm border border-slate-200 mb-3 overflow-hidden">
-                                <div class="bg-slate-100 px-4 py-2 border-b border-slate-200"><h3 class="font-bold text-dark text-xs uppercase">${prog}</h3></div>
-                                <div class="divide-y divide-slate-100">`;
-                    for(let hj in grouped[prog]) {
-                        html += `<div class="p-3"><h4 class="font-bold text-primary text-[10px] mb-2">🗓️ ${hj}</h4><div class="flex flex-wrap gap-1.5">`;
-                        grouped[prog][hj].forEach(s => { html += `<span class="bg-blue-50 border border-blue-100 text-slate-700 text-[10px] px-2 py-1 rounded-md font-medium">${s['Nama Siswa']}</span>`; });
-                        html += `</div></div>`;
+        async function loadAllJadwal() {
+            const cont = document.getElementById('jadwalTableContainer'); cont.innerHTML = '<p class="text-center py-4 text-xs">Memuat papan jadwal...</p>';
+            try {
+                const res = await fetch(API_URL + "?action=getAllJadwal"); globalJadwalData = await res.json();
+                if(globalJadwalData.length === 0) return cont.innerHTML = '<p class="text-center py-4 text-xs">Belum ada jadwal.</p>';
+                const hariUrut = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu']; let html = '';
+
+                hariUrut.forEach(hari => {
+                    let muridHariIni = [];
+                    globalJadwalData.forEach(s => {
+                        let j1 = s['Jam Belajar 1'] || s['Jam Belajar'] || '-'; let j2 = s['Jam Belajar 2'] || s['Jam Belajar'] || '-'; let j3 = s['Jam Belajar 3'] || '-';
+                        if(s['Hari 1'] === hari) muridHariIni.push({...s, sesiAktif: j1}); if(s['Hari 2'] === hari) muridHariIni.push({...s, sesiAktif: j2}); if(s['Hari 3'] === hari) muridHariIni.push({...s, sesiAktif: j3});
+                    });
+
+                    if(muridHariIni.length > 0) {
+                        let groupedByTime = muridHariIni.reduce((acc, obj) => { let w = obj.sesiAktif; if(!acc[w]) acc[w] = []; acc[w].push(obj); return acc; }, {});
+                        html += `<div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden mb-4"><div class="bg-primary text-white px-4 py-2.5 flex justify-between items-center"><h3 class="font-bold text-xs uppercase tracking-widest">🗓️ ${hari}</h3><span class="text-[10px] bg-white/20 px-2 py-0.5 rounded font-bold">${muridHariIni.length} Siswa</span></div>`;
+                        for(let waktu in groupedByTime) {
+                            html += `<div class="bg-blue-50 border-y border-blue-100 px-3 py-1.5 flex items-center gap-2"><span class="text-[10px] font-bold text-primary">⏰ Sesi: ${waktu}</span></div><div class="divide-y divide-slate-100">`;
+                            groupedByTime[waktu].forEach(s => { html += `<div class="p-3 flex justify-between items-center bg-white"><div class="pr-2"><p class="font-bold text-dark text-[11px] leading-tight">${s['Nama Siswa']}</p><p class="text-[9px] text-slate-500 font-medium">${s['Program']} - ${s['Metode Bimbel']}</p></div><button onclick="openEditJadwalModal('${s['Nama Siswa']}')" class="text-slate-400 hover:text-primary p-1.5 bg-slate-50 border border-slate-200 shadow-sm rounded-lg text-xs whitespace-nowrap">✏️ Edit</button></div>`; });
+                            html += `</div>`;
+                        }
+                        html += `</div>`;
                     }
-                    html += `</div></div>`;
-                }
+                });
                 cont.innerHTML = html;
-            } catch(e) { cont.innerHTML = '<p class="text-red-500 py-4 text-xs">Gagal memuat.</p>'; }
+            } catch(e) { cont.innerHTML = '<p class="text-red-500 py-4 text-xs">Gagal memuat jadwal.</p>'; }
         }
 
+        function openEditJadwalModal(nama) {
+            const s = globalJadwalData.find(x => x['Nama Siswa'] === nama);
+            if(!s) return showToast("Data sumber tidak ditemukan!", "error");
+            document.getElementById('editJadwalNamaSiswa').innerText = nama; document.getElementById('editJadwalNama').value = nama;
+            document.getElementById('editJadwalHari1').value = s['Hari 1'] || '-'; document.getElementById('editJadwalJam1').value = s['Jam Belajar 1'] || s['Jam Belajar'] || '-';
+            document.getElementById('editJadwalHari2').value = s['Hari 2'] || '-'; document.getElementById('editJadwalJam2').value = s['Jam Belajar 2'] || s['Jam Belajar'] || '-';
+            document.getElementById('editJadwalHari3').value = s['Hari 3'] || '-'; document.getElementById('editJadwalJam3').value = s['Jam Belajar 3'] || '-';
+            document.getElementById('editJadwalModal').style.display = 'flex';
+        }
+        function closeEditJadwalModal() { document.getElementById('editJadwalModal').style.display = 'none'; }
+
+        document.getElementById('formEditJadwalAPI').addEventListener('submit', async e => {
+            e.preventDefault();
+            const p = { action: 'editJadwal', namaSiswa: document.getElementById('editJadwalNama').value, hari1: document.getElementById('editJadwalHari1').value, jam1: document.getElementById('editJadwalJam1').value, hari2: document.getElementById('editJadwalHari2').value, jam2: document.getElementById('editJadwalJam2').value, hari3: document.getElementById('editJadwalHari3').value, jam3: document.getElementById('editJadwalJam3').value };
+            if(await apiPost(p, e.target.querySelector('button'))) { closeEditJadwalModal(); loadAllJadwal(); }
+        });
+
         async function loadAllJurnal() {
-            const cont = document.getElementById('jurnalTableContainer');
-            cont.innerHTML = '<p class="text-center py-4 text-xs">Memuat...</p>';
+            const filterSelect = document.getElementById('filterJurnalSiswa'); const cont = document.getElementById('jurnalTableContainer'); cont.innerHTML = '<p class="text-center py-4 text-xs">Mengambil data dari server...</p>';
             try {
-                const res = await fetch(API_URL + "?action=getAllJurnal");
-                const data = await res.json();
-                if(data.length === 0) return cont.innerHTML = '<p class="text-center py-4 text-xs">Belum ada jurnal.</p>';
-                
-                const grouped = data.reduce((acc, r) => { let n = r['Nama Siswa'] || 'Lainnya'; if(!acc[n]) acc[n] = []; acc[n].push(r); return acc; }, {});
+                const res = await fetch(API_URL + "?action=getAllJurnal"); globalJurnalData = await res.json();
+                if(globalJurnalData.length === 0) return cont.innerHTML = '<p class="text-center py-4 text-xs">Belum ada jurnal.</p>';
+                const uniqueStudents = [...new Set(globalJurnalData.map(item => item['Nama Siswa']))]; let options = '<option value="">-- Pilih Siswa --</option>';
+                uniqueStudents.forEach(name => { options += `<option value="${name}">${name}</option>`; }); filterSelect.innerHTML = options;
+                cont.innerHTML = '<p class="text-center py-6 text-xs text-slate-400">Silakan pilih nama siswa di atas untuk melihat riwayat jurnal.</p>';
+            } catch(e) { cont.innerHTML = '<p class="text-red-500 py-4 text-xs">Gagal memuat jurnal.</p>'; }
+        }
 
-                let html = '';
-                for(let nama in grouped) {
-                    html += `<details class="group bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm outline-none">
-                                <summary class="cursor-pointer font-bold p-4 bg-slate-50 flex justify-between items-center text-dark text-sm outline-none">
-                                    <span>${nama} <span class="text-[9px] bg-primary text-white px-1.5 py-0.5 rounded ml-1">${grouped[nama].length}</span></span>
-                                    <span class="text-slate-400 group-open:rotate-180 transition-transform">▼</span>
-                                </summary>
-                                <div class="p-3 border-t border-slate-200 bg-white space-y-4">`;
-                    grouped[nama].forEach(j => {
-                        let tgl = new Date(j['Tanggal Belajar']).toLocaleDateString('id-ID');
-                        
-                        // Menentukan warna badge refleksi
-                        let refColor = "bg-slate-100 text-slate-600";
-                        if(j['Refleksi'] === 'Sangat Baik') refColor = "bg-green-100 text-green-700";
-                        else if(j['Refleksi'] === 'Baik') refColor = "bg-blue-100 text-primary";
-                        else if(j['Refleksi'] === 'Perlu Bimbingan') refColor = "bg-red-100 text-red-600";
+        function renderFilteredJurnal() {
+            const selectedName = document.getElementById('filterJurnalSiswa').value; const cont = document.getElementById('jurnalTableContainer');
+            if(!selectedName) return cont.innerHTML = '<p class="text-center py-6 text-xs text-slate-400">Silakan pilih nama siswa di atas untuk melihat riwayat jurnal.</p>';
+            const filtered = globalJurnalData.filter(j => j['Nama Siswa'] === selectedName);
+            if(filtered.length === 0) return cont.innerHTML = '<p class="text-center py-4 text-xs text-slate-400">Tidak ada riwayat untuk siswa ini.</p>';
 
-                        html += `<div class="border-l-2 border-primary pl-3">
-                                    <div class="flex justify-between items-start mb-1">
-                                        <p class="text-[10px] text-slate-400">📅 ${tgl} | 👤 ${j['Nama Pengajar']}</p>
-                                        <span class="text-[9px] px-1.5 py-0.5 rounded font-bold ${refColor}">${j['Refleksi'] || '-'}</span>
-                                    </div>
-                                    <p class="text-xs text-slate-600 font-medium">${j['Materi/Catatan']}</p>
-                                 </div>`;
-                    });
-                    html += `</div></details>`;
-                }
-                cont.innerHTML = html;
-            } catch(e) { cont.innerHTML = '<p class="text-red-500 py-4 text-xs">Gagal memuat.</p>'; }
+            let html = '';
+            filtered.forEach(j => {
+                let tgl = new Date(j['Tanggal Belajar']).toLocaleDateString('id-ID', {day: 'numeric', month: 'long', year: 'numeric'});
+                let refColor = "bg-slate-100 text-slate-600 border-slate-200";
+                if(j['Hasil Belajar'] === 'Sangat Baik') refColor = "bg-green-100 text-green-700 border-green-200";
+                else if(j['Hasil Belajar'] === 'Baik') refColor = "bg-blue-100 text-primary border-blue-200";
+                else if(j['Hasil Belajar'] === 'Perlu Bimbingan') refColor = "bg-red-100 text-red-600 border-red-200";
+
+                // Menangani perbedaan nama header jika sudah diganti atau belum
+                let materi = j['Materi/Catatan'] || j['Materi'] || '-';
+
+                html += `
+                <div class="bg-white border border-slate-200 rounded-2xl p-4 shadow-sm mb-3 border-l-4 border-l-primary">
+                    <div class="flex justify-between items-start mb-3">
+                        <p class="text-[10px] text-slate-400 font-bold tracking-wider uppercase">📅 ${tgl}</p>
+                        <span class="text-[9px] px-2 py-1 rounded font-bold border ${refColor}">${j['Hasil Belajar'] || '-'}</span>
+                    </div>
+                    <div class="mb-3">
+                        <p class="text-[10px] font-bold text-slate-400 uppercase mb-0.5">Materi Belajar</p>
+                        <p class="text-xs text-slate-700 font-medium leading-relaxed">${materi}</p>
+                    </div>
+                    <div class="mb-3">
+                        <p class="text-[10px] font-bold text-slate-400 uppercase mb-0.5">Catatan Pembelajaran</p>
+                        <p class="text-xs text-slate-600 font-normal leading-relaxed bg-slate-50 p-2 rounded-lg border border-slate-100">${j['Catatan Pembelajaran'] || '-'}</p>
+                    </div>
+                    <p class="text-[9px] text-slate-400 text-right border-t border-slate-100 pt-2">👤 Pengajar: <span class="font-bold text-dark">${j['Nama Pengajar']}</span></p>
+                </div>`;
+            });
+            cont.innerHTML = html;
         }
 
         async function loadAllPembayaran() {
-            const cont = document.getElementById('bayarTableContainer');
-            cont.innerHTML = '<p class="text-center py-4 text-xs">Memuat...</p>';
+            const filterSelect = document.getElementById('filterKasSiswa'); const cont = document.getElementById('bayarTableContainer'); cont.innerHTML = '<p class="text-center py-4 text-xs">Mengambil data dari server...</p>';
             try {
-                const res = await fetch(API_URL + "?action=getAllPembayaran");
-                const data = await res.json();
-                if(data.length === 0) return cont.innerHTML = '<p class="text-center py-4 text-xs">Belum ada pembayaran.</p>';
-                
-                const grouped = data.reduce((acc, r) => { let n = r['Nama Siswa'] || 'Lainnya'; if(!acc[n]) acc[n] = []; acc[n].push(r); return acc; }, {});
-
-                let html = '';
-                for(let nama in grouped) {
-                    html += `<details class="group bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm outline-none">
-                                <summary class="cursor-pointer font-bold p-4 bg-slate-50 flex justify-between items-center text-dark text-sm outline-none">
-                                    <span>${nama}</span><span class="text-slate-400 group-open:rotate-180 transition-transform">▼</span>
-                                </summary>
-                                <div class="p-3 border-t border-slate-200 bg-white space-y-3">`;
-                    grouped[nama].forEach(r => {
-                        let tgl = new Date(r['Tanggal Bayar']).toLocaleDateString('id-ID');
-                        let nom = parseInt(r['Nominal (Rp)']||0).toLocaleString('id-ID', {style:'currency', currency:'IDR'});
-                        html += `<div class="flex justify-between items-center bg-slate-50 p-3 rounded-xl border border-slate-100">
-                                    <div><p class="text-[10px] text-slate-500 mb-0.5">${tgl}</p><p class="text-xs font-bold text-dark">${r['Jenis Pembayaran']}</p></div>
-                                    <p class="text-xs font-bold text-green-600">${nom}</p>
-                                 </div>`;
-                    });
-                    html += `</div></details>`;
-                }
-                cont.innerHTML = html;
-            } catch(e) { cont.innerHTML = '<p class="text-red-500 py-4 text-xs">Gagal memuat.</p>'; }
+                const res = await fetch(API_URL + "?action=getAllPembayaran"); globalKasData = await res.json();
+                if(globalKasData.length === 0) return cont.innerHTML = '<p class="text-center py-4 text-xs">Belum ada riwayat pembayaran.</p>';
+                const uniqueStudents = [...new Set(globalKasData.map(item => item['Nama Siswa']))]; let options = '<option value="">-- Pilih Siswa --</option>';
+                uniqueStudents.forEach(name => { options += `<option value="${name}">${name}</option>`; }); filterSelect.innerHTML = options;
+                cont.innerHTML = '<p class="text-center py-6 text-xs text-slate-400">Silakan pilih nama siswa di atas untuk melihat riwayat pembayaran.</p>';
+            } catch(e) { cont.innerHTML = '<p class="text-red-500 py-4 text-xs">Gagal memuat kas.</p>'; }
         }
 
-        // --- LOGIKA FORM ---
+       function renderFilteredKas() {
+            const selectedName = document.getElementById('filterKasSiswa').value; const cont = document.getElementById('bayarTableContainer');
+            if(!selectedName) return cont.innerHTML = '<p class="text-center py-6 text-xs text-slate-400">Silakan pilih nama siswa di atas untuk melihat riwayat pembayaran.</p>';
+            const filtered = globalKasData.filter(r => r['Nama Siswa'] === selectedName);
+            if(filtered.length === 0) return cont.innerHTML = '<p class="text-center py-4 text-xs text-slate-400">Tidak ada riwayat untuk siswa ini.</p>';
+
+            let html = '';
+            filtered.forEach(r => {
+                let tgl = new Date(r['Tanggal Bayar']).toLocaleDateString('id-ID', {day: '2-digit', month: 'short', year: 'numeric'});
+                let nom = parseInt(r['Nominal (Rp)']||0).toLocaleString('id-ID', {style:'currency', currency:'IDR'});
+                html += `
+                <div class="bg-white rounded-lg shadow-sm border border-slate-200 mb-4 relative overflow-hidden">
+                    <div class="bg-slate-800 text-white text-center py-1.5 text-[10px] font-bold tracking-[0.2em] uppercase">Setruk Lunas</div>
+                    <div class="p-4 border-b-2 border-dashed border-slate-200">
+                        <div class="flex justify-between items-center mb-1"><span class="text-[10px] text-slate-400 uppercase tracking-wider">Tanggal</span><span class="text-xs font-bold text-dark">${tgl}</span></div>
+                        <div class="flex justify-between items-center mb-1"><span class="text-[10px] text-slate-400 uppercase tracking-wider">Siswa</span><span class="text-xs font-bold text-dark">${r['Nama Siswa']}</span></div>
+                        <div class="flex justify-between items-center"><span class="text-[10px] text-slate-400 uppercase tracking-wider">Program</span><span class="text-xs font-bold text-dark text-right">${r['Metode Bimbel']}</span></div>
+                    </div>
+                    <div class="p-4 bg-slate-50/50">
+                        <div class="flex justify-between items-center mb-3"><span class="text-[11px] font-medium text-slate-600">Metode: ${r['Jenis Pembayaran']}</span></div>
+                        <div class="flex justify-between items-center pt-3 border-t border-slate-200"><span class="text-[11px] font-bold text-slate-400 uppercase">Total Bayar</span><span class="text-lg font-bold text-green-600 font-mono tracking-tight">${nom}</span></div>
+                    </div>
+                </div>`;
+            });
+            cont.innerHTML = html;
+        }
+
         function populateSelects() {
-            const activeStudents = studentsData.filter(s => s.Status === 'Aktif');
-            let options = '<option value="">-- Pilih --</option>';
+            const activeStudents = studentsData.filter(s => s.Status === 'Aktif'); let options = '<option value="">-- Pilih --</option>';
             activeStudents.forEach(s => { options += `<option value="${s['Nama Lengkap']}">${s['Nama Lengkap']}</option>`; });
             document.getElementById('jadwalSiswa').innerHTML = options; document.getElementById('jurnalSiswa').innerHTML = options; document.getElementById('bayarSiswa').innerHTML = options;
         }
 
         function handlePaymentLogic() {
-            const name = document.getElementById('bayarSiswa').value;
-            const student = studentsData.find(s => s['Nama Lengkap'] === name);
-            if(!student) return;
+            const name = document.getElementById('bayarSiswa').value; const student = studentsData.find(s => s['Nama Lengkap'] === name); if(!student) return;
             const isPrivate = student.Metode.toLowerCase().includes('private');
             document.getElementById('bayarInfo').innerText = isPrivate ? "PRIVATE (Wajib Bulanan)" : "REGULER";
             document.getElementById('bayarJenis').innerHTML = isPrivate ? `<option value="">-- Pilih --</option><option value="Bulanan">Paket 1 Bulan (Rp 200.000)</option>` : `<option value="">-- Pilih --</option><option value="Bulanan">Paket 1 Bulan (Rp 150.000)</option><option value="Per Pertemuan">Per Pertemuan (Rp 20.000)</option>`;
@@ -380,8 +401,7 @@
         }
 
         function handlePaymentNominal() {
-            const val = document.getElementById('bayarJenis').value;
-            const isPrivate = document.getElementById('bayarInfo').innerText.includes('PRIVATE');
+            const val = document.getElementById('bayarJenis').value; const isPrivate = document.getElementById('bayarInfo').innerText.includes('PRIVATE');
             if(val === 'Bulanan') document.getElementById('bayarNominal').value = isPrivate ? 200000 : 150000;
             else if (val === 'Per Pertemuan') document.getElementById('bayarNominal').value = 20000;
             else document.getElementById('bayarNominal').value = '';
@@ -405,7 +425,7 @@
         document.getElementById('formJadwal').addEventListener('submit', async e => {
             e.preventDefault();
             const s = studentsData.find(x => x['Nama Lengkap'] === document.getElementById('jadwalSiswa').value);
-            const p = { action: 'saveJadwal', namaSiswa: s['Nama Lengkap'], program: s.Program, metodeBimbel: s.Metode, hari1: document.getElementById('jadwalHari1').value, hari2: document.getElementById('jadwalHari2').value, jamBelajar: document.getElementById('jadwalJam').value };
+            const p = { action: 'saveJadwal', namaSiswa: s['Nama Lengkap'], program: s.Program, metodeBimbel: s.Metode, hari1: document.getElementById('jadwalHari1').value, jam1: document.getElementById('jadwalJam1').value, hari2: document.getElementById('jadwalHari2').value, jam2: document.getElementById('jadwalJam2').value, hari3: document.getElementById('jadwalHari3').value, jam3: document.getElementById('jadwalJam3').value };
             if(await apiPost(p, e.target.querySelector('button'))) e.target.reset();
         });
 
@@ -417,9 +437,10 @@
                 tanggal: document.getElementById('jurnalTanggal').value, 
                 namaSiswa: s['Nama Lengkap'], 
                 program: s.Program, 
-                catatan: document.getElementById('jurnalCatatan').value, 
-                pengajar: document.getElementById('jurnalPengajar').value,
-                refleksi: document.getElementById('jurnalRefleksi').value // TERMASUK REFLEKSI
+                materi: document.getElementById('jurnalMateri').value,
+                catatanPembelajaran: document.getElementById('jurnalCatatanPembelajaran').value,
+                hasilBelajar: document.getElementById('jurnalHasilBelajar').value,
+                pengajar: document.getElementById('jurnalPengajar').value 
             };
             if(await apiPost(p, e.target.querySelector('button'))) { e.target.reset(); document.getElementById('jurnalTanggal').valueAsDate = new Date(); }
         });
@@ -430,7 +451,6 @@
             if(await apiPost(p, e.target.querySelector('button'))) { e.target.reset(); document.getElementById('bayarTanggal').valueAsDate = new Date(); document.getElementById('bayarInfo').innerText = ''; }
         });
 
-        // Jalankan saat dibuka
         loadData();
     </script>
 </body>

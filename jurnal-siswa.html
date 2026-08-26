@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal Wali Murid | KHAAZ Learning</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Mono:wght@700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="Logo Only (TP).png">
+    <script>
+        tailwind.config = { theme: { extend: { fontFamily: { sans: ['Inter', 'sans-serif'], mono: ['Space Mono', 'monospace'] }, colors: { primary: '#1d4ed8', secondary: '#0ea5e9', dark: '#0f172a', yellow: '#ffdd16' } } } }
+    </script>
+    <style>
+        body { background-color: #f8fafc; }
+        .hero-bg { background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); }
+        
+        /* Animasi Tab */
+        .portal-tab { display: none; opacity: 0; transform: translateY(10px); transition: all 0.3s ease; }
+        .portal-tab.active { display: block; opacity: 1; transform: translateY(0); animation: slideUp 0.4s ease forwards; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+        
+        /* Tombol Segmented Control */
+        .tab-btn.active { background-color: white; color: #1d4ed8; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); }
+        .tab-btn { color: #64748b; }
+    </style>
+</head>
+<body class="text-slate-700 antialiased selection:bg-primary selection:text-white pb-10">
+
+    <!-- NAVBAR -->
+    <nav class="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-lg border-b border-slate-200 shadow-sm">
+        <div class="max-w-4xl mx-auto px-5 py-3.5 flex justify-between items-center">
+            <a href="index.html" class="flex items-center gap-3">
+                <img src="https://i.ibb.co.com/Tf5mCxV/Logo-Utama-TP-1.png" alt="Logo KHAAZ" class="h-6 w-auto object-contain">
+                <span class="text-[10px] font-bold text-slate-400 border-l border-slate-300 pl-3 uppercase tracking-widest">Portal Orang Tua</span>
+            </a>
+            <a href="index.html" class="text-[10px] font-bold text-slate-400 hover:text-primary transition-colors flex items-center gap-1">
+                <span>Keluar</span>
+            </a>
+        </div>
+    </nav>
+
+    <!-- HEADER / HERO -->
+    <section class="pt-24 pb-8 px-5 hero-bg relative overflow-hidden rounded-b-[40px] shadow-sm border-b border-blue-100">
+        <div class="max-w-2xl mx-auto text-center relative z-10">
+            <div class="w-14 h-14 bg-white text-primary rounded-full flex items-center justify-center mx-auto mb-4 text-2xl shadow-md border border-blue-50">🎓</div>
+            <h1 class="text-xl md:text-3xl font-extrabold text-dark mb-2 tracking-tight">Akademik Siswa</h1>
+            <p class="text-xs text-slate-500 font-medium mb-6 max-w-sm mx-auto">Pantau perkembangan, jadwal, dan administrasi buah hati Anda dengan mudah.</p>
+            
+            <!-- DROPDOWN PENCARIAN -->
+            <div class="bg-white p-1 rounded-2xl shadow-lg border border-slate-100 flex items-center gap-3 relative max-w-sm mx-auto">
+                <div class="pl-4 text-lg">🔍</div>
+                <select id="selectNamaSiswa" onchange="fetchDataSiswa()" class="w-full bg-transparent text-sm font-bold text-dark py-3 outline-none cursor-pointer appearance-none">
+                    <option value="">-- Memuat Data Sistem --</option>
+                </select>
+                <div class="pr-5 text-slate-300 text-xs font-bold">▼</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- KONTEN UTAMA (Disembunyikan sampai nama dipilih) -->
+    <main id="dashboardSiswa" class="hidden py-6 px-5 max-w-3xl mx-auto">
+        
+        <!-- MENU TAB SEGMENTED CONTROL -->
+        <div class="bg-slate-200/70 p-1.5 rounded-xl flex items-center mb-8 max-w-sm mx-auto">
+            <button onclick="switchPortalTab('jadwal', this)" class="tab-btn active flex-1 py-2 text-xs font-bold rounded-lg transition-all duration-300">🗓️ Jadwal</button>
+            <button onclick="switchPortalTab('jurnal', this)" class="tab-btn flex-1 py-2 text-xs font-bold rounded-lg transition-all duration-300">📝 Jurnal</button>
+            <button onclick="switchPortalTab('kas', this)" class="tab-btn flex-1 py-2 text-xs font-bold rounded-lg transition-all duration-300">💳 Pembayaran</button>
+        </div>
+
+        <div id="loaderData" class="text-center py-10 hidden">
+            <p class="text-primary font-bold animate-pulse text-sm">Menarik data dari sistem...</p>
+        </div>
+
+        <div id="wrapperData">
+            
+            <!-- ======================= -->
+            <!-- TAB 1: JADWAL BELAJAR   -->
+            <!-- ======================= -->
+            <section id="tab-jadwal" class="portal-tab active">
+                <h2 class="text-lg font-bold text-dark mb-4 text-center">Jadwal Mingguan</h2>
+                <div id="wadahJadwal" class="grid grid-cols-1 sm:grid-cols-3 gap-4"></div>
+            </section>
+
+            <!-- ======================= -->
+            <!-- TAB 2: JURNAL BELAJAR   -->
+            <!-- ======================= -->
+            <section id="tab-jurnal" class="portal-tab">
+                <h2 class="text-lg font-bold text-dark mb-4 text-center">Rekam Jejak Belajar</h2>
+                <div id="wadahJurnal" class="space-y-5"></div>
+            </section>
+
+            <!-- ======================= -->
+            <!-- TAB 3: RIWAYAT KAS      -->
+            <!-- ======================= -->
+            <section id="tab-kas" class="portal-tab">
+                <h2 class="text-lg font-bold text-dark mb-4 text-center">Riwayat Pembayaran</h2>
+                <div id="wadahKas" class="grid grid-cols-1 md:grid-cols-2 gap-5"></div>
+            </section>
+
+        </div>
+    </main>
+
+    <script>
+        const API_URL = 'https://script.google.com/macros/s/AKfycbzA8SfMkBpWkIQ5ZMqOWwLL8z0uSaWMBbOqXVayEs_cmA_egfqDMpJKyfhCVVp_l1on/exec';
+        let allJadwal = [], allJurnal = [], allKas = [];
+        let isDataLoaded = false;
+
+        // FUNGSI GANTI TAB
+        function switchPortalTab(tabId, btnElement) {
+            document.querySelectorAll('.portal-tab').forEach(el => el.classList.remove('active'));
+            document.getElementById('tab-' + tabId).classList.add('active');
+            
+            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+            btnElement.classList.add('active');
+        }
+
+        // INIT DATA
+        async function initPortal() {
+            try {
+                const [resJadwal, resJurnal, resKas] = await Promise.all([
+                    fetch(API_URL + "?action=getAllJadwal"), fetch(API_URL + "?action=getAllJurnal"), fetch(API_URL + "?action=getAllPembayaran")
+                ]);
+                allJadwal = await resJadwal.json(); allJurnal = await resJurnal.json(); allKas = await resKas.json();
+
+                const namaSet = new Set();
+                allJadwal.forEach(i => { if(i['Nama Siswa']) namaSet.add(i['Nama Siswa']); });
+                allJurnal.forEach(i => { if(i['Nama Siswa']) namaSet.add(i['Nama Siswa']); });
+                allKas.forEach(i => { if(i['Nama Siswa']) namaSet.add(i['Nama Siswa']); });
+
+                const namaArray = Array.from(namaSet).sort();
+                const selectElement = document.getElementById('selectNamaSiswa');
+                let options = '<option value="">-- Pilih Nama Siswa --</option>';
+                namaArray.forEach(nama => { options += `<option value="${nama}">${nama}</option>`; });
+                
+                selectElement.innerHTML = options;
+                isDataLoaded = true;
+            } catch (error) {
+                document.getElementById('selectNamaSiswa').innerHTML = '<option value="">Gagal memuat data.</option>';
+            }
+        }
+
+        // RENDER DATA BERDASARKAN NAMA
+        function fetchDataSiswa() {
+            const namaSiswa = document.getElementById('selectNamaSiswa').value;
+            const dashboard = document.getElementById('dashboardSiswa');
+            
+            if (!namaSiswa || !isDataLoaded) { dashboard.classList.add('hidden'); return; }
+            dashboard.classList.remove('hidden');
+
+            // --- 1. RENDER JADWAL ---
+            const jadwalSiswa = allJadwal.find(j => j['Nama Siswa'] === namaSiswa);
+            const wadahJadwal = document.getElementById('wadahJadwal');
+            
+            if (jadwalSiswa) {
+                let htmlJadwal = '';
+                const renderKartuHari = (hari, jam, label, icon) => {
+                    if (hari && hari !== '-') {
+                        return `
+                        <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm text-center relative overflow-hidden group hover:border-primary transition duration-300">
+                            <div class="absolute -right-4 -top-4 text-5xl opacity-5 group-hover:opacity-10 transition">${icon}</div>
+                            <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">${label}</span>
+                            <h3 class="text-xl font-bold text-dark mt-1 mb-3">${hari}</h3>
+                            <div class="inline-block bg-blue-50 text-primary text-xs font-bold px-4 py-2 rounded-xl border border-blue-100">${jam || '-'}</div>
+                        </div>`;
+                    }
+                    return '';
+                };
+                htmlJadwal += renderKartuHari(jadwalSiswa['Hari 1'], jadwalSiswa['Jam Belajar 1'] || jadwalSiswa['Jam Belajar'], 'Sesi Pertama', '📚');
+                htmlJadwal += renderKartuHari(jadwalSiswa['Hari 2'], jadwalSiswa['Jam Belajar 2'] || jadwalSiswa['Jam Belajar'], 'Sesi Kedua', '✏️');
+                htmlJadwal += renderKartuHari(jadwalSiswa['Hari 3'], jadwalSiswa['Jam Belajar 3'], 'Sesi Tambahan', '🎯');
+                
+                wadahJadwal.innerHTML = htmlJadwal || '<p class="text-sm text-slate-400 col-span-3 text-center py-6 bg-white rounded-2xl border border-dashed border-slate-300">Jadwal belum ditentukan.</p>';
+            } else {
+                wadahJadwal.innerHTML = '<div class="bg-white border border-dashed border-slate-300 p-8 rounded-2xl col-span-3 text-center text-sm text-slate-500">Belum ada jadwal yang diatur untuk siswa ini.</div>';
+            }
+
+            // --- 2. RENDER JURNAL ---
+            const jurnalSiswa = allJurnal.filter(j => j['Nama Siswa'] === namaSiswa);
+            const wadahJurnal = document.getElementById('wadahJurnal');
+            
+            if (jurnalSiswa.length > 0) {
+                let htmlJurnal = '';
+                jurnalSiswa.forEach(j => {
+                    let tgl = new Date(j['Tanggal Belajar']).toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+                    let refColor = "bg-slate-100 text-slate-600 border-slate-200";
+                    if(j['Hasil Belajar'] === 'Sangat Baik') refColor = "bg-green-100 text-emerald-700 border-green-200";
+                    else if(j['Hasil Belajar'] === 'Baik') refColor = "bg-blue-100 text-primary border-blue-200";
+                    else if(j['Hasil Belajar'] === 'Perlu Bimbingan') refColor = "bg-red-100 text-red-600 border-red-200";
+
+                    let materi = j['Materi/Catatan'] || j['Materi'] || '-';
+
+                    htmlJurnal += `
+                    <div class="bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden">
+                        <div class="bg-slate-50 px-5 py-3 border-b border-slate-100 flex justify-between items-center">
+                            <span class="text-xs font-bold text-dark">📅 ${tgl}</span>
+                            <span class="text-[9px] px-2.5 py-1 rounded-md font-bold border ${refColor}">${j['Hasil Belajar'] || '-'}</span>
+                        </div>
+                        <div class="p-5">
+                            <div class="mb-4">
+                                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wide mb-1">Materi Belajar</p>
+                                <p class="text-sm text-slate-700 font-medium">${materi}</p>
+                            </div>
+                            <div class="bg-blue-50/50 p-4 rounded-xl border border-blue-100/50">
+                                <p class="text-[10px] font-bold text-primary uppercase tracking-wide mb-1 flex items-center gap-1"><span>💡</span> Catatan Guru</p>
+                                <p class="text-sm text-slate-600 leading-relaxed">${j['Catatan Pembelajaran'] || '<i>Berjalan lancar dan baik.</i>'}</p>
+                            </div>
+                            <div class="mt-4 text-right">
+                                <p class="text-[10px] text-slate-400 font-medium">Tutor: <span class="font-bold text-dark">${j['Nama Pengajar']}</span></p>
+                            </div>
+                        </div>
+                    </div>`;
+                });
+                wadahJurnal.innerHTML = htmlJurnal;
+            } else {
+                wadahJurnal.innerHTML = '<div class="bg-white border border-dashed border-slate-300 p-8 rounded-2xl text-center text-sm text-slate-500">Belum ada rekam jejak jurnal.</div>';
+            }
+
+            // --- 3. RENDER KAS (SETRUK DIPERBARUI) ---
+            const kasSiswa = allKas.filter(r => r['Nama Siswa'] === namaSiswa);
+            const wadahKas = document.getElementById('wadahKas');
+            
+            if (kasSiswa.length > 0) {
+                let htmlKas = '';
+                kasSiswa.forEach(r => {
+                    let tgl = new Date(r['Tanggal Bayar']).toLocaleDateString('id-ID', {day: '2-digit', month: 'long', year: 'numeric'});
+                    let nom = parseInt(r['Nominal (Rp)']||0).toLocaleString('id-ID', {style:'currency', currency:'IDR'});
+                    
+                    htmlKas += `
+                    <div class="bg-white rounded-2xl shadow-sm border border-slate-200 relative overflow-hidden flex flex-col hover:shadow-md transition">
+                        <div class="bg-gradient-to-r from-emerald-500 to-green-600 text-white text-center py-2.5 text-[10px] font-bold tracking-[0.2em] uppercase">Setruk Valid</div>
+                        <div class="p-5 border-b-2 border-dashed border-slate-200 flex-grow bg-slate-50/30">
+                            <div class="flex justify-between items-center mb-3">
+                                <span class="text-[11px] text-slate-400 uppercase tracking-wider font-semibold">Tanggal</span>
+                                <span class="text-sm font-bold text-dark">${tgl}</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-[11px] text-slate-400 uppercase tracking-wider font-semibold">Program</span>
+                                <span class="text-sm font-bold text-dark text-right max-w-[60%] leading-tight">${r['Metode Bimbel']}</span>
+                            </div>
+                        </div>
+                        <div class="p-5 bg-white">
+                            <div class="mb-4 text-center">
+                                <span class="text-xs font-medium text-slate-500 bg-slate-100 px-3 py-1.5 rounded-lg border border-slate-200">Metode: <strong class="text-slate-700">${r['Jenis Pembayaran']}</strong></span>
+                            </div>
+                            <div class="flex justify-between items-end pt-2 border-t border-slate-100">
+                                <span class="text-xs font-bold text-slate-400 uppercase mb-1">Status Lunas</span>
+                                <span class="text-2xl font-bold text-emerald-600 font-mono tracking-tight">${nom}</span>
+                            </div>
+                        </div>
+                    </div>`;
+                });
+                wadahKas.innerHTML = htmlKas;
+            } else {
+                wadahKas.innerHTML = '<div class="bg-white border border-dashed border-slate-300 p-8 rounded-2xl col-span-2 text-center text-sm text-slate-500">Belum ada riwayat pembayaran yang tercatat.</div>';
+            }
+        }
+
+        // Jalankan saat web dibuka
+        initPortal();
+    </script>
+</body>
+</html>

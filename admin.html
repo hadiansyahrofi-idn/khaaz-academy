@@ -21,12 +21,12 @@
         .sub-menu-btn.active { background-color: #1d4ed8; color: white; border-color: #1d4ed8; }
         .cb-custom { width: 1.25rem; height: 1.25rem; accent-color: #1d4ed8; cursor: pointer; }
         #loginScreen { backdrop-filter: blur(8px); }
-        /* Style untuk tag details (Accordion) */
         details > summary { list-style: none; }
         details > summary::-webkit-details-marker { display: none; }
     </style>
 </head>
 <body class="text-slate-700 antialiased flex h-screen overflow-hidden relative">
+    
     <!-- TOAST NOTIFICATION CONTAINER -->
     <div id="toast-container" class="fixed top-5 right-5 z-[9999] flex flex-col gap-3 pointer-events-none"></div>
 
@@ -126,7 +126,7 @@
                 <div id="groupedStudentContainer" class="space-y-8"><div class="text-center py-10 text-slate-400 text-sm">Belum ada data dimuat.</div></div>
             </section>
 
-            <!-- TAB 2: ATUR JADWAL -->
+            <!-- TAB 2: ATUR JADWAL (UPDATE) -->
             <section id="tab-jadwal" class="tab-content">
                 <div class="flex flex-col sm:flex-row justify-between sm:items-end mb-6 gap-4">
                     <div>
@@ -140,12 +140,24 @@
                 </div>
                 <div id="jadwal-form" class="sub-tab-content active bg-white p-6 md:p-8 rounded-2xl border border-slate-100 shadow-sm max-w-2xl">
                     <form id="formJadwal" class="space-y-5">
-                        <div><label class="text-[11px] font-bold text-slate-400 uppercase tracking-widest">Pilih Siswa (Hanya Aktif)</label><select id="jadwalSiswa" required class="w-full mt-1.5 px-4 py-3 text-sm border border-slate-200 rounded-xl focus:border-primary outline-none"></select></div>
-                        <div class="grid grid-cols-2 gap-4">
-                            <div><label class="text-[11px] font-bold text-slate-400 uppercase tracking-widest">Hari Ke-1</label><select id="jadwalHari1" class="w-full mt-1.5 px-4 py-3 text-sm border border-slate-200 rounded-xl outline-none"><option>Senin</option><option>Selasa</option><option>Rabu</option><option>Kamis</option><option>Jumat</option><option>Sabtu</option></select></div>
-                            <div><label class="text-[11px] font-bold text-slate-400 uppercase tracking-widest">Hari Ke-2</label><select id="jadwalHari2" class="w-full mt-1.5 px-4 py-3 text-sm border border-slate-200 rounded-xl outline-none"><option>Senin</option><option>Selasa</option><option>Rabu</option><option>Kamis</option><option>Jumat</option><option>Sabtu</option></select></div>
+                        <div>
+                            <label class="text-[11px] font-bold text-slate-400 uppercase tracking-widest">Pilih Siswa (Hanya Aktif)</label>
+                            <select id="jadwalSiswa" required class="w-full mt-1.5 px-4 py-3 text-sm border border-slate-200 rounded-xl focus:border-primary outline-none"></select>
                         </div>
-                        <div><label class="text-[11px] font-bold text-slate-400 uppercase tracking-widest">Sesi Jam Belajar</label><select id="jadwalJam" class="w-full mt-1.5 px-4 py-3 text-sm border border-slate-200 rounded-xl outline-none"><option>13:00 - 15:00 WIB</option><option>15:30 - 17:30 WIB</option></select></div>
+                        
+                        <div class="grid grid-cols-2 gap-4">
+                            <div><label class="text-[11px] font-bold text-slate-400 uppercase tracking-widest">Hari Ke-1</label><select id="jadwalHari1" class="w-full mt-1.5 px-4 py-3 text-sm border border-slate-200 rounded-xl outline-none"><option value="-">- Kosong -</option><option>Senin</option><option>Selasa</option><option>Rabu</option><option>Kamis</option><option>Jumat</option><option>Sabtu</option></select></div>
+                            <div><label class="text-[11px] font-bold text-slate-400 uppercase tracking-widest">Jam Sesi 1</label><select id="jadwalJam1" class="w-full mt-1.5 px-4 py-3 text-sm border border-slate-200 rounded-xl outline-none"><option value="-">- Kosong -</option><option>13:00 - 15:00 WIB</option><option>15:30 - 17:30 WIB</option></select></div>
+                        </div>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div><label class="text-[11px] font-bold text-slate-400 uppercase tracking-widest">Hari Ke-2</label><select id="jadwalHari2" class="w-full mt-1.5 px-4 py-3 text-sm border border-slate-200 rounded-xl outline-none"><option value="-">- Kosong -</option><option>Senin</option><option>Selasa</option><option>Rabu</option><option>Kamis</option><option>Jumat</option><option>Sabtu</option></select></div>
+                            <div><label class="text-[11px] font-bold text-slate-400 uppercase tracking-widest">Jam Sesi 2</label><select id="jadwalJam2" class="w-full mt-1.5 px-4 py-3 text-sm border border-slate-200 rounded-xl outline-none"><option value="-">- Kosong -</option><option>13:00 - 15:00 WIB</option><option>15:30 - 17:30 WIB</option></select></div>
+                        </div>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div><label class="text-[11px] font-bold text-slate-400 uppercase tracking-widest">Hari Ke-3</label><select id="jadwalHari3" class="w-full mt-1.5 px-4 py-3 text-sm border border-slate-200 rounded-xl outline-none"><option value="-">- Kosong -</option><option>Senin</option><option>Selasa</option><option>Rabu</option><option>Kamis</option><option>Jumat</option><option>Sabtu</option></select></div>
+                            <div><label class="text-[11px] font-bold text-slate-400 uppercase tracking-widest">Jam Sesi 3</label><select id="jadwalJam3" class="w-full mt-1.5 px-4 py-3 text-sm border border-slate-200 rounded-xl outline-none"><option value="-">- Kosong -</option><option>13:00 - 15:00 WIB</option><option>15:30 - 17:30 WIB</option></select></div>
+                        </div>
+                        
                         <button type="submit" class="w-full bg-primary text-white py-3.5 rounded-xl text-sm font-bold shadow-md hover:bg-blue-800 transition">Simpan Jadwal Siswa</button>
                     </form>
                 </div>
@@ -154,7 +166,7 @@
                 </div>
             </section>
 
-            <!-- TAB 3: JURNAL BELAJAR -->
+            <!-- TAB 3: JURNAL BELAJAR (UPDATE) -->
             <section id="tab-jurnal" class="tab-content">
                 <div class="flex flex-col sm:flex-row justify-between sm:items-end mb-6 gap-4">
                     <div>
@@ -170,10 +182,13 @@
                     <form id="formJurnal" class="space-y-5">
                         <div><label class="text-[11px] font-bold text-slate-400 uppercase tracking-widest">Tanggal</label><input type="date" id="jurnalTanggal" required class="w-full mt-1.5 px-4 py-3 text-sm border border-slate-200 rounded-xl outline-none"></div>
                         <div><label class="text-[11px] font-bold text-slate-400 uppercase tracking-widest">Siswa (Aktif)</label><select id="jurnalSiswa" required class="w-full mt-1.5 px-4 py-3 text-sm border border-slate-200 rounded-xl outline-none"></select></div>
-                        <div><label class="text-[11px] font-bold text-slate-400 uppercase tracking-widest">Materi & Evaluasi</label><textarea id="jurnalCatatan" rows="3" required class="w-full mt-1.5 px-4 py-3 text-sm border border-slate-200 rounded-xl outline-none"></textarea></div>
+                        
+                        <div><label class="text-[11px] font-bold text-slate-400 uppercase tracking-widest">Materi / Topik Belajar</label><textarea id="jurnalMateri" rows="2" required class="w-full mt-1.5 px-4 py-3 text-sm border border-slate-200 rounded-xl outline-none"></textarea></div>
+                        <div><label class="text-[11px] font-bold text-slate-400 uppercase tracking-widest">Catatan Pembelajaran (Progres)</label><textarea id="jurnalCatatanPembelajaran" rows="2" required class="w-full mt-1.5 px-4 py-3 text-sm border border-slate-200 rounded-xl outline-none"></textarea></div>
+                        
                         <div>
-                            <label class="text-[11px] font-bold text-slate-400 uppercase tracking-widest">Refleksi Hasil Belajar</label>
-                            <select id="jurnalRefleksi" required class="w-full mt-1.5 px-4 py-3 text-sm border border-slate-200 rounded-xl outline-none">
+                            <label class="text-[11px] font-bold text-slate-400 uppercase tracking-widest">Hasil Belajar</label>
+                            <select id="jurnalHasilBelajar" required class="w-full mt-1.5 px-4 py-3 text-sm border border-slate-200 rounded-xl outline-none">
                                 <option value="Sangat Baik">Sangat Baik</option>
                                 <option value="Baik" selected>Baik</option>
                                 <option value="Cukup Baik">Cukup Baik</option>
@@ -181,12 +196,12 @@
                             </select>
                         </div>
                         <div>
-                        <label class="text-[11px] font-bold text-slate-400 uppercase tracking-widest">Nama Guru/Pengajar</label>
-                        <select id="jurnalPengajar" required class="w-full mt-1.5 px-4 py-3 text-sm border border-slate-200 rounded-xl outline-none text-dark font-medium">
-                            <option value="">-- Pilih Guru --</option>
-                            <option value="Rofi Hadiansyah">Rofi Hadiansyah</option>
-                            <option value="Sri Wahyuni">Sri Wahyuni</option>
-                        </select>
+                            <label class="text-[11px] font-bold text-slate-400 uppercase tracking-widest">Nama Guru/Pengajar</label>
+                            <select id="jurnalPengajar" required class="w-full mt-1.5 px-4 py-3 text-sm border border-slate-200 rounded-xl outline-none text-dark font-medium">
+                                <option value="">-- Pilih Guru --</option>
+                                <option value="Rofi Hadiansyah">Rofi Hadiansyah</option>
+                                <option value="Sri Wahyuni">Sri Wahyuni</option>
+                            </select>
                         </div>
                         <button type="submit" class="w-full bg-dark text-white py-3.5 rounded-xl text-sm font-bold shadow-md hover:bg-slate-800">Publikasi Jurnal</button>
                     </form>
@@ -196,7 +211,7 @@
                 </div>
             </section>
 
-            <!-- TAB 4: KEUANGAN -->
+            <!-- TAB 4: KEUANGAN (UPDATE) -->
             <section id="tab-keuangan" class="tab-content">
                 <div class="flex flex-col sm:flex-row justify-between sm:items-end mb-6 gap-4">
                     <div>
@@ -226,6 +241,7 @@
     </main>
 
     <script>
+        // PASTIKAN API_URL SAMA DENGAN APLIKASI LAIN
         const API_URL = 'https://script.google.com/macros/s/AKfycbzA8SfMkBpWkIQ5ZMqOWwLL8z0uSaWMBbOqXVayEs_cmA_egfqDMpJKyfhCVVp_l1on/exec';
         let studentsData = [];
 
@@ -360,7 +376,7 @@
             if(await apiPost(payload, e.target.querySelector('button'))) { closeEditModal(); loadData(); }
         });
 
-        // --- TAMPILKAN JADWAL (GROUP BY PROGRAM -> HARI) ---
+        // --- TAMPILKAN JADWAL (GROUP BY PROGRAM -> SISWA) (UPDATE) ---
         async function loadAllJadwal() {
             const cont = document.getElementById('jadwalTableContainer');
             cont.innerHTML = '<p class="text-center py-4 text-sm">Memuat data papan jadwal...</p>';
@@ -369,39 +385,46 @@
                 const data = await res.json();
                 if(data.length === 0) return cont.innerHTML = '<p class="text-center py-4 text-sm">Belum ada jadwal yang diatur.</p>';
                 
-                // Grouping: Program -> Hari Sesi
+                // Grouping berdasarkan Program saja untuk daftar admin
                 const grouped = data.reduce((acc, r) => {
                     let prog = r['Program'] || 'Lainnya';
-                    let hariJam = `${r['Hari 1']} & ${r['Hari 2']} (${r['Jam Belajar']})`;
-                    if(!acc[prog]) acc[prog] = {};
-                    if(!acc[prog][hariJam]) acc[prog][hariJam] = [];
-                    acc[prog][hariJam].push(r);
-                    return acc;
+                    if(!acc[prog]) acc[prog] = [];
+                    acc[prog].push(r); return acc;
                 }, {});
 
                 let html = '';
                 for(let prog in grouped) {
-                    html += `<div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
-                                <div class="bg-slate-200/50 px-5 py-3 border-b border-slate-100">
+                    html += `<div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden mb-4">
+                                <div class="bg-slate-100/80 px-5 py-3 border-b border-slate-100 flex justify-between items-center">
                                     <h3 class="font-bold text-dark text-sm uppercase tracking-wider">${prog}</h3>
+                                    <span class="text-[10px] bg-white px-2 py-1 rounded-md text-primary font-bold border border-blue-100">${grouped[prog].length} Siswa</span>
                                 </div>
                                 <div class="divide-y divide-slate-100">`;
-                    for(let hj in grouped[prog]) {
-                        html += `<div class="p-4">
-                                    <h4 class="font-bold text-primary text-xs mb-3 flex items-center gap-2">🗓️ ${hj}</h4>
-                                    <div class="flex flex-wrap gap-2">`;
-                        grouped[prog][hj].forEach(s => {
-                            html += `<span class="bg-blue-50 border border-blue-100 text-slate-700 text-xs px-3 py-1.5 rounded-full font-medium">👤 ${s['Nama Siswa']} <span class="text-[10px] text-slate-400 ml-1">(${s['Metode']})</span></span>`;
-                        });
-                        html += `</div></div>`;
-                    }
+                    
+                    grouped[prog].forEach(s => {
+                        let j1 = s['Hari 1'] && s['Hari 1'] !== '-' ? `${s['Hari 1']} (${s['Jam Belajar 1'] || s['Jam Belajar'] || '-'})` : '';
+                        let j2 = s['Hari 2'] && s['Hari 2'] !== '-' ? `${s['Hari 2']} (${s['Jam Belajar 2'] || s['Jam Belajar'] || '-'})` : '';
+                        let j3 = s['Hari 3'] && s['Hari 3'] !== '-' ? `${s['Hari 3']} (${s['Jam Belajar 3'] || '-'})` : '';
+                        let allJ = [j1, j2, j3].filter(Boolean).join(' &bull; ');
+                        if(!allJ) allJ = '<span class="text-slate-400 italic font-normal">Belum diset</span>';
+
+                        html += `<div class="p-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 hover:bg-slate-50 transition">
+                                    <div>
+                                        <h4 class="font-bold text-slate-700 text-sm">${s['Nama Siswa']}</h4>
+                                        <p class="text-[10px] text-slate-500 font-medium uppercase tracking-wider mt-0.5">${s['Metode Bimbel'] || s['Metode']}</p>
+                                    </div>
+                                    <div class="text-left sm:text-right w-full sm:w-auto mt-2 sm:mt-0">
+                                        <p class="text-[11px] text-primary font-bold bg-blue-50 border border-blue-100 px-3 py-1.5 rounded-lg inline-block w-full sm:w-auto text-center">${allJ}</p>
+                                    </div>
+                                </div>`;
+                    });
                     html += `</div></div>`;
                 }
                 cont.innerHTML = html;
             } catch(e) { cont.innerHTML = '<p class="text-red-500 py-4 text-sm">Gagal memuat data.</p>'; }
         }
 
-        // --- TAMPILKAN JURNAL (GROUP BY NAMA - ACCORDION) ---
+        // --- TAMPILKAN JURNAL (GROUP BY NAMA - ACCORDION) (UPDATE) ---
         async function loadAllJurnal() {
             const cont = document.getElementById('jurnalTableContainer');
             cont.innerHTML = '<p class="text-center py-4 text-sm">Memuat riwayat jurnal...</p>';
@@ -425,11 +448,24 @@
                             <span class="text-slate-400 group-open:rotate-180 transition-transform">▼</span>
                         </summary>
                         <div class="p-4 border-t border-slate-200 bg-white space-y-4">`;
+                    
                     grouped[nama].forEach(j => {
                         let tgl = new Date(j['Tanggal Belajar']).toLocaleDateString('id-ID');
-                        html += `<div class="border-l-2 border-primary pl-4">
-                                    <p class="text-xs text-slate-400 mb-1">📅 ${tgl} &bull; Pengajar: ${j['Nama Pengajar']}</p>
-                                    <p class="text-sm text-slate-600 font-medium">${j['Materi/Catatan']}</p>
+                        let materi = j['Materi/Catatan'] || j['Materi'] || '-';
+                        let cp = j['Catatan Pembelajaran'] || '-';
+                        let hb = j['Hasil Belajar'] || '-';
+                        let refColor = "text-slate-600";
+                        if(hb === 'Sangat Baik') refColor = "text-green-600";
+                        else if(hb === 'Perlu Bimbingan') refColor = "text-red-500";
+                        else if(hb === 'Baik') refColor = "text-blue-600";
+
+                        html += `<div class="border-l-2 border-primary pl-4 py-1">
+                                    <div class="flex justify-between items-center mb-1">
+                                        <p class="text-xs text-slate-400">📅 ${tgl} &bull; ${j['Nama Pengajar']}</p>
+                                        <span class="text-[10px] font-bold uppercase tracking-wider ${refColor}">${hb}</span>
+                                    </div>
+                                    <p class="text-sm text-slate-700 font-bold mb-1">${materi}</p>
+                                    <p class="text-xs text-slate-600 leading-relaxed">${cp}</p>
                                  </div>`;
                     });
                     html += `</div></details>`;
@@ -438,7 +474,7 @@
             } catch(e) { cont.innerHTML = '<p class="text-red-500 py-4 text-sm">Gagal memuat data.</p>'; }
         }
 
-        // --- TAMPILKAN PEMBAYARAN (GROUP BY NAMA - ACCORDION) ---
+        // --- TAMPILKAN PEMBAYARAN (GROUP BY NAMA - ACCORDION) (UPDATE) ---
         async function loadAllPembayaran() {
             const cont = document.getElementById('bayarTableContainer');
             cont.innerHTML = '<p class="text-center py-4 text-sm">Memuat riwayat pembayaran...</p>';
@@ -462,13 +498,16 @@
                             <span class="text-slate-400 group-open:rotate-180 transition-transform">▼</span>
                         </summary>
                         <div class="p-4 border-t border-slate-200 bg-white space-y-3">`;
+                    
                     grouped[nama].forEach(r => {
                         let tgl = new Date(r['Tanggal Bayar']).toLocaleDateString('id-ID');
                         let nom = parseInt(r['Nominal (Rp)']||0).toLocaleString('id-ID', {style:'currency', currency:'IDR'});
+                        
                         html += `<div class="flex justify-between items-center bg-slate-50 p-3 rounded-xl border border-slate-100">
                                     <div>
                                         <p class="text-xs text-slate-500 mb-0.5">📅 ${tgl}</p>
-                                        <p class="text-sm font-bold text-dark">${r['Jenis Pembayaran']} <span class="text-[10px] text-slate-400 font-normal uppercase ml-1">(${r['Metode']})</span></p>
+                                        <!-- MEMANGGIL METODE BIMBEL BERDASARKAN PEMBARUAN -->
+                                        <p class="text-sm font-bold text-dark">${r['Jenis Pembayaran']} <span class="text-[10px] text-slate-400 font-normal uppercase ml-1">(${r['Metode Bimbel'] || r['Metode']})</span></p>
                                     </div>
                                     <div class="text-right">
                                         <p class="text-sm font-bold text-green-600">${nom}</p>
@@ -515,11 +554,11 @@
                 const res = await fetch(API_URL, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(payload) });
                 const r = await res.json();
                 if(r.status === 'success') { 
-                    showToast('Berhasil diproses!', 'success'); // Ini yang diubah
+                    showToast('Berhasil diproses!', 'success'); 
                     return true; 
                 } else throw new Error(r.error);
             } catch (e) { 
-                showToast("Error: " + e.message, 'error'); // Ini yang diubah
+                showToast("Error: " + e.message, 'error'); 
                 return false; 
             } 
             finally { btnElement.innerHTML = ogText; btnElement.disabled = false; }
@@ -542,7 +581,18 @@
         document.getElementById('formJadwal').addEventListener('submit', async e => {
             e.preventDefault();
             const s = studentsData.find(x => x['Nama Lengkap'] === document.getElementById('jadwalSiswa').value);
-            const p = { action: 'saveJadwal', namaSiswa: s['Nama Lengkap'], program: s.Program, metodeBimbel: s.Metode, hari1: document.getElementById('jadwalHari1').value, hari2: document.getElementById('jadwalHari2').value, jamBelajar: document.getElementById('jadwalJam').value };
+            const p = { 
+                action: 'saveJadwal', 
+                namaSiswa: s['Nama Lengkap'], 
+                program: s.Program, 
+                metodeBimbel: s.Metode, 
+                hari1: document.getElementById('jadwalHari1').value, 
+                jam1: document.getElementById('jadwalJam1').value, 
+                hari2: document.getElementById('jadwalHari2').value, 
+                jam2: document.getElementById('jadwalJam2').value,
+                hari3: document.getElementById('jadwalHari3').value, 
+                jam3: document.getElementById('jadwalJam3').value 
+            };
             if(await apiPost(p, e.target.querySelector('button'))) e.target.reset();
         });
 
@@ -554,16 +604,25 @@
                 tanggal: document.getElementById('jurnalTanggal').value, 
                 namaSiswa: s['Nama Lengkap'], 
                 program: s.Program, 
-                catatan: document.getElementById('jurnalCatatan').value, 
-                pengajar: document.getElementById('jurnalPengajar').value,
-                refleksi: document.getElementById('jurnalRefleksi').value // TAMBAHAN INI
+                materi: document.getElementById('jurnalMateri').value,
+                catatanPembelajaran: document.getElementById('jurnalCatatanPembelajaran').value,
+                hasilBelajar: document.getElementById('jurnalHasilBelajar').value,
+                pengajar: document.getElementById('jurnalPengajar').value 
             };
             if(await apiPost(p, e.target.querySelector('button'))) { e.target.reset(); document.getElementById('jurnalTanggal').valueAsDate = new Date(); }
         });
 
         document.getElementById('formBayar').addEventListener('submit', async e => {
             e.preventDefault();
-            const p = { action: 'savePembayaran', tanggal: document.getElementById('bayarTanggal').value, namaSiswa: document.getElementById('bayarSiswa').value, metodeBimbel: document.getElementById('bayarInfo').innerText.includes('PRIVATE')?'Private':'Reguler', jenisPembayaran: document.getElementById('bayarJenis').value, nominal: document.getElementById('bayarNominal').value, keterangan: 'Via Admin' };
+            const p = { 
+                action: 'savePembayaran', 
+                tanggal: document.getElementById('bayarTanggal').value, 
+                namaSiswa: document.getElementById('bayarSiswa').value, 
+                metodeBimbel: document.getElementById('bayarInfo').innerText.includes('PRIVATE') ? 'Private' : 'Reguler', 
+                jenisPembayaran: document.getElementById('bayarJenis').value, 
+                nominal: document.getElementById('bayarNominal').value, 
+                keterangan: 'Via Admin' 
+            };
             if(await apiPost(p, e.target.querySelector('button'))) { e.target.reset(); document.getElementById('bayarTanggal').valueAsDate = new Date(); document.getElementById('bayarInfo').innerText = ''; }
         });
 
@@ -573,6 +632,7 @@
             document.getElementById('selectAllCB').checked = (checks.length > 0 && checks.length === document.querySelectorAll('.student-cb').length);
         }
         function toggleSelectAll(cb) { document.querySelectorAll('.student-cb').forEach(c => c.checked = cb.checked); checkSelection(); }
+        
         // --- FUNGSI NOTIFIKASI TOAST (MODERN ALERT) ---
         function showToast(message, type = 'success') {
             const container = document.getElementById('toast-container');
@@ -586,9 +646,9 @@
             
             container.appendChild(toast);
             
-            setTimeout(() => { toast.classList.remove('translate-x-full', 'opacity-0'); }, 10); // Muncul
+            setTimeout(() => { toast.classList.remove('translate-x-full', 'opacity-0'); }, 10);
             setTimeout(() => {
-                toast.classList.add('translate-x-full', 'opacity-0'); // Menghilang
+                toast.classList.add('translate-x-full', 'opacity-0');
                 setTimeout(() => toast.remove(), 300);
             }, 3000);
         }
